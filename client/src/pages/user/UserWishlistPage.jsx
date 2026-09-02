@@ -1,0 +1,43 @@
+import React from 'react';
+import { Heart } from 'lucide-react';
+import ProfessionalCard from '../../components/cards/ProfessionalCard';
+import EmptyState from '../../components/common/EmptyState';
+import { MOCK_PROFESSIONALS } from '../../constants/mockData';
+
+const UserWishlistPage = () => {
+  const wishlistedPros = MOCK_PROFESSIONALS.slice(0, 3);
+
+  return (
+    <div className="space-y-6 text-left">
+      <div className="pb-4 border-b border-[#E5E0D8]">
+        <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#B88A5A] block mb-1">
+          Saved Talents
+        </span>
+        <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#171717]">
+          My Curated Creators
+        </h1>
+        <p className="text-xs text-[#6B6258] mt-1">
+          Keep track of photographers, videographers, and editors you want to hire for upcoming projects.
+        </p>
+      </div>
+
+      {wishlistedPros.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {wishlistedPros.map((pro) => (
+            <ProfessionalCard key={pro.id} professional={pro} isWishlisted={true} />
+          ))}
+        </div>
+      ) : (
+        <EmptyState
+          icon={Heart}
+          title="Your Wishlist is Empty"
+          description="Browse our curated catalog and tap the heart icon to save creators."
+          actionLabel="Explore Creators"
+          onAction={() => {}}
+        />
+      )}
+    </div>
+  );
+};
+
+export default UserWishlistPage;

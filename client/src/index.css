@@ -1,0 +1,133 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-primary: #171717;
+    --color-bg-main: #F7F5F2;
+    --color-bg-secondary: #EEEAE4;
+    --color-accent-bronze: #B88A5A;
+    --color-card-bg: #FFFFFF;
+    --color-text-secondary: #6B6258;
+    --color-border-subtle: #E5E0D8;
+  }
+
+  body {
+    @apply bg-[#F7F5F2] text-[#171717] min-h-screen font-sans antialiased;
+    background-color: #F7F5F2;
+  }
+
+  h1, h2, h3, .font-editorial {
+    font-family: "Playfair Display", "Cormorant Garamond", Georgia, serif;
+    letter-spacing: -0.015em;
+  }
+}
+
+/* Custom Minimal Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #EEEAE4;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D6CFC4;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #B88A5A;
+}
+
+/* Editorial Minimal Utilities */
+.editorial-card {
+  background-color: #FFFFFF;
+  border: 1px solid #E5E0D8;
+  border-radius: 8px;
+  transition: transform 0.25s ease-out, box-shadow 0.25s ease-out, border-color 0.25s ease-out;
+}
+
+.editorial-card:hover {
+  border-color: #D6CFC4;
+  box-shadow: 0 10px 25px -5px rgba(23, 23, 23, 0.05);
+}
+
+.editorial-tag {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #6B6258;
+}
+
+.editorial-number {
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 500;
+  color: #B88A5A;
+}
+
+.editorial-nav-link {
+  position: relative;
+  transition: color 0.2s ease-out;
+}
+
+.editorial-nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0%;
+  height: 1.5px;
+  background-color: #B88A5A;
+  transition: width 0.25s ease-out;
+}
+
+.editorial-nav-link:hover::after,
+.editorial-nav-link.active::after {
+  width: 100%;
+}
+
+/* 35mm Film Frame Outline Aesthetic */
+.film-frame-marker {
+  position: relative;
+}
+
+.film-frame-marker::before,
+.film-frame-marker::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-color: rgba(23, 23, 23, 0.25);
+  pointer-events: none;
+}
+
+.film-frame-marker::before {
+  top: 8px;
+  left: 8px;
+  border-top: 1.5px solid;
+  border-left: 1.5px solid;
+}
+
+.film-frame-marker::after {
+  bottom: 8px;
+  right: 8px;
+  border-bottom: 1.5px solid;
+  border-right: 1.5px solid;
+}
+
+/* Prefers Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
