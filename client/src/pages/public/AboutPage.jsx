@@ -1,53 +1,59 @@
 import React from 'react';
-import { Camera, ShieldCheck, Award, Users } from 'lucide-react';
+import { Camera, ShieldCheck, Award, Users, Sparkles, CheckCircle2 } from 'lucide-react';
 
 const AboutPage = () => {
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-left space-y-16">
-      <div className="text-center max-w-3xl mx-auto space-y-4">
-        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#B88A5A] block">
-          Editorial Manifesto
-        </span>
-        <h1 className="text-4xl sm:text-5xl font-serif font-bold text-[#171717] leading-tight">
-          Elevating Creative Talent & Production Standards.
-        </h1>
-        <p className="text-sm text-[#6B6258] leading-relaxed">
-          LensCraft was founded to bridge the gap between discerning clients, couples, and luxury brands with the world's most gifted photographers, cinematographers, and video editors.
-        </p>
-      </div>
-
-      {/* 3 Pillars */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="p-6 rounded-md bg-white border border-[#E5E0D8] space-y-3 shadow-2xs">
-          <div className="w-10 h-10 rounded-md bg-[#FAF7F3] border border-[#E8DBCA] flex items-center justify-center text-[#B88A5A]">
-            <ShieldCheck className="w-5 h-5 stroke-[1.75]" />
+    <div className="space-y-16 pb-24 text-left">
+      {/* Editorial Manifesto Hero */}
+      <section className="bg-[#121212] text-white py-20 px-4 sm:px-6 lg:px-8 border-b border-[#242424]">
+        <div className="max-w-4xl mx-auto text-center space-y-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-[#C4683C] text-[10px] font-bold uppercase tracking-[0.2em] border border-white/10">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Editorial Manifesto</span>
           </div>
-          <h3 className="text-base font-serif font-bold text-[#171717]">Rigorous Curation</h3>
-          <p className="text-xs text-[#6B6258] leading-relaxed">
-            Every creator on our platform undergoes a meticulous portfolio and identity audit to ensure top-tier artistic and professional fidelity.
+          <h1 className="text-4xl sm:text-6xl font-serif font-bold tracking-tight text-white leading-tight">
+            Elevating the Standards of Visual Storytelling.
+          </h1>
+          <p className="text-sm sm:text-base text-[#8C8276] leading-relaxed max-w-2xl mx-auto">
+            LensCraft was founded to bridge the gap between discerning clients, luxury brands, and celebrations with the most gifted Photographers, Cinematographers, and Video Editors.
           </p>
         </div>
+      </section>
 
-        <div className="p-6 rounded-md bg-white border border-[#E5E0D8] space-y-3 shadow-2xs">
-          <div className="w-10 h-10 rounded-md bg-[#FAF7F3] border border-[#E8DBCA] flex items-center justify-center text-[#B88A5A]">
-            <Award className="w-5 h-5 stroke-[1.75]" />
+      {/* 3 Core Pillars */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="p-8 rounded-xl bg-white border border-[#E8E2D8] space-y-4 shadow-2xs">
+            <div className="w-12 h-12 rounded-lg bg-[#FAF8F5] border border-[#E8E2D8] flex items-center justify-center text-[#C4683C]">
+              <ShieldCheck className="w-6 h-6 stroke-[1.75]" />
+            </div>
+            <h3 className="text-xl font-serif font-bold text-[#121212]">Rigorous Curation</h3>
+            <p className="text-xs text-[#6B6258] leading-relaxed">
+              Every creator on our platform undergoes a meticulous portfolio, gear bag, and identity audit by our senior creative board before joining the active roster.
+            </p>
           </div>
-          <h3 className="text-base font-serif font-bold text-[#171717]">Transparent Pricing</h3>
-          <p className="text-xs text-[#6B6258] leading-relaxed">
-            No hidden charges or surprise surcharges. Clear package tiering, deliverable counts, turnaround timelines, and milestone escrow.
-          </p>
-        </div>
 
-        <div className="p-6 rounded-md bg-white border border-[#E5E0D8] space-y-3 shadow-2xs">
-          <div className="w-10 h-10 rounded-md bg-[#FAF7F3] border border-[#E8DBCA] flex items-center justify-center text-[#B88A5A]">
-            <Users className="w-5 h-5 stroke-[1.75]" />
+          <div className="p-8 rounded-xl bg-white border border-[#E8E2D8] space-y-4 shadow-2xs">
+            <div className="w-12 h-12 rounded-lg bg-[#FAF8F5] border border-[#E8E2D8] flex items-center justify-center text-[#C4683C]">
+              <Award className="w-6 h-6 stroke-[1.75]" />
+            </div>
+            <h3 className="text-xl font-serif font-bold text-[#121212]">100% Escrow Protection</h3>
+            <p className="text-xs text-[#6B6258] leading-relaxed">
+              No hidden surprise charges. Clear package tiering, deliverable counts, turnaround timelines, and milestone funds held in certified escrow until your delivery approval.
+            </p>
           </div>
-          <h3 className="text-base font-serif font-bold text-[#171717]">Empowering Creators</h3>
-          <p className="text-xs text-[#6B6258] leading-relaxed">
-            We provide creators with the digital infrastructure to manage calendars, receive timely payouts, and scale their independent studio business.
-          </p>
+
+          <div className="p-8 rounded-xl bg-white border border-[#E8E2D8] space-y-4 shadow-2xs">
+            <div className="w-12 h-12 rounded-lg bg-[#FAF8F5] border border-[#E8E2D8] flex items-center justify-center text-[#C4683C]">
+              <Users className="w-6 h-6 stroke-[1.75]" />
+            </div>
+            <h3 className="text-xl font-serif font-bold text-[#121212]">Empowering Studios</h3>
+            <p className="text-xs text-[#6B6258] leading-relaxed">
+              We provide independent creators with the digital studio infrastructure to manage shoot calendars, client call-sheets, milestone earnings, and direct cloud media deliveries.
+            </p>
+          </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 };
