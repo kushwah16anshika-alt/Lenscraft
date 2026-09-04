@@ -101,7 +101,7 @@ const RegisterPage = () => {
         <Input
           label="Full Name"
           required
-          placeholder="e.g. Aarav Sharma"
+          placeholder="Enter your full name"
           leftIcon={<User className="w-4 h-4" />}
           value={formData.name}
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}

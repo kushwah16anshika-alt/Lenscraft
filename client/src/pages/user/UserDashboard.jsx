@@ -73,15 +73,15 @@ const UserDashboard = () => {
             <Card key={b.id} className="p-5 bg-white border border-[#E5E0D8] space-y-4 shadow-2xs">
               <div className="flex items-start justify-between gap-2">
                 <div className="flex items-center gap-3">
-                  <Avatar src={b.professionalAvatar} name={b.professionalName} size="md" />
+                  <Avatar src={b.professional?.avatar || b.professionalAvatar} name={b.professional?.name || b.professionalName} size="md" />
                   <div>
-                    <h4 className="text-sm font-bold text-[#171717]">{b.professionalName}</h4>
-                    <span className="text-[11px] text-[#6B6258]">{b.serviceTitle}</span>
+                    <h4 className="text-sm font-bold text-[#171717]">{b.professional?.name || b.professionalName}</h4>
+                    <span className="text-[11px] text-[#6B6258]">{b.service?.title || b.serviceTitle}</span>
                   </div>
                 </div>
                 <Badge
                   variant={
-                    b.status === 'confirmed'
+                    b.status === 'confirmed' || b.status === 'accepted'
                       ? 'success'
                       : b.status === 'completed'
                       ? 'charcoal'
@@ -109,7 +109,7 @@ const UserDashboard = () => {
                   <Clock className="w-3.5 h-3.5 text-[#B88A5A]" />
                   <span>Deliverables pending</span>
                 </span>
-                <Link to={`/professionals/${b.professionalId}`} className="text-[#171717] font-bold hover:underline">
+                <Link to={`/professionals/${b.professional?.id || b.professionalId || 'pro-1'}`} className="text-[#171717] font-bold hover:underline">
                   Contact Creator →
                 </Link>
               </div>

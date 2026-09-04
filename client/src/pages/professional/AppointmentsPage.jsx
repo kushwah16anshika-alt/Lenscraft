@@ -43,10 +43,10 @@ const AppointmentsPage = () => {
           <Card key={b.id} className="p-6 bg-white border border-[#E5E0D8] space-y-4 shadow-2xs">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div className="flex items-center gap-4">
-                <Avatar src={b.userAvatar} name={b.userName} size="lg" />
+                <Avatar src={b.user?.avatar || b.userAvatar} name={b.user?.name || b.userName} size="lg" />
                 <div>
-                  <h3 className="text-base font-bold text-[#171717]">{b.userName}</h3>
-                  <p className="text-xs text-[#6B6258]">{b.serviceTitle}</p>
+                  <h3 className="text-base font-bold text-[#171717]">{b.user?.name || b.userName}</h3>
+                  <p className="text-xs text-[#6B6258]">{b.service?.title || b.serviceTitle}</p>
                 </div>
               </div>
 

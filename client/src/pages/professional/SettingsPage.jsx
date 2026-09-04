@@ -4,16 +4,18 @@ import Input from '../../components/common/Input';
 import Textarea from '../../components/common/Textarea';
 import Button from '../../components/common/Button';
 import { Save, Camera } from 'lucide-react';
+import { useAuth } from '../../hooks/useAuth';
 import { useToast } from '../../hooks/useToast';
 
 const SettingsPage = () => {
+  const { user } = useAuth();
   const { success } = useToast();
   const [formData, setFormData] = useState({
-    studioName: 'Aarav Sharma Photography',
-    tagline: 'International Editorial & Royal Wedding Photography. Captured with Leica & Hasselblad.',
-    city: 'Mumbai, Maharashtra',
-    experienceYears: '8',
-    bio: 'Specializing in destination luxury weddings across Rajasthan, Goa, and Europe.',
+    studioName: user?.name ? `${user.name} Studio` : 'Creative Studio',
+    tagline: 'Professional Photography & Creative Media Services',
+    city: user?.location?.city ? `${user.location.city}, ${user.location.state || 'India'}` : 'Mumbai, Maharashtra',
+    experienceYears: '5',
+    bio: 'Capturing moments with creative excellence and cinematic precision.',
   });
 
   const handleSubmit = (e) => {
