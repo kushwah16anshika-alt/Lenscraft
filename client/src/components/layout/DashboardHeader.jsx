@@ -66,7 +66,7 @@ const DashboardHeader = ({ onMobileMenuToggle }) => {
           <button
             type="button"
             onClick={() => setDemoRoleOpen(!demoRoleOpen)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[#FAF7F3] border border-[#E8DBCA] text-xs font-semibold text-[#B88A5A] hover:border-[#B88A5A] transition-all"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[#FAF8F5] border border-[#E8E2D8] text-xs font-semibold text-[#C4683C] hover:border-[#121212] transition-all"
           >
             <Sparkles className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Role: {user?.role}</span>
@@ -75,10 +75,10 @@ const DashboardHeader = ({ onMobileMenuToggle }) => {
 
           {demoRoleOpen && (
             <div
-              className="absolute right-0 mt-2 w-52 rounded-md bg-white border border-[#E5E0D8] shadow-lg p-1.5 z-50 animate-slide-up text-left"
+              className="absolute right-0 mt-2 w-52 rounded-md bg-white border border-[#E8E2D8] shadow-lg p-1.5 z-50 animate-reveal text-left"
               onMouseLeave={() => setDemoRoleOpen(false)}
             >
-              <span className="text-[10px] uppercase font-bold text-[#8C8276] px-3 py-1.5 block border-b border-[#E5E0D8] mb-1">
+              <span className="text-[10px] uppercase font-bold text-[#8C8276] px-3 py-1.5 block border-b border-[#E8E2D8] mb-1">
                 Instant Role Switcher
               </span>
               {Object.values(ROLES).map((roleKey) => (
@@ -92,10 +92,10 @@ const DashboardHeader = ({ onMobileMenuToggle }) => {
                       navigate('/professional/dashboard');
                     else navigate('/user/dashboard');
                   }}
-                  className="w-full text-left px-3 py-2 text-xs rounded hover:bg-[#F7F5F2] flex items-center justify-between text-[#171717] font-medium"
+                  className="w-full text-left px-3 py-2 text-xs rounded hover:bg-[#FAF8F5] flex items-center justify-between text-[#121212] font-medium"
                 >
                   <span>{ROLE_LABELS[roleKey]}</span>
-                  <span className="text-[10px] px-1.5 py-0.2 rounded border uppercase font-bold text-[#6B6258] bg-[#EEEAE4] border-[#E5E0D8]">
+                  <span className="text-[10px] px-1.5 py-0.2 rounded border uppercase font-bold text-[#6B6258] bg-[#F3EFEA] border-[#E8E2D8]">
                     {roleKey}
                   </span>
                 </button>
