@@ -1,15 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, ShieldCheck, Heart, ArrowUpRight } from 'lucide-react';
-import Card from '../common/Card';
+import { MapPin, ShieldCheck, Heart, ArrowUpRight, Star } from 'lucide-react';
 import Avatar from '../common/Avatar';
-import Badge from '../common/Badge';
-import StarRating from '../common/StarRating';
-import Button from '../common/Button';
 import { formatCurrency, formatPriceUnit } from '../../utils/formatters';
 import { ROLE_LABELS } from '../../constants/roles';
 
-const ProfessionalCard = ({ professional, onWishlist, isWishlisted = false }) => {
+const ProfessionalCard = ({ professional, onWishlist, isWishlisted = false, variant = 'default' }) => {
   const {
     id,
     name,
@@ -28,117 +24,119 @@ const ProfessionalCard = ({ professional, onWishlist, isWishlisted = false }) =>
   } = professional;
 
   return (
-    <Card hoverEffect className="group flex flex-col h-full bg-white border border-[#E5E0D8] rounded-md shadow-2xs">
-      {/* Cover / Media Banner */}
-      <div className="relative h-48 w-full overflow-hidden bg-[#EEEAE4]">
+    <div className="group flex flex-col h-full bg-white border border-[#E8E2D8] rounded-lg overflow-hidden transition-all duration-300 hover:border-[#121212] hover:shadow-xl text-left">
+      {/* Visual Cover / Image Showcase */}
+      <Link to={`/professionals/${id}`} className="relative h-56 sm:h-60 w-full overflow-hidden bg-[#F3EFEA] block">
         <img
           src={coverImage || 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80'}
           alt={name}
-          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-106"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#171717]/80 via-transparent to-transparent opacity-80" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
 
         {/* Role Pill */}
         <div className="absolute top-3 left-3">
-          <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-xs backdrop-blur-md bg-white/90 text-[#171717] border border-white/40 shadow-xs">
+          <span className="text-[9px] font-bold uppercase tracking-wider px-2.5 py-1 rounded bg-black/70 backdrop-blur-md text-white border border-white/20">
             {ROLE_LABELS[role] || role}
           </span>
         </div>
 
-        {/* Wishlist Button */}
+        {/* Wishlist Icon Button */}
         <button
           type="button"
           onClick={(e) => {
             e.preventDefault();
+            e.stopPropagation();
             onWishlist && onWishlist(professional);
           }}
-          className="absolute top-3 right-3 p-2 rounded-full bg-white/90 backdrop-blur-md border border-white/40 text-[#171717] hover:text-[#99453F] transition-colors shadow-xs"
+          className="absolute top-3 right-3 p-2 rounded-full bg-black/60 hover:bg-white text-white hover:text-[#99453F] backdrop-blur-md border border-white/20 transition-all shadow-sm"
           title="Save Creator"
         >
           <Heart className={`w-3.5 h-3.5 ${isWishlisted ? 'fill-[#99453F] text-[#99453F]' : ''}`} />
         </button>
 
-        {/* Starting Price Overlay */}
-        <div className="absolute bottom-2.5 right-3 px-2.5 py-1 rounded-sm bg-[#171717]/90 backdrop-blur-md text-right border border-white/10">
-          <span className="text-[9px] text-[#D6CFC4] block uppercase tracking-wider">Starting from</span>
-          <span className="text-xs font-bold text-white">
-            {formatCurrency(startingPrice)}
-          </span>
-          <span className="text-[10px] text-[#D6CFC4] ml-1">{formatPriceUnit(priceUnit)}</span>
-        </div>
-      </div>
+        {/* Starting Price & Rating Pill */}
+        <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white">
+          <div className="flex items-center gap-1 text-xs font-bold bg-black/60 backdrop-blur-md px-2 py-1 rounded border border-white/10">
+            <Star className="w-3 h-3 fill-[#C4683C] text-[#C4683C]" />
+            <span>{rating}</span>
+            <span className="text-white/60 text-[10px] font-normal">({reviewCount})</span>
+          </div>
 
-      {/* Profile Details */}
-      <div className="p-5 flex-1 flex flex-col justify-between text-left">
+          <div className="text-right bg-black/60 backdrop-blur-md px-2.5 py-1 rounded border border-white/10">
+            <span className="text-xs font-serif font-bold text-white">
+              {formatCurrency(startingPrice)}
+            </span>
+            <span className="text-[10px] text-white/70 ml-1">{formatPriceUnit(priceUnit)}</span>
+          </div>
+        </div>
+      </Link>
+
+      {/* Details Area */}
+      <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
         <div>
           {/* Avatar and Name */}
-          <div className="flex items-start gap-3 -mt-8 mb-3 relative z-10">
+          <div className="flex items-start gap-3">
             <Avatar
               src={avatar}
               name={name}
-              size="lg"
-              className="ring-3 ring-white shadow-sm"
+              size="md"
+              className="ring-2 ring-white shadow-sm shrink-0"
             />
-            <div className="pt-4 flex-1 min-w-0">
-              <div className="flex items-center gap-1.5">
-                <h3 className="text-base font-serif font-bold text-[#171717] truncate group-hover:text-[#B88A5A] transition-colors">
-                  {name}
-                </h3>
-                {isVerified && (
-                  <ShieldCheck className="w-4 h-4 text-[#B88A5A] shrink-0" title="Verified Creator" />
-                )}
-              </div>
+            <div className="flex-1 min-w-0">
+              <Link to={`/professionals/${id}`}>
+                <div className="flex items-center gap-1.5">
+                  <h3 className="text-base font-serif font-bold text-[#121212] truncate group-hover:text-[#C4683C] transition-colors">
+                    {name}
+                  </h3>
+                  {isVerified && (
+                    <ShieldCheck className="w-4 h-4 text-[#C4683C] shrink-0" title="Verified Creator" />
+                  )}
+                </div>
+              </Link>
               <div className="flex items-center gap-1 text-xs text-[#6B6258] mt-0.5">
                 <MapPin className="w-3 h-3 text-[#8C8276] shrink-0" />
-                <span className="truncate">{location?.city || 'India'}, {location?.state || ''}</span>
+                <span className="truncate">{location?.city || 'India'}</span>
+                {experienceYears && (
+                  <>
+                    <span className="text-[#8C8276]">·</span>
+                    <span className="text-[#8C8276] text-[11px]">{experienceYears}y exp</span>
+                  </>
+                )}
               </div>
             </div>
           </div>
 
           {/* Tagline */}
-          <p className="text-xs text-[#6B6258] line-clamp-2 mb-3 min-h-[32px] leading-relaxed">
+          <p className="text-xs text-[#6B6258] line-clamp-2 mt-3 leading-relaxed">
             {tagline}
           </p>
 
-          {/* Rating & Experience */}
-          <div className="flex items-center justify-between py-2 border-y border-[#E5E0D8] mb-3 text-xs">
-            <StarRating rating={rating} reviewsCount={reviewCount} size="xs" />
-            <span className="text-[#6B6258] font-medium">{experienceYears} yrs exp</span>
-          </div>
-
           {/* Specialties Pills */}
-          <div className="flex flex-wrap gap-1.5 mb-4">
-            {specialties.slice(0, 3).map((spec, i) => (
-              <span
-                key={i}
-                className="text-[10px] px-2 py-0.5 rounded-xs bg-[#F7F5F2] border border-[#E5E0D8] text-[#6B6258] font-medium"
-              >
-                {spec}
-              </span>
-            ))}
-            {specialties.length > 3 && (
-              <span className="text-[10px] text-[#8C8276] self-center font-medium">
-                +{specialties.length - 3}
-              </span>
-            )}
-          </div>
+          {specialties && specialties.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 mt-3 pt-3 border-t border-[#E8E2D8]">
+              {specialties.slice(0, 3).map((spec, sIdx) => (
+                <span
+                  key={sIdx}
+                  className="text-[10px] px-2 py-0.5 rounded bg-[#F3EFEA] text-[#4A433B] border border-[#E8E2D8]"
+                >
+                  {spec}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
 
-        {/* Card CTA */}
-        <div className="pt-1">
-          <Link to={`/professionals/${id}`} className="block">
-            <Button
-              variant="outline"
-              size="sm"
-              className="w-full justify-between group-hover:bg-[#171717] group-hover:text-white group-hover:border-[#171717] transition-all"
-              rightIcon={<ArrowUpRight className="w-3.5 h-3.5" />}
-            >
-              <span>View Portfolio</span>
-            </Button>
-          </Link>
-        </div>
+        {/* View Profile Action */}
+        <Link
+          to={`/professionals/${id}`}
+          className="w-full flex items-center justify-between p-2.5 rounded bg-[#FAF8F5] hover:bg-[#121212] text-[#121212] hover:text-white border border-[#E8E2D8] hover:border-[#121212] transition-all text-xs font-semibold"
+        >
+          <span>View Studio Portfolio</span>
+          <ArrowUpRight className="w-3.5 h-3.5" />
+        </Link>
       </div>
-    </Card>
+    </div>
   );
 };
 
