@@ -7,6 +7,7 @@ const Button = ({
   variant = 'primary',
   size = 'md',
   isLoading = false,
+  loading = false,
   disabled = false,
   leftIcon,
   rightIcon,
@@ -14,6 +15,8 @@ const Button = ({
   onClick,
   ...props
 }) => {
+  const isButtonLoading = isLoading || loading;
+
   const baseStyles =
     'inline-flex items-center justify-center font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#F7F5F2] disabled:opacity-50 disabled:cursor-not-allowed rounded-md active:scale-[0.99] select-none text-sm tracking-tight';
 
@@ -45,15 +48,15 @@ const Button = ({
   return (
     <button
       type={type}
-      disabled={disabled || isLoading}
+      disabled={disabled || isButtonLoading}
       onClick={onClick}
       className={`${baseStyles} ${variants[variant] || variants.primary} ${sizes[size] || sizes.md} ${className}`}
       {...props}
     >
-      {isLoading && <Loader2 className="w-4 h-4 animate-spin text-current shrink-0" />}
-      {!isLoading && leftIcon && <span className="shrink-0 transition-transform duration-200">{leftIcon}</span>}
+      {isButtonLoading && <Loader2 className="w-4 h-4 animate-spin text-current shrink-0" />}
+      {!isButtonLoading && leftIcon && <span className="shrink-0 transition-transform duration-200">{leftIcon}</span>}
       <span>{children}</span>
-      {!isLoading && rightIcon && <span className="shrink-0 transition-transform duration-200">{rightIcon}</span>}
+      {!isButtonLoading && rightIcon && <span className="shrink-0 transition-transform duration-200">{rightIcon}</span>}
     </button>
   );
 };

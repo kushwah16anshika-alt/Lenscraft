@@ -107,6 +107,14 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Update User Profile state & local storage
+  const updateUser = (updatedData) => {
+    const updatedUser = { ...user, ...updatedData };
+    setUser(updatedUser);
+    localStorage.setItem('lenscraft_user', JSON.stringify(updatedUser));
+    return updatedUser;
+  };
+
   // Logout
   const logout = () => {
     setUser(null);
@@ -131,6 +139,7 @@ export const AuthProvider = ({ children }) => {
     login,
     quickDemoLogin,
     register,
+    updateUser,
     logout,
   };
 

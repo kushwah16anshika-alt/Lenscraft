@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { useToast } from '../../hooks/useToast';
 import Card from '../../components/common/Card';
@@ -8,17 +8,56 @@ import Avatar from '../../components/common/Avatar';
 import { Camera, Save } from 'lucide-react';
 
 const UserProfilePage = () => {
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
   const { success } = useToast();
+  const fileInputRef = useRef(null);
+
   const [formData, setFormData] = useState({
     name: user?.name || '',
     email: user?.email || '',
     phone: user?.phone || '',
-    city: 'Mumbai',
+    city: user?.location?.city || 'Mumbai',
   });
+
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        name: user.name || '',
+        email: user.email || '',
+        phone: user.phone || '',
+        city: user.location?.city || 'Mumbai',
+      });
+    }
+  }, [user]);
+
+  const handleAvatarChange = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (updateUser) {
+          updateUser({
+            avatar: { url: reader.result },
+          });
+        }
+        success('Avatar updated successfully!');
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (updateUser) {
+      updateUser({
+        name: formData.name,
+        phone: formData.phone,
+        location: {
+          ...(user?.location || {}),
+          city: formData.city,
+        },
+      });
+    }
     success('Profile updated successfully!');
   };
 
@@ -37,7 +76,19 @@ const UserProfilePage = () => {
         <div className="flex items-center gap-6 pb-6 border-b border-[#E5E0D8]">
           <Avatar src={user?.avatar?.url} name={user?.name} size="2xl" />
           <div className="space-y-2">
-            <Button variant="outline" size="sm" leftIcon={<Camera className="w-3.5 h-3.5" />}>
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleAvatarChange}
+              accept="image/*"
+              className="hidden"
+            />
+            <Button
+              variant="outline"
+              size="sm"
+              leftIcon={<Camera className="w-3.5 h-3.5" />}
+              onClick={() => fileInputRef.current?.click()}
+            >
               Change Avatar
             </Button>
             <p className="text-[11px] text-[#8C8276]">JPG, GIF or PNG. Max size of 2MB.</p>

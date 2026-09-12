@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const Avatar = ({
   src,
@@ -8,6 +8,12 @@ const Avatar = ({
   isOnline,
   className = '',
 }) => {
+  const [imgError, setImgError] = useState(false);
+
+  useEffect(() => {
+    setImgError(false);
+  }, [src]);
+
   const sizes = {
     xs: 'w-6 h-6 text-xs',
     sm: 'w-8 h-8 text-xs',
@@ -29,14 +35,12 @@ const Avatar = ({
 
   return (
     <div className={`relative inline-block shrink-0 ${sizes[size] || sizes.md} ${className}`}>
-      {src ? (
+      {src && !imgError ? (
         <img
           src={src}
           alt={alt || name}
           className="w-full h-full object-cover rounded-full border border-[#E5E0D8]"
-          onError={(e) => {
-            e.currentTarget.style.display = 'none';
-          }}
+          onError={() => setImgError(true)}
         />
       ) : (
         <div className="w-full h-full rounded-full bg-[#EEEAE4] text-[#171717] flex items-center justify-center border border-[#E5E0D8]">
