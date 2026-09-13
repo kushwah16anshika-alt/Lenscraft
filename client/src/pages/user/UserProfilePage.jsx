@@ -9,7 +9,7 @@ import { Camera, Save } from 'lucide-react';
 
 const UserProfilePage = () => {
   const { user, updateUser } = useAuth();
-  const { success } = useToast();
+  const { success, error: toastError } = useToast();
   const fileInputRef = useRef(null);
 
   const [formData, setFormData] = useState({
@@ -33,6 +33,14 @@ const UserProfilePage = () => {
   const handleAvatarChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
+      if (file.size > 2 * 1024 * 1024) {
+        if (toastError) toastError('Avatar image must be less than 2MB.');
+        return;
+      }
+      if (!file.type.startsWith('image/')) {
+        if (toastError) toastError('Please select a valid image file (JPG, PNG, GIF, WebP).');
+        return;
+      }
       const reader = new FileReader();
       reader.onloadend = () => {
         if (updateUser) {
@@ -48,13 +56,17 @@ const UserProfilePage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!formData.name.trim()) {
+      if (toastError) toastError('Full Name cannot be empty.');
+      return;
+    }
     if (updateUser) {
       updateUser({
-        name: formData.name,
-        phone: formData.phone,
+        name: formData.name.trim(),
+        phone: formData.phone.trim(),
         location: {
           ...(user?.location || {}),
-          city: formData.city,
+          city: formData.city.trim(),
         },
       });
     }
@@ -74,7 +86,7 @@ const UserProfilePage = () => {
 
       <Card className="p-6 sm:p-8 bg-white border border-[#E5E0D8] space-y-6 shadow-2xs">
         <div className="flex items-center gap-6 pb-6 border-b border-[#E5E0D8]">
-          <Avatar src={user?.avatar?.url} name={user?.name} size="2xl" />
+          <Avatar src={user?.avatar?.url || user?.avatar} name={user?.name} size="2xl" />
           <div className="space-y-2">
             <input
               type="file"

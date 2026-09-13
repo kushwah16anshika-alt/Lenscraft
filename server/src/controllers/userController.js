@@ -20,7 +20,7 @@ export const getUserProfile = async (req, res, next) => {
 // @access  Private
 export const updateUserProfile = async (req, res, next) => {
   try {
-    const { name, phone, bio, location } = req.body;
+    const { name, phone, bio, location, avatar } = req.body;
     const user = await User.findById(req.user._id);
 
     if (!user) {
@@ -30,7 +30,8 @@ export const updateUserProfile = async (req, res, next) => {
     if (name) user.name = name;
     if (phone !== undefined) user.phone = phone;
     if (bio !== undefined) user.bio = bio;
-    if (location) user.location = { ...user.location, ...location };
+    if (location) user.location = { ...(user.location || {}), ...location };
+    if (avatar) user.avatar = typeof avatar === 'string' ? { url: avatar } : { ...(user.avatar || {}), ...avatar };
 
     const updatedUser = await user.save();
     return ApiResponse.success(res, 'Profile updated successfully', { user: updatedUser });

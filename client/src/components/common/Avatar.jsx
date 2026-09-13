@@ -9,10 +9,11 @@ const Avatar = ({
   className = '',
 }) => {
   const [imgError, setImgError] = useState(false);
+  const imageUrl = typeof src === 'object' && src !== null ? src.url : src;
 
   useEffect(() => {
     setImgError(false);
-  }, [src]);
+  }, [imageUrl]);
 
   const sizes = {
     xs: 'w-6 h-6 text-xs',
@@ -27,6 +28,7 @@ const Avatar = ({
     if (!fullName) return '?';
     return fullName
       .split(' ')
+      .filter(Boolean)
       .map((n) => n[0])
       .slice(0, 2)
       .join('')
@@ -35,9 +37,9 @@ const Avatar = ({
 
   return (
     <div className={`relative inline-block shrink-0 ${sizes[size] || sizes.md} ${className}`}>
-      {src && !imgError ? (
+      {imageUrl && !imgError ? (
         <img
-          src={src}
+          src={imageUrl}
           alt={alt || name}
           className="w-full h-full object-cover rounded-full border border-[#E5E0D8]"
           onError={() => setImgError(true)}
