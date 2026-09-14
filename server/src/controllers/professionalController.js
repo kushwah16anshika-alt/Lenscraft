@@ -181,3 +181,36 @@ export const getProfessionalAppointments = async (req, res, next) => {
   }
 };
 
+// @desc    Update professional profile
+// @route   PUT /api/professionals/me/profile
+// @access  Private (Creative role)
+export const updateProfessionalProfile = async (req, res, next) => {
+  try {
+    const { tagline, about, experienceYears, specialties, equipment, softwareSkills, startingPrice, priceUnit, availability, travelsToClient } = req.body;
+
+    let profile = await ProfessionalProfile.findOne({ user: req.user._id });
+
+    if (!profile) {
+      profile = new ProfessionalProfile({ user: req.user._id, professionType: req.user.role });
+    }
+
+    if (tagline !== undefined) profile.tagline = tagline;
+    if (about !== undefined) profile.about = about;
+    if (experienceYears !== undefined) profile.experienceYears = experienceYears;
+    if (specialties) profile.specialties = specialties;
+    if (equipment) profile.equipment = equipment;
+    if (softwareSkills) profile.softwareSkills = softwareSkills;
+    if (startingPrice !== undefined) profile.startingPrice = startingPrice;
+    if (priceUnit) profile.priceUnit = priceUnit;
+    if (availability) profile.availability = availability;
+    if (travelsToClient !== undefined) profile.travelsToClient = travelsToClient;
+
+    await profile.save();
+
+    return ApiResponse.success(res, 'Professional profile updated', { profile });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
