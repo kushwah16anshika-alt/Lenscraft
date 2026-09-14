@@ -102,34 +102,82 @@ export const getProfessionalDashboard = async (req, res, next) => {
   }
 };
 
-// @desc    Update professional profile
-// @route   PUT /api/professionals/me/profile
+// @desc    Add item to portfolio
+// @route   POST /api/professionals/me/portfolio
 // @access  Private (Creative role)
-export const updateProfessionalProfile = async (req, res, next) => {
+export const addPortfolioItem = async (req, res, next) => {
   try {
-    const { tagline, about, experienceYears, specialties, equipment, softwareSkills, startingPrice, priceUnit, availability, travelsToClient } = req.body;
+    const { title, description, category, mediaType, url, isFeatured } = req.body;
 
     let profile = await ProfessionalProfile.findOne({ user: req.user._id });
-
     if (!profile) {
       profile = new ProfessionalProfile({ user: req.user._id, professionType: req.user.role });
     }
 
-    if (tagline !== undefined) profile.tagline = tagline;
-    if (about !== undefined) profile.about = about;
-    if (experienceYears !== undefined) profile.experienceYears = experienceYears;
-    if (specialties) profile.specialties = specialties;
-    if (equipment) profile.equipment = equipment;
-    if (softwareSkills) profile.softwareSkills = softwareSkills;
-    if (startingPrice !== undefined) profile.startingPrice = startingPrice;
-    if (priceUnit) profile.priceUnit = priceUnit;
-    if (availability) profile.availability = availability;
-    if (travelsToClient !== undefined) profile.travelsToClient = travelsToClient;
+    const newItem = {
+      title,
+      description: description || '',
+      category: category || 'General',
+      mediaType: mediaType || 'image',
+      url,
+      isFeatured: !!isFeatured,
+    };
 
+    profile.portfolio.push(newItem);
     await profile.save();
 
-    return ApiResponse.success(res, 'Professional profile updated', { profile });
+    return ApiResponse.success(res, 'Portfolio item added successfully', {
+      portfolio: profile.portfolio,
+      item: profile.portfolio[profile.portfolio.length - 1],
+    });
   } catch (error) {
     next(error);
   }
 };
+
+// @desc    Remove item from portfolio
+// @route   DELETE /api/professionals/me/portfolio/:itemId
+// @access  Private (Creative role)
+export const deletePortfolioItem = async (req, res, next) => {
+  try {
+    const { itemId } = req.params;
+    const profile = await ProfessionalProfile.findOne({ user: req.user._id });
+
+    if (!profile) {
+      return ApiResponse.error(res, 'Professional profile not found', 404);
+    }
+
+    profile.portfolio = profile.portfolio.filter((item) => item._id.toString() !== itemId);
+    await profile.save();
+
+    return ApiResponse.success(res, 'Portfolio item removed successfully', {
+      portfolio: profile.portfolio,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Get appointments / bookings for professional
+// @route   GET /api/professionals/me/appointments
+// @access  Private (Creative role)
+export const getProfessionalAppointments = async (req, res, next) => {
+  try {
+    const { status } = req.query;
+    const query = { professional: req.user._id };
+    if (status) query.status = status;
+
+    const bookings = await Booking.find(query)
+      .populate('user', 'name email phone avatar')
+      .populate('service', 'title category price deliveryDays')
+      .sort({ createdAt: -1 });
+
+    return ApiResponse.success(res, 'Professional appointments retrieved', {
+      count: bookings.length,
+      bookings,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
