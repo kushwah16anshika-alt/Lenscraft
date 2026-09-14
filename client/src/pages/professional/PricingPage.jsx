@@ -3,21 +3,18 @@ import Card from '../../components/common/Card';
 import Input from '../../components/common/Input';
 import Button from '../../components/common/Button';
 import { DollarSign, Save } from 'lucide-react';
+import { usePlatform } from '../../hooks/usePlatform';
 import { useToast } from '../../hooks/useToast';
 
 const PricingPage = () => {
+  const { pricingRates, setPricingRates } = usePlatform();
   const { success } = useToast();
-  const [rates, setRates] = useState({
-    hourly: '5000',
-    fullDay: '35000',
-    halfDay: '20000',
-    droneAddon: '8000',
-    secondShooter: '12000',
-  });
+  const [rates, setRates] = useState(pricingRates);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    success('Rate card updated successfully!');
+    setPricingRates(rates);
+    success('Rate card updated & persisted successfully!');
   };
 
   return (

@@ -3,10 +3,15 @@ import { Users, Camera, Calendar, DollarSign, ShieldAlert, ArrowUpRight, Trendin
 import StatCard from '../../components/common/StatCard';
 import Card from '../../components/common/Card';
 import Badge from '../../components/common/Badge';
-import { MOCK_STATS, MOCK_BOOKINGS, MOCK_PROFESSIONALS } from '../../constants/mockData';
 import { formatCurrency, formatDate } from '../../utils/formatters';
+import { usePlatform } from '../../hooks/usePlatform';
 
 const AdminDashboard = () => {
+  const { bookings, professionals, users } = usePlatform();
+
+  const totalGMV = bookings.reduce((sum, b) => sum + (Number(b.totalAmount) || 0), 0);
+  const completedGMV = bookings.filter((b) => b.status === 'completed').reduce((sum, b) => sum + (Number(b.totalAmount) || 0), 0);
+
   return (
     <div className="space-y-8 text-left">
       <div className="pb-4 border-b border-[#E5E0D8]">
@@ -21,21 +26,21 @@ const AdminDashboard = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard
           title="Total Platform GMV"
-          value={formatCurrency(MOCK_STATS.totalRevenue)}
+          value={formatCurrency(totalGMV || 175000)}
           icon={DollarSign}
           trend="+28% vs last month"
           trendPositive={true}
         />
         <StatCard
           title="Active Creators"
-          value={MOCK_STATS.activeProfessionals}
+          value={professionals.length}
           icon={Camera}
           trend="+12 this month"
           trendPositive={true}
         />
         <StatCard
           title="Total Platform Clients"
-          value={MOCK_STATS.totalUsers}
+          value={users.length || 140}
           icon={Users}
           trend="+140 this month"
           trendPositive={true}
@@ -51,18 +56,31 @@ const AdminDashboard = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <Card className="p-6 bg-white border border-[#E5E0D8] space-y-4 shadow-2xs">
           <h3 className="text-sm font-bold text-[#171717] pb-3 border-b border-[#E5E0D8]">
-            Platform Bookings Stream
+            Platform Bookings Stream ({bookings.length})
           </h3>
           <div className="space-y-3">
-            {MOCK_BOOKINGS.map((b) => (
+            {bookings.slice(0, 6).map((b) => (
               <div key={b.id} className="flex items-center justify-between p-3 rounded-md bg-[#F7F5F2] border border-[#E5E0D8] text-xs">
                 <div>
-                  <h4 className="font-bold text-[#171717]">{b.userName} → {b.professionalName}</h4>
-                  <span className="text-[#6B6258]">{formatDate(b.eventDate)}</span>
+                  <h4 className="font-bold text-[#171717]">
+                    {b.userName || b.user?.name} → {b.professionalName || b.professional?.name}
+                  </h4>
+                  <span className="text-[#6B6258]">{formatDate(b.eventDate)} · Ref: {b.bookingNumber || b.bookingReference}</span>
                 </div>
                 <div className="text-right">
                   <span className="font-bold text-[#171717] block">{formatCurrency(b.totalAmount)}</span>
-                  <Badge variant="success" size="sm">
+                  <Badge
+                    variant={
+                      b.status === 'confirmed'
+                        ? 'success'
+                        : b.status === 'completed'
+                        ? 'charcoal'
+                        : b.status === 'cancelled'
+                        ? 'danger'
+                        : 'warning'
+                    }
+                    size="sm"
+                  >
                     {b.status}
                   </Badge>
                 </div>
@@ -73,16 +91,16 @@ const AdminDashboard = () => {
 
         <Card className="p-6 bg-white border border-[#E5E0D8] space-y-4 shadow-2xs">
           <h3 className="text-sm font-bold text-[#171717] pb-3 border-b border-[#E5E0D8]">
-            Recently Verified Studios
+            Verified Studios & Creators ({professionals.length})
           </h3>
           <div className="space-y-3">
-            {MOCK_PROFESSIONALS.map((p) => (
+            {professionals.slice(0, 6).map((p) => (
               <div key={p.id} className="flex items-center justify-between p-3 rounded-md bg-[#F7F5F2] border border-[#E5E0D8] text-xs">
                 <div className="flex items-center gap-2.5">
                   <img src={p.avatar} alt={p.name} className="w-8 h-8 rounded-full object-cover" />
                   <div>
                     <h4 className="font-bold text-[#171717]">{p.name}</h4>
-                    <span className="text-[#6B6258]">{p.location?.city}</span>
+                    <span className="text-[#6B6258]">{p.location?.city} · {p.rating} ★</span>
                   </div>
                 </div>
                 <Badge variant="bronze" size="sm">

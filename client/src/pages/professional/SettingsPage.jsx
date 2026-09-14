@@ -5,22 +5,35 @@ import Textarea from '../../components/common/Textarea';
 import Button from '../../components/common/Button';
 import { Save, Camera } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
+import { usePlatform } from '../../hooks/usePlatform';
 import { useToast } from '../../hooks/useToast';
 
 const SettingsPage = () => {
   const { user } = useAuth();
+  const { professionals, updateStudioProfile } = usePlatform();
   const { success } = useToast();
+
+  const currentPro = professionals[0] || {};
+
   const [formData, setFormData] = useState({
-    studioName: user?.name ? `${user.name} Studio` : 'Creative Studio',
-    tagline: 'Professional Photography & Creative Media Services',
-    city: user?.location?.city ? `${user.location.city}, ${user.location.state || 'India'}` : 'Mumbai, Maharashtra',
-    experienceYears: '5',
-    bio: 'Capturing moments with creative excellence and cinematic precision.',
+    name: currentPro.name || (user?.name ? `${user.name} Studio` : 'Aarav Mehta Studio'),
+    tagline: currentPro.tagline || 'Fine Art Wedding & Editorial Portrait Photographer',
+    city: currentPro.location?.city || 'Mumbai',
+    state: currentPro.location?.state || 'Maharashtra',
+    experienceYears: String(currentPro.experienceYears || '10'),
+    bio: currentPro.bio || '10+ years capturing grand Indian weddings and destination celebrations across Udaipur, Goa, and Europe.',
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    success('Studio settings & biography updated successfully!');
+    updateStudioProfile(currentPro.id, {
+      name: formData.name,
+      tagline: formData.tagline,
+      location: { city: formData.city, state: formData.state, country: 'India' },
+      experienceYears: Number(formData.experienceYears) || 5,
+      bio: formData.bio,
+    });
+    success('Studio settings & biography updated across public portfolio!');
   };
 
   return (
@@ -38,25 +51,29 @@ const SettingsPage = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
             label="Studio / Brand Name"
-            value={formData.studioName}
-            onChange={(e) => setFormData({ ...formData, studioName: e.target.value })}
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            required
           />
           <Input
             label="Editorial Tagline"
             value={formData.tagline}
             onChange={(e) => setFormData({ ...formData, tagline: e.target.value })}
+            required
           />
           <div className="grid grid-cols-2 gap-4">
             <Input
               label="Base City"
               value={formData.city}
               onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+              required
             />
             <Input
               label="Years of Experience"
               type="number"
               value={formData.experienceYears}
               onChange={(e) => setFormData({ ...formData, experienceYears: e.target.value })}
+              required
             />
           </div>
           <Textarea
@@ -64,6 +81,7 @@ const SettingsPage = () => {
             rows={4}
             value={formData.bio}
             onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+            required
           />
 
           <div className="pt-2">

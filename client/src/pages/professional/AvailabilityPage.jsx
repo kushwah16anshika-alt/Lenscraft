@@ -2,23 +2,18 @@ import React, { useState } from 'react';
 import Card from '../../components/common/Card';
 import Button from '../../components/common/Button';
 import { Calendar, CheckCircle2, Save } from 'lucide-react';
+import { usePlatform } from '../../hooks/usePlatform';
 import { useToast } from '../../hooks/useToast';
 
 const AvailabilityPage = () => {
+  const { availabilitySchedule, setAvailabilitySchedule } = usePlatform();
   const { success } = useToast();
   const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-  const [schedule, setSchedule] = useState({
-    Monday: true,
-    Tuesday: true,
-    Wednesday: true,
-    Thursday: true,
-    Friday: true,
-    Saturday: true,
-    Sunday: true,
-  });
+  const [schedule, setSchedule] = useState(availabilitySchedule);
 
   const handleSave = () => {
-    success('Working days & calendar schedule saved!');
+    setAvailabilitySchedule(schedule);
+    success('Working days & calendar schedule saved to live store!');
   };
 
   return (
@@ -49,9 +44,9 @@ const AvailabilityPage = () => {
               </div>
               <input
                 type="checkbox"
-                checked={schedule[day]}
+                checked={!!schedule[day]}
                 onChange={(e) => setSchedule({ ...schedule, [day]: e.target.checked })}
-                className="rounded text-[#171717] focus:ring-0"
+                className="rounded text-[#171717] focus:ring-0 w-4 h-4"
               />
             </label>
           ))}

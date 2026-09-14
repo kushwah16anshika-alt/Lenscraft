@@ -2,25 +2,26 @@ import React, { useState } from 'react';
 import { Camera, Search, SlidersHorizontal, MapPin, Sparkles, Filter, Award } from 'lucide-react';
 import ProfessionalCard from '../../components/cards/ProfessionalCard';
 import Button from '../../components/common/Button';
-import { MOCK_PROFESSIONALS } from '../../constants/mockData';
 import { ROLES } from '../../constants/roles';
+import { usePlatform } from '../../hooks/usePlatform';
 
 const PhotographersPage = () => {
+  const { professionals, toggleWishlist, isWishlisted } = usePlatform();
   const [search, setSearch] = useState('');
   const [cityFilter, setCityFilter] = useState('all');
   const [specialtyFilter, setSpecialtyFilter] = useState('all');
   const [maxBudget, setMaxBudget] = useState('all');
 
-  const photographers = MOCK_PROFESSIONALS.filter((p) => p.role === ROLES.PHOTOGRAPHER);
+  const photographers = professionals.filter((p) => p.role === ROLES.PHOTOGRAPHER);
 
   const filtered = photographers.filter((p) => {
     const matchesSearch =
       p.name.toLowerCase().includes(search.toLowerCase()) ||
       p.tagline.toLowerCase().includes(search.toLowerCase()) ||
-      p.specialties.some((s) => s.toLowerCase().includes(search.toLowerCase()));
+      (p.specialties || []).some((s) => s.toLowerCase().includes(search.toLowerCase()));
 
-    const matchesCity = cityFilter === 'all' || p.location.city.toLowerCase() === cityFilter.toLowerCase();
-    const matchesSpecialty = specialtyFilter === 'all' || p.specialties.includes(specialtyFilter);
+    const matchesCity = cityFilter === 'all' || p.location?.city?.toLowerCase() === cityFilter.toLowerCase();
+    const matchesSpecialty = specialtyFilter === 'all' || (p.specialties || []).includes(specialtyFilter);
     const matchesBudget =
       maxBudget === 'all' ||
       (maxBudget === 'under20k' && p.startingPrice <= 20000) ||
@@ -99,18 +100,15 @@ const PhotographersPage = () => {
               onChange={(e) => setMaxBudget(e.target.value)}
               className="w-full px-3 py-2.5 rounded bg-[#FAF8F5] border border-[#E8E2D8] text-xs focus:outline-none focus:border-[#121212] transition-all"
             >
-              <option value="all">Any Day Rate Budget</option>
+              <option value="all">Any Budget Tier</option>
               <option value="under20k">Under ₹20,000 / day</option>
-              <option value="under35k">₹20,000 – ₹35,000 / day</option>
-              <option value="luxury">Luxury & Editorial (₹35,000+)</option>
+              <option value="under35k">Under ₹35,000 / day</option>
+              <option value="luxury">Luxury Tier (₹35,000+)</option>
             </select>
           </div>
 
-          {/* Active Filter Chips */}
-          <div className="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-[#E8E2D8] text-xs text-[#6B6258]">
-            <span className="font-semibold text-[#121212]">
-              Showing {filtered.length} verified photographer{filtered.length === 1 ? '' : 's'}
-            </span>
+          <div className="flex items-center justify-between pt-3 border-t border-[#E8E2D8]/60 text-xs text-[#6B6258]">
+            <span>Showing <strong className="text-[#121212]">{filtered.length}</strong> master photographers</span>
             {(search || cityFilter !== 'all' || specialtyFilter !== 'all' || maxBudget !== 'all') && (
               <button
                 onClick={() => {
@@ -151,7 +149,12 @@ const PhotographersPage = () => {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filtered.map((pro) => (
-              <ProfessionalCard key={pro.id} professional={pro} />
+              <ProfessionalCard
+                key={pro.id}
+                professional={pro}
+                isWishlisted={isWishlisted(pro.id)}
+                onWishlistToggle={() => toggleWishlist(pro.id)}
+              />
             ))}
           </div>
         )}

@@ -47,7 +47,8 @@ const ProfessionalCard = ({ professional, onWishlist, isWishlisted = false, vari
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            onWishlist && onWishlist(professional);
+            if (onWishlist) onWishlist(professional);
+            else if (onWishlistToggle) onWishlistToggle(professional);
           }}
           className="absolute top-3 right-3 p-2 rounded-full bg-black/60 hover:bg-white text-white hover:text-[#99453F] backdrop-blur-md border border-white/20 transition-all shadow-sm"
           title="Save Creator"

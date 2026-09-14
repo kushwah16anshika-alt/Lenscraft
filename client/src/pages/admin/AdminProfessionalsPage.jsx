@@ -1,13 +1,16 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Card from '../../components/common/Card';
 import Badge from '../../components/common/Badge';
 import Avatar from '../../components/common/Avatar';
 import Button from '../../components/common/Button';
-import { MOCK_PROFESSIONALS } from '../../constants/mockData';
-import { Check, ShieldCheck } from 'lucide-react';
+import { Check, ShieldCheck, ArrowUpRight } from 'lucide-react';
 import { formatCurrency, formatPriceUnit } from '../../utils/formatters';
+import { usePlatform } from '../../hooks/usePlatform';
 
 const AdminProfessionalsPage = () => {
+  const { professionals } = usePlatform();
+
   return (
     <div className="space-y-6 text-left">
       <div className="pb-4 border-b border-[#E5E0D8]">
@@ -15,7 +18,7 @@ const AdminProfessionalsPage = () => {
           Talent Moderation
         </span>
         <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#171717]">
-          Creator Studio Directory
+          Creator Studio Directory ({professionals.length})
         </h1>
       </div>
 
@@ -33,14 +36,14 @@ const AdminProfessionalsPage = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-[#E5E0D8]">
-              {MOCK_PROFESSIONALS.map((p) => (
+              {professionals.map((p) => (
                 <tr key={p.id} className="hover:bg-[#F7F5F2]/50">
                   <td className="py-3">
                     <div className="flex items-center gap-2.5">
                       <Avatar src={p.avatar} name={p.name} size="sm" />
                       <div>
                         <span className="font-bold text-[#171717] block">{p.name}</span>
-                        <span className="text-[10px] text-[#6B6258]">{p.rating} ★ ({p.reviewCount} reviews)</span>
+                        <span className="text-[10px] text-[#6B6258]">{p.rating || 5.0} ★ ({p.reviewCount || 0} reviews)</span>
                       </div>
                     </div>
                   </td>
@@ -59,9 +62,11 @@ const AdminProfessionalsPage = () => {
                     </span>
                   </td>
                   <td className="py-3 text-right">
-                    <Button variant="outline" size="sm">
-                      Inspect
-                    </Button>
+                    <Link to={`/professionals/${p.id}`}>
+                      <Button variant="outline" size="sm" rightIcon={<ArrowUpRight className="w-3 h-3" />}>
+                        Inspect
+                      </Button>
+                    </Link>
                   </td>
                 </tr>
               ))}

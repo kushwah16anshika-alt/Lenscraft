@@ -1,10 +1,12 @@
 import React from 'react';
 import Card from '../../components/common/Card';
 import Badge from '../../components/common/Badge';
-import { MOCK_BOOKINGS } from '../../constants/mockData';
 import { formatCurrency, formatDate } from '../../utils/formatters';
+import { usePlatform } from '../../hooks/usePlatform';
 
 const AdminAppointmentsPage = () => {
+  const { bookings } = usePlatform();
+
   return (
     <div className="space-y-6 text-left">
       <div className="pb-4 border-b border-[#E5E0D8]">
@@ -12,7 +14,7 @@ const AdminAppointmentsPage = () => {
           Escrow Transactions
         </span>
         <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#171717]">
-          Platform Bookings & Escrow
+          Platform Bookings & Escrow Monitor ({bookings.length})
         </h1>
       </div>
 
@@ -24,20 +26,31 @@ const AdminAppointmentsPage = () => {
                 <th className="pb-3">Ref ID</th>
                 <th className="pb-3">Client</th>
                 <th className="pb-3">Studio</th>
-                <th className="pb-3">Shoot Date</th>
+                <th className="pb-3">Event Date</th>
                 <th className="pb-3">Escrow Status</th>
                 <th className="pb-3 text-right">GMV Amount</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#E5E0D8]">
-              {MOCK_BOOKINGS.map((b) => (
+              {bookings.map((b) => (
                 <tr key={b.id} className="hover:bg-[#F7F5F2]/50">
-                  <td className="py-3 font-mono font-bold text-[#171717]">{b.bookingNumber}</td>
-                  <td className="py-3 font-semibold text-[#171717]">{b.userName}</td>
-                  <td className="py-3 text-[#6B6258]">{b.professionalName}</td>
+                  <td className="py-3 font-mono font-bold text-[#171717]">{b.bookingNumber || b.bookingReference}</td>
+                  <td className="py-3 font-semibold text-[#171717]">{b.userName || b.user?.name}</td>
+                  <td className="py-3 text-[#6B6258]">{b.professionalName || b.professional?.name}</td>
                   <td className="py-3 text-[#6B6258]">{formatDate(b.eventDate)}</td>
                   <td className="py-3">
-                    <Badge variant="success" size="sm">
+                    <Badge
+                      variant={
+                        b.status === 'confirmed'
+                          ? 'success'
+                          : b.status === 'completed'
+                          ? 'charcoal'
+                          : b.status === 'cancelled'
+                          ? 'danger'
+                          : 'warning'
+                      }
+                      size="sm"
+                    >
                       {b.status}
                     </Badge>
                   </td>
