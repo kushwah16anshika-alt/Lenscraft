@@ -19,33 +19,38 @@ import {
   Camera,
   Film,
   Zap,
+  MessageSquarePlus,
 } from 'lucide-react';
-import { MOCK_PROFESSIONALS } from '../../constants/mockData';
 import { ROLE_LABELS } from '../../constants/roles';
-import { formatCurrency, formatPriceUnit } from '../../utils/formatters';
+import { formatCurrency, formatPriceUnit, formatDate } from '../../utils/formatters';
 import Avatar from '../../components/common/Avatar';
 import Button from '../../components/common/Button';
 import Tabs from '../../components/common/Tabs';
 import LightboxModal from '../../components/common/LightboxModal';
 import BookingModal from '../../components/common/BookingModal';
+import WriteReviewModal from '../../components/common/WriteReviewModal';
+import { usePlatform } from '../../hooks/usePlatform';
 import { useToast } from '../../hooks/useToast';
 
 const ProfessionalProfilePage = () => {
   const { id } = useParams();
   const { success } = useToast();
+  const { professionals, reviews, toggleWishlist, isWishlisted } = usePlatform();
   const [activeTab, setActiveTab] = useState('portfolio');
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
+  const [writeReviewOpen, setWriteReviewOpen] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [activeLightboxIndex, setActiveLightboxIndex] = useState(0);
-  const [isWishlisted, setIsWishlisted] = useState(false);
 
-  const pro = MOCK_PROFESSIONALS.find((p) => p.id === id) || MOCK_PROFESSIONALS[0];
+  const pro = professionals.find((p) => p.id === id) || professionals[0];
+  const proReviews = reviews.filter((r) => r.creatorId === pro.id);
+  const savedInWishlist = isWishlisted(pro.id);
 
   const tabs = [
     { id: 'portfolio', label: 'Portfolio Gallery', icon: Image, count: pro.portfolio?.length || 0 },
     { id: 'services', label: 'Packages & Rates', icon: Layers, count: pro.services?.length || 0 },
-    { id: 'reviews', label: 'Client Reviews', icon: Star, count: pro.reviewCount || 0 },
+    { id: 'reviews', label: 'Client Reviews', icon: Star, count: proReviews.length || pro.reviewCount || 0 },
     { id: 'about', label: 'Gear Kit & Biography', icon: Wrench },
   ];
 
@@ -108,7 +113,7 @@ const ProfessionalProfilePage = () => {
                         {ROLE_LABELS[pro.role]}
                       </span>
                       <span className="text-xs text-[#6B6258]">
-                        {pro.experienceYears} Years Experience
+                        {pro.experienceYears || 8} Years Experience
                       </span>
                     </div>
                   </div>
@@ -117,8 +122,11 @@ const ProfessionalProfilePage = () => {
                 <div className="flex items-center gap-2">
                   <button
                     type="button"
-                    onClick={() => success('Studio profile link copied to clipboard!')}
-                    className="p-2.5 rounded bg-[#FAF8F5] hover:bg-[#F3EFEA] text-[#6B6258] hover:text-[#121212] border border-[#E8E2D8] transition-colors"
+                    onClick={() => {
+                      navigator.clipboard?.writeText(window.location.href);
+                      success('Studio profile link copied to clipboard!');
+                    }}
+                    className="p-2.5 rounded-lg border border-[#E8E2D8] text-[#6B6258] hover:text-[#121212] hover:bg-[#FAF8F5] transition-colors"
                     title="Share Profile"
                   >
                     <Share2 className="w-4 h-4" />
@@ -126,107 +134,81 @@ const ProfessionalProfilePage = () => {
                   <button
                     type="button"
                     onClick={() => {
-                      setIsWishlisted(!isWishlisted);
-                      success(isWishlisted ? 'Removed from saved creators' : 'Saved to wishlist!');
+                      toggleWishlist(pro.id);
+                      success(savedInWishlist ? 'Removed from saved creators' : 'Saved to your curated wishlist!');
                     }}
-                    className="p-2.5 rounded bg-[#FAF8F5] hover:bg-[#F3EFEA] text-[#6B6258] hover:text-[#99453F] border border-[#E8E2D8] transition-colors"
+                    className={`p-2.5 rounded-lg border transition-colors ${
+                      savedInWishlist
+                        ? 'bg-[#FDF2F1] border-[#E8C4C1] text-[#C4683C]'
+                        : 'border-[#E8E2D8] text-[#6B6258] hover:text-[#C4683C] hover:bg-[#FAF8F5]'
+                    }`}
                     title="Save to Wishlist"
                   >
-                    <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-[#99453F] text-[#99453F]' : ''}`} />
+                    <Heart className={`w-4 h-4 ${savedInWishlist ? 'fill-[#C4683C]' : ''}`} />
                   </button>
                 </div>
               </div>
 
-              <p className="text-xs sm:text-sm text-[#6B6258] leading-relaxed font-normal">
-                {pro.tagline}
-              </p>
-
-              {/* Quick Meta Stats Grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 border-t border-[#E8E2D8] text-xs">
-                <div>
-                  <span className="text-[#8C8276] block text-[10px] uppercase font-semibold">Client Rating</span>
-                  <div className="flex items-center gap-1 font-bold text-[#121212] mt-0.5">
-                    <Star className="w-3.5 h-3.5 fill-[#C4683C] text-[#C4683C]" />
-                    <span>{pro.rating}</span>
-                    <span className="text-[#8C8276] font-normal">({pro.reviewCount})</span>
-                  </div>
-                </div>
-
-                <div>
-                  <span className="text-[#8C8276] block text-[10px] uppercase font-semibold">Base Location</span>
-                  <div className="flex items-center gap-1 font-bold text-[#121212] mt-0.5 truncate">
-                    <MapPin className="w-3.5 h-3.5 text-[#8C8276]" />
-                    <span>{pro.location?.city}, {pro.location?.state || 'India'}</span>
-                  </div>
-                </div>
-
-                <div>
-                  <span className="text-[#8C8276] block text-[10px] uppercase font-semibold">Day Rates From</span>
-                  <span className="font-bold text-[#121212] block mt-0.5">
-                    {formatCurrency(pro.startingPrice)} {formatPriceUnit(pro.priceUnit)}
+              {/* Tagline & City */}
+              <div className="space-y-2 pt-2 border-t border-[#E8E2D8]/60">
+                <p className="text-sm sm:text-base font-medium text-[#121212]">
+                  {pro.tagline}
+                </p>
+                <div className="flex items-center gap-4 text-xs text-[#6B6258]">
+                  <span className="flex items-center gap-1">
+                    <MapPin className="w-3.5 h-3.5 text-[#C4683C]" />
+                    {pro.location?.city}, {pro.location?.state || 'India'}
                   </span>
-                </div>
-
-                <div>
-                  <span className="text-[#8C8276] block text-[10px] uppercase font-semibold">Escrow Protection</span>
-                  <span className="font-bold text-[#121212] block mt-0.5 text-[#C4683C]">
-                    100% Certified
+                  <span className="flex items-center gap-1 font-bold text-[#121212]">
+                    <Star className="w-3.5 h-3.5 fill-[#C4683C] text-[#C4683C]" />
+                    {pro.rating || 5.0} ({proReviews.length || pro.reviewCount || 0} reviews)
                   </span>
                 </div>
               </div>
             </div>
 
-            {/* Content Tabs */}
+            {/* Navigation Tabs */}
             <Tabs tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />
 
             {/* ─────────────────────────────────────────────────────────────
-                TAB 1: PORTFOLIO GALLERY (Masonry + Fullscreen Lightbox)
+                TAB 1: PORTFOLIO GALLERY
                ───────────────────────────────────────────────────────────── */}
             {activeTab === 'portfolio' && (
               <div className="space-y-6">
-                <div className="flex items-center justify-between pb-2 border-b border-[#E8E2D8]">
-                  <h3 className="text-lg font-serif font-bold text-[#121212]">
-                    Signature Portfolio Works ({pro.portfolio?.length || 0})
-                  </h3>
-                  <span className="text-xs text-[#8C8276]">Click any frame for fullscreen view</span>
-                </div>
-
                 {pro.portfolio && pro.portfolio.length > 0 ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {pro.portfolio.map((item, idx) => (
                       <div
-                        key={item.id}
+                        key={item.id || idx}
                         onClick={() => {
                           setActiveLightboxIndex(idx);
                           setLightboxOpen(true);
                         }}
-                        className="group relative h-64 rounded-lg overflow-hidden bg-[#121212] cursor-pointer shadow-sm border border-[#E8E2D8] hover:border-[#121212] transition-all"
+                        className="group relative aspect-4/3 rounded-lg overflow-hidden bg-[#EEEAE4] cursor-pointer border border-[#E8E2D8] shadow-xs"
                       >
                         <img
                           src={item.url}
                           alt={item.title}
-                          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-106 opacity-90 group-hover:opacity-100"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-
-                        <div className="absolute top-3 left-3 px-2 py-0.5 rounded bg-black/60 backdrop-blur-md text-white text-[9px] uppercase font-bold tracking-wider border border-white/20">
-                          {item.category}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+                          <span className="text-[10px] uppercase font-mono tracking-widest text-[#C4683C]">
+                            {item.category}
+                          </span>
+                          <h4 className="text-sm font-bold font-serif">{item.title}</h4>
                         </div>
-
-                        <div className="absolute top-3 right-3 p-1.5 rounded-full bg-black/60 backdrop-blur-md text-white border border-white/20 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button
+                          type="button"
+                          className="absolute top-3 right-3 p-2 rounded-full bg-black/60 text-white backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
                           <Maximize2 className="w-3.5 h-3.5" />
-                        </div>
-
-                        <div className="absolute bottom-3.5 left-3.5 right-3.5 text-white">
-                          <h4 className="text-sm font-serif font-bold leading-snug">{item.title}</h4>
-                        </div>
+                        </button>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <div className="p-12 text-center bg-white rounded-lg border border-[#E8E2D8] space-y-2">
-                    <Image className="w-8 h-8 text-[#8C8276] mx-auto opacity-50" />
-                    <p className="text-xs text-[#6B6258]">Portfolio media is currently being curated.</p>
+                  <div className="p-12 text-center bg-white rounded-lg border border-[#E8E2D8]">
+                    <p className="text-xs text-[#6B6258]">No portfolio items uploaded yet.</p>
                   </div>
                 )}
               </div>
@@ -236,66 +218,55 @@ const ProfessionalProfilePage = () => {
                 TAB 2: PACKAGES & RATES
                ───────────────────────────────────────────────────────────── */}
             {activeTab === 'services' && (
-              <div className="space-y-6">
-                <div className="pb-2 border-b border-[#E8E2D8]">
-                  <h3 className="text-lg font-serif font-bold text-[#121212]">
-                    Available Booking Packages & Turnaround Times
-                  </h3>
-                </div>
-
+              <div className="space-y-4">
                 {pro.services && pro.services.length > 0 ? (
-                  <div className="space-y-4">
-                    {pro.services.map((srv) => (
-                      <div
-                        key={srv.id}
-                        className="p-6 rounded-xl bg-white border border-[#E8E2D8] shadow-2xs hover:border-[#121212] transition-all space-y-4"
-                      >
-                        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
-                          <div>
-                            <h4 className="text-lg font-serif font-bold text-[#121212]">{srv.title}</h4>
-                            <p className="text-xs text-[#6B6258] mt-1 max-w-xl leading-relaxed">
-                              {srv.description}
-                            </p>
-                          </div>
-                          <div className="text-left sm:text-right shrink-0">
-                            <span className="text-2xl font-serif font-bold text-[#121212] block">
-                              {formatCurrency(srv.price)}
-                            </span>
-                            <span className="text-[11px] text-[#8C8276] font-medium">
-                              {srv.deliveryDays} Days Full Turnaround
-                            </span>
-                          </div>
+                  pro.services.map((srv) => (
+                    <div
+                      key={srv.id}
+                      className="p-6 rounded-xl bg-white border border-[#E8E2D8] space-y-4 shadow-xs hover:border-[#C4683C]/50 transition-colors"
+                    >
+                      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+                        <div>
+                          <h3 className="text-base font-serif font-bold text-[#121212]">{srv.title}</h3>
+                          <span className="text-xs text-[#C4683C] font-semibold flex items-center gap-1 mt-1">
+                            <Clock className="w-3.5 h-3.5" /> {srv.deliveryDays} Days Turnaround
+                          </span>
                         </div>
-
-                        {srv.inclusions && srv.inclusions.length > 0 && (
-                          <div className="pt-3 border-t border-[#E8E2D8] space-y-2">
-                            <span className="text-[10px] uppercase font-bold text-[#8C8276] tracking-wider block">
-                              Deliverable Inclusions:
-                            </span>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-[#4A433B]">
-                              {srv.inclusions.map((inc, iIdx) => (
-                                <div key={iIdx} className="flex items-center gap-2">
-                                  <CheckCircle2 className="w-3.5 h-3.5 text-[#C4683C] shrink-0" />
-                                  <span>{inc}</span>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-
-                        <div className="pt-2">
-                          <Button
-                            variant="primary"
-                            size="md"
-                            onClick={() => handleBookPackage(srv)}
-                            rightIcon={<ArrowRight className="w-4 h-4" />}
-                          >
-                            Book This Package
-                          </Button>
+                        <div className="text-left sm:text-right">
+                          <span className="text-xl font-bold text-[#121212] block">
+                            {formatCurrency(srv.price)}
+                          </span>
+                          <span className="text-[10px] text-[#6B6258] uppercase tracking-wider font-mono">
+                            {formatPriceUnit(srv.pricingType)}
+                          </span>
                         </div>
                       </div>
-                    ))}
-                  </div>
+
+                      <p className="text-xs text-[#6B6258] leading-relaxed">{srv.description}</p>
+
+                      {srv.inclusions && srv.inclusions.length > 0 && (
+                        <div className="pt-3 border-t border-[#E8E2D8] space-y-1.5">
+                          {srv.inclusions.map((inc, iIdx) => (
+                            <div key={iIdx} className="flex items-center gap-2 text-xs text-[#121212]">
+                              <CheckCircle2 className="w-3.5 h-3.5 text-[#3D7055] shrink-0" />
+                              <span>{inc}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      <div className="pt-2">
+                        <Button
+                          variant="primary"
+                          size="sm"
+                          onClick={() => handleBookPackage(srv)}
+                          className="w-full sm:w-auto"
+                        >
+                          Book This Package
+                        </Button>
+                      </div>
+                    </div>
+                  ))
                 ) : (
                   <div className="p-8 text-center bg-white rounded-lg border border-[#E8E2D8]">
                     <p className="text-xs text-[#6B6258]">Contact creator directly for custom rate quotation.</p>
@@ -309,40 +280,67 @@ const ProfessionalProfilePage = () => {
                ───────────────────────────────────────────────────────────── */}
             {activeTab === 'reviews' && (
               <div className="space-y-6">
-                <div className="flex items-center justify-between pb-2 border-b border-[#E8E2D8]">
-                  <h3 className="text-lg font-serif font-bold text-[#121212]">
-                    Verified Client Testimonials ({pro.reviewCount || 0})
-                  </h3>
-                  <div className="flex items-center gap-1 font-bold text-sm text-[#121212]">
-                    <Star className="w-4 h-4 fill-[#C4683C] text-[#C4683C]" />
-                    <span>{pro.rating} / 5.0 Rating</span>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#E8E2D8]">
+                  <div>
+                    <h3 className="text-lg font-serif font-bold text-[#121212]">
+                      Verified Client Testimonials ({proReviews.length})
+                    </h3>
+                    <div className="flex items-center gap-1 font-bold text-sm text-[#121212] mt-0.5">
+                      <Star className="w-4 h-4 fill-[#C4683C] text-[#C4683C]" />
+                      <span>{pro.rating || 5.0} / 5.0 Overall Rating</span>
+                    </div>
                   </div>
+
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setWriteReviewOpen(true)}
+                    leftIcon={<MessageSquarePlus className="w-3.5 h-3.5" />}
+                  >
+                    Write a Review
+                  </Button>
                 </div>
 
                 <div className="space-y-4">
-                  <div className="p-6 rounded-lg bg-white border border-[#E8E2D8] space-y-3 shadow-2xs">
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-center gap-3">
-                        <Avatar
-                          src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80"
-                          name="Pooja Sharma"
-                          size="md"
-                        />
-                        <div>
-                          <h4 className="text-xs font-bold text-[#121212]">Pooja & Rohan Sharma</h4>
-                          <span className="text-[11px] text-[#8C8276]">Destination Wedding in Udaipur</span>
+                  {proReviews.length > 0 ? (
+                    proReviews.map((rev) => (
+                      <div key={rev.id} className="p-6 rounded-lg bg-white border border-[#E8E2D8] space-y-3 shadow-2xs">
+                        <div className="flex items-start justify-between">
+                          <div className="flex items-center gap-3">
+                            <Avatar
+                              src={rev.clientAvatar || rev.userAvatar}
+                              name={rev.clientName || rev.userName}
+                              size="md"
+                            />
+                            <div>
+                              <h4 className="text-xs font-bold text-[#121212]">{rev.clientName || rev.userName}</h4>
+                              <span className="text-[11px] text-[#8C8276]">{rev.event}</span>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <div className="flex items-center gap-1 text-[#C4683C]">
+                              {[...Array(rev.rating || 5)].map((_, i) => (
+                                <Star key={i} className="w-3 h-3 fill-[#C4683C]" />
+                              ))}
+                            </div>
+                            <span className="text-[10px] text-[#8C8276] block mt-1">
+                              {formatDate(rev.date || rev.createdAt)}
+                            </span>
+                          </div>
                         </div>
+                        <p className="text-xs text-[#4A433B] italic font-serif leading-relaxed">
+                          "{rev.comment}"
+                        </p>
                       </div>
-                      <div className="flex items-center gap-1 text-[#C4683C]">
-                        {[...Array(5)].map((_, i) => (
-                          <Star key={i} className="w-3 h-3 fill-[#C4683C]" />
-                        ))}
-                      </div>
+                    ))
+                  ) : (
+                    <div className="p-10 text-center bg-white rounded-lg border border-[#E8E2D8] space-y-3">
+                      <p className="text-xs text-[#6B6258]">Be the first to review {pro.name}!</p>
+                      <Button variant="primary" size="sm" onClick={() => setWriteReviewOpen(true)}>
+                        Write First Review
+                      </Button>
                     </div>
-                    <p className="text-xs text-[#4A433B] italic font-serif leading-relaxed">
-                      "{pro.name} and the crew were absolutely phenomenal. Every photograph and 4K film cut looks like an editorial spread in Vogue. Highly recommended for couples wanting genuine cinematic storytelling."
-                    </p>
-                  </div>
+                  )}
                 </div>
               </div>
             )}
@@ -356,7 +354,7 @@ const ProfessionalProfilePage = () => {
                   <div>
                     <h3 className="text-base font-serif font-bold text-[#121212] mb-2">Studio Biography</h3>
                     <p className="text-xs text-[#6B6258] leading-relaxed">
-                      {pro.bio || 'Dedicated visual artist with years of hands-on production experience capturing high-end celebrations and commercial brand stories.'}
+                      {pro.bio || pro.about || 'Dedicated visual artist with years of hands-on production experience capturing high-end celebrations and commercial brand stories.'}
                     </p>
                   </div>
 
@@ -413,7 +411,7 @@ const ProfessionalProfilePage = () => {
                 </div>
                 <div className="flex items-center gap-1 text-xs font-bold text-[#121212]">
                   <Star className="w-3.5 h-3.5 fill-[#C4683C] text-[#C4683C]" />
-                  <span>{pro.rating}</span>
+                  <span>{pro.rating || 5.0}</span>
                 </div>
               </div>
 
@@ -453,7 +451,7 @@ const ProfessionalProfilePage = () => {
       </div>
 
       {/* Lightbox Modal */}
-      {pro.portfolio && (
+      {pro.portfolio && pro.portfolio.length > 0 && (
         <LightboxModal
           isOpen={lightboxOpen}
           onClose={() => setLightboxOpen(false)}
@@ -474,6 +472,13 @@ const ProfessionalProfilePage = () => {
         professional={pro}
         initialService={selectedService}
         onBookingSuccess={handleBookingSuccess}
+      />
+
+      {/* Write Review Modal */}
+      <WriteReviewModal
+        isOpen={writeReviewOpen}
+        onClose={() => setWriteReviewOpen(false)}
+        professional={pro}
       />
     </div>
   );
