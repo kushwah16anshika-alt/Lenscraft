@@ -17,8 +17,10 @@ import Button from './Button';
 import Input from './Input';
 import Textarea from './Textarea';
 import { formatCurrency } from '../../utils/formatters';
+import { usePlatform } from '../../hooks/usePlatform';
 
 const BookingModal = ({ isOpen, onClose, professional, initialService, onBookingSuccess }) => {
+  const { createBooking } = usePlatform();
   const [step, setStep] = useState(1);
   const [selectedService, setSelectedService] = useState(initialService || professional?.services?.[0] || null);
   const [eventDate, setEventDate] = useState('');
@@ -62,20 +64,22 @@ const BookingModal = ({ isOpen, onClose, professional, initialService, onBooking
     setIsSubmitting(true);
     setTimeout(() => {
       setIsSubmitting(false);
-      onBookingSuccess &&
-        onBookingSuccess({
-          bookingReference: `LC-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`,
-          professional,
-          service: currentService,
-          eventDate,
-          eventTime,
-          eventCity,
-          eventType,
-          totalAmount,
-          advanceEscrowDeposit,
-        });
+
+      const newBooking = createBooking({
+        professional,
+        service: currentService,
+        eventDate,
+        eventTime,
+        eventCity,
+        eventType,
+        totalAmount,
+        advanceEscrowDeposit,
+        notes,
+      });
+
+      onBookingSuccess && onBookingSuccess(newBooking);
       onClose();
-    }, 1200);
+    }, 800);
   };
 
   return (
