@@ -5,13 +5,16 @@ import Button from '../../components/common/Button';
 import Modal from '../../components/common/Modal';
 import Input from '../../components/common/Input';
 import Textarea from '../../components/common/Textarea';
-import { MOCK_PROFESSIONALS } from '../../constants/mockData';
 import { formatCurrency, formatPriceUnit } from '../../utils/formatters';
+import { usePlatform } from '../../hooks/usePlatform';
 import { useToast } from '../../hooks/useToast';
 
 const ServicesManagePage = () => {
-  const { success } = useToast();
-  const [services, setServices] = useState(MOCK_PROFESSIONALS[0]?.services || []);
+  const { professionals, addService, deleteService } = usePlatform();
+  const { success, error } = useToast();
+  const currentPro = professionals[0] || {};
+  const services = currentPro.services || [];
+
   const [modalOpen, setModalOpen] = useState(false);
   const [newService, setNewService] = useState({
     title: '',
@@ -23,17 +26,30 @@ const ServicesManagePage = () => {
 
   const handleAddService = (e) => {
     e.preventDefault();
-    setServices([
-      ...services,
-      {
-        id: `srv-${Date.now()}`,
-        ...newService,
-        price: Number(newService.price),
-        inclusions: ['4K Raw Deliverables', 'Color Graded Gallery', 'Full Commercial License'],
-      },
-    ]);
+    if (!newService.title.trim() || !newService.price) {
+      error('Please enter a package title and price.');
+      return;
+    }
+
+    addService(currentPro.id, {
+      ...newService,
+      price: Number(newService.price),
+      deliveryDays: Number(newService.deliveryDays) || 7,
+      inclusions: [
+        'High-Resolution Retouched Deliverables',
+        'Direct Cloud Gallery Access',
+        'Commercial & Personal License',
+      ],
+    });
+
     setModalOpen(false);
-    success('Service package created and published!');
+    success('Service package created and published to your studio!');
+    setNewService({ title: '', price: '', pricingType: 'per_day', deliveryDays: 7, description: '' });
+  };
+
+  const handleDelete = (serviceId) => {
+    deleteService(currentPro.id, serviceId);
+    success('Package removed from your studio offerings.');
   };
 
   return (
@@ -44,7 +60,7 @@ const ServicesManagePage = () => {
             Package Offerings
           </span>
           <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#171717]">
-            Services & Tiered Packages
+            Services & Tiered Packages ({services.length})
           </h1>
         </div>
         <Button variant="primary" size="sm" onClick={() => setModalOpen(true)} leftIcon={<Plus className="w-3.5 h-3.5" />}>
@@ -52,37 +68,56 @@ const ServicesManagePage = () => {
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {services.map((srv) => (
-          <Card key={srv.id} className="p-6 bg-white border border-[#E5E0D8] space-y-4 shadow-2xs">
-            <div className="flex items-start justify-between">
-              <div>
-                <h3 className="text-base font-serif font-bold text-[#171717]">{srv.title}</h3>
-                <span className="text-xs text-[#B88A5A] font-semibold flex items-center gap-1 mt-0.5">
-                  <Clock className="w-3 h-3" /> {srv.deliveryDays} days turnaround
-                </span>
-              </div>
-              <div className="text-right">
-                <span className="text-base font-bold text-[#171717]">{formatCurrency(srv.price)}</span>
-                <span className="text-[10px] text-[#6B6258] block">{formatPriceUnit(srv.pricingType)}</span>
-              </div>
-            </div>
-
-            <p className="text-xs text-[#6B6258] leading-relaxed">{srv.description}</p>
-
-            {srv.inclusions && (
-              <div className="space-y-1.5 pt-3 border-t border-[#E5E0D8]">
-                {srv.inclusions.map((inc, idx) => (
-                  <div key={idx} className="flex items-center gap-2 text-xs text-[#171717]">
-                    <Check className="w-3.5 h-3.5 text-[#3D7055]" />
-                    <span>{inc}</span>
+      {services.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {services.map((srv) => (
+            <Card key={srv.id} className="p-6 bg-white border border-[#E5E0D8] space-y-4 shadow-2xs">
+              <div className="flex items-start justify-between">
+                <div>
+                  <h3 className="text-base font-serif font-bold text-[#171717]">{srv.title}</h3>
+                  <span className="text-xs text-[#B88A5A] font-semibold flex items-center gap-1 mt-0.5">
+                    <Clock className="w-3 h-3" /> {srv.deliveryDays} days turnaround
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="text-right">
+                    <span className="text-base font-bold text-[#171717]">{formatCurrency(srv.price)}</span>
+                    <span className="text-[10px] text-[#6B6258] block">{formatPriceUnit(srv.pricingType)}</span>
                   </div>
-                ))}
+                  <button
+                    type="button"
+                    onClick={() => handleDelete(srv.id)}
+                    className="p-1.5 rounded-md hover:bg-[#FDF2F1] text-[#6B6258] hover:text-[#99453F] transition-colors ml-2"
+                    title="Delete package"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
-            )}
-          </Card>
-        ))}
-      </div>
+
+              <p className="text-xs text-[#6B6258] leading-relaxed">{srv.description}</p>
+
+              {srv.inclusions && (
+                <div className="space-y-1.5 pt-3 border-t border-[#E5E0D8]">
+                  {srv.inclusions.map((inc, idx) => (
+                    <div key={idx} className="flex items-center gap-2 text-xs text-[#171717]">
+                      <Check className="w-3.5 h-3.5 text-[#3D7055]" />
+                      <span>{inc}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </Card>
+          ))}
+        </div>
+      ) : (
+        <div className="p-12 text-center bg-white rounded-lg border border-[#E5E0D8]">
+          <p className="text-xs text-[#6B6258] mb-3">No packages created yet.</p>
+          <Button variant="primary" size="sm" onClick={() => setModalOpen(true)}>
+            Create First Package
+          </Button>
+        </div>
+      )}
 
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title="New Service Package">
         <form onSubmit={handleAddService} className="space-y-4">
@@ -120,7 +155,7 @@ const ServicesManagePage = () => {
             onChange={(e) => setNewService({ ...newService, description: e.target.value })}
           />
           <div className="pt-2 flex justify-end gap-2 border-t border-[#E5E0D8]">
-            <Button variant="ghost" size="sm" onClick={() => setModalOpen(false)}>
+            <Button variant="ghost" size="sm" type="button" onClick={() => setModalOpen(false)}>
               Cancel
             </Button>
             <Button type="submit" variant="primary" size="sm">

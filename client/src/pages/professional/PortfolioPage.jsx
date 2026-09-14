@@ -5,12 +5,15 @@ import Button from '../../components/common/Button';
 import Modal from '../../components/common/Modal';
 import Input from '../../components/common/Input';
 import Select from '../../components/common/Select';
-import { MOCK_PROFESSIONALS } from '../../constants/mockData';
+import { usePlatform } from '../../hooks/usePlatform';
 import { useToast } from '../../hooks/useToast';
 
 const PortfolioPage = () => {
-  const { success } = useToast();
-  const [items, setItems] = useState(MOCK_PROFESSIONALS[0]?.portfolio || []);
+  const { professionals, addPortfolioItem, deletePortfolioItem } = usePlatform();
+  const { success, error } = useToast();
+  const currentPro = professionals[0] || {};
+  const items = currentPro.portfolio || [];
+
   const [modalOpen, setModalOpen] = useState(false);
   const [newItem, setNewItem] = useState({
     title: '',
@@ -21,21 +24,20 @@ const PortfolioPage = () => {
 
   const handleAddItem = (e) => {
     e.preventDefault();
-    setItems([
-      ...items,
-      {
-        id: `p-${Date.now()}`,
-        ...newItem,
-      },
-    ]);
+    if (!newItem.title.trim() || !newItem.url.trim()) {
+      error('Please provide both a title and media URL.');
+      return;
+    }
+
+    addPortfolioItem(currentPro.id, newItem);
     setModalOpen(false);
     success('Portfolio item published to your public gallery!');
     setNewItem({ title: '', category: 'Weddings', url: '', mediaType: 'image' });
   };
 
   const handleDelete = (id) => {
-    setItems(items.filter((i) => i.id !== id));
-    success('Portfolio media removed.');
+    deletePortfolioItem(currentPro.id, id);
+    success('Portfolio media removed from public studio.');
   };
 
   return (
@@ -46,7 +48,7 @@ const PortfolioPage = () => {
             Media Management
           </span>
           <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#171717]">
-            Studio Portfolio Gallery
+            Studio Portfolio Gallery ({items.length} items)
           </h1>
         </div>
         <Button variant="primary" size="sm" onClick={() => setModalOpen(true)} leftIcon={<Plus className="w-3.5 h-3.5" />}>
@@ -54,30 +56,40 @@ const PortfolioPage = () => {
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {items.map((item) => (
-          <div key={item.id} className="group relative rounded-md overflow-hidden bg-white border border-[#E5E0D8] shadow-2xs">
-            <div className="aspect-square bg-[#EEEAE4] overflow-hidden">
-              <img src={item.url} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-            </div>
-            <div className="p-4 flex items-center justify-between bg-white">
-              <div>
-                <span className="text-[10px] uppercase font-bold text-[#B88A5A] tracking-wider block">
-                  {item.category}
-                </span>
-                <h4 className="text-xs font-bold text-[#171717]">{item.title}</h4>
+      {items.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {items.map((item) => (
+            <div key={item.id} className="group relative rounded-md overflow-hidden bg-white border border-[#E5E0D8] shadow-2xs">
+              <div className="aspect-square bg-[#EEEAE4] overflow-hidden">
+                <img src={item.url} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               </div>
-              <button
-                onClick={() => handleDelete(item.id)}
-                className="p-1.5 rounded-md hover:bg-[#FDF2F1] text-[#6B6258] hover:text-[#99453F] transition-colors"
-                title="Delete media"
-              >
-                <Trash2 className="w-4 h-4" />
-              </button>
+              <div className="p-4 flex items-center justify-between bg-white">
+                <div>
+                  <span className="text-[10px] uppercase font-bold text-[#B88A5A] tracking-wider block">
+                    {item.category}
+                  </span>
+                  <h4 className="text-xs font-bold text-[#171717]">{item.title}</h4>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => handleDelete(item.id)}
+                  className="p-1.5 rounded-md hover:bg-[#FDF2F1] text-[#6B6258] hover:text-[#99453F] transition-colors"
+                  title="Delete media"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <div className="p-12 text-center bg-white rounded-lg border border-[#E5E0D8]">
+          <p className="text-xs text-[#6B6258] mb-3">No portfolio media uploaded yet.</p>
+          <Button variant="primary" size="sm" onClick={() => setModalOpen(true)}>
+            Upload First Item
+          </Button>
+        </div>
+      )}
 
       {/* Upload Modal */}
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title="Upload Portfolio Media">
@@ -103,12 +115,13 @@ const PortfolioPage = () => {
             options={[
               { label: 'Weddings', value: 'Weddings' },
               { label: 'Pre-Wedding', value: 'Pre-Wedding' },
-              { label: 'Fashion & Editorial', value: 'Fashion' },
+              { label: 'Portraits & Fashion', value: 'Portraits' },
               { label: 'Commercial & Product', value: 'Commercial' },
+              { label: 'Events & Parties', value: 'Events' },
             ]}
           />
           <div className="pt-2 flex justify-end gap-2 border-t border-[#E5E0D8]">
-            <Button variant="ghost" size="sm" onClick={() => setModalOpen(false)}>
+            <Button variant="ghost" size="sm" type="button" onClick={() => setModalOpen(false)}>
               Cancel
             </Button>
             <Button type="submit" variant="primary" size="sm">
