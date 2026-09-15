@@ -2,24 +2,25 @@ import React, { useState } from 'react';
 import { Video, Search, MapPin, Sparkles, Filter, Award } from 'lucide-react';
 import ProfessionalCard from '../../components/cards/ProfessionalCard';
 import Button from '../../components/common/Button';
-import { MOCK_PROFESSIONALS } from '../../constants/mockData';
 import { ROLES } from '../../constants/roles';
+import { usePlatform } from '../../hooks/usePlatform';
 
 const VideographersPage = () => {
+  const { professionals, toggleWishlist, isWishlisted } = usePlatform();
   const [search, setSearch] = useState('');
   const [cityFilter, setCityFilter] = useState('all');
   const [styleFilter, setStyleFilter] = useState('all');
 
-  const videographers = MOCK_PROFESSIONALS.filter((p) => p.role === ROLES.VIDEOGRAPHER);
+  const videographers = professionals.filter((p) => p.role === ROLES.VIDEOGRAPHER);
 
   const filtered = videographers.filter((p) => {
     const matchesSearch =
       p.name.toLowerCase().includes(search.toLowerCase()) ||
       p.tagline.toLowerCase().includes(search.toLowerCase()) ||
-      p.specialties.some((s) => s.toLowerCase().includes(search.toLowerCase()));
+      (p.specialties || []).some((s) => s.toLowerCase().includes(search.toLowerCase()));
 
-    const matchesCity = cityFilter === 'all' || p.location.city.toLowerCase() === cityFilter.toLowerCase();
-    const matchesStyle = styleFilter === 'all' || p.specialties.includes(styleFilter);
+    const matchesCity = cityFilter === 'all' || p.location?.city?.toLowerCase() === cityFilter.toLowerCase();
+    const matchesStyle = styleFilter === 'all' || (p.specialties || []).includes(styleFilter);
 
     return matchesSearch && matchesCity && matchesStyle;
   });
@@ -116,7 +117,12 @@ const VideographersPage = () => {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filtered.map((pro) => (
-              <ProfessionalCard key={pro.id} professional={pro} />
+              <ProfessionalCard
+                key={pro.id}
+                professional={pro}
+                isWishlisted={isWishlisted(pro.id)}
+                onWishlistToggle={() => toggleWishlist(pro.id)}
+              />
             ))}
           </div>
         )}
