@@ -11,9 +11,9 @@ const Card = ({
   return (
     <div
       onClick={onClick}
-      className={`rounded-lg overflow-hidden bg-white border border-[#E5E0D8] transition-all duration-300 ${
+      className={`rounded-lg overflow-hidden bg-white border border-zinc-200 transition-all duration-200 ${
         hoverEffect
-          ? 'cursor-pointer hover:border-[#D6CFC4] hover:-translate-y-0.5 hover:shadow-md'
+          ? 'cursor-pointer hover:border-zinc-900 hover:shadow-soft'
           : ''
       } ${className}`}
       {...props}
@@ -24,7 +24,7 @@ const Card = ({
 };
 
 export const CardHeader = ({ children, className = '' }) => (
-  <div className={`p-5 pb-4 border-b border-[#E5E0D8] flex items-center justify-between bg-white ${className}`}>
+  <div className={`p-5 pb-4 border-b border-zinc-200 flex items-center justify-between bg-white ${className}`}>
     {children}
   </div>
 );
@@ -34,7 +34,7 @@ export const CardBody = ({ children, className = '' }) => (
 );
 
 export const CardFooter = ({ children, className = '' }) => (
-  <div className={`p-5 pt-4 border-t border-[#E5E0D8] bg-[#F7F5F2]/60 flex items-center justify-between ${className}`}>
+  <div className={`p-5 pt-4 border-t border-zinc-200 bg-zinc-50/70 flex items-center justify-between ${className}`}>
     {children}
   </div>
 );

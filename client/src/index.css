@@ -4,29 +4,27 @@
 
 @layer base {
   :root {
-    --color-primary: #121212;
-    --color-bg-main: #FAF8F5;
-    --color-bg-secondary: #F3EFEA;
-    --color-bg-tertiary: #EAE4DC;
-    --color-accent: #C4683C;
-    --color-accent-gold: #B88A5A;
+    --color-primary: #09090B;
+    --color-bg-main: #FAFAFA;
+    --color-bg-secondary: #F4F4F5;
+    --color-bg-tertiary: #E4E4E7;
     --color-card-bg: #FFFFFF;
-    --color-text-primary: #121212;
-    --color-text-secondary: #6B6258;
-    --color-text-muted: #8C8276;
-    --color-border-subtle: #E8E2D8;
-    --color-border-strong: #121212;
+    --color-text-primary: #09090B;
+    --color-text-secondary: #52525B;
+    --color-text-muted: #71717A;
+    --color-border-subtle: #E4E4E7;
+    --color-border-strong: #09090B;
   }
 
   body {
-    @apply bg-[#FAF8F5] text-[#121212] min-h-screen font-sans antialiased selection:bg-[#C4683C]/20 selection:text-[#121212];
-    background-color: #FAF8F5;
-    color: #121212;
+    @apply bg-[#FAFAFA] text-[#09090B] min-h-screen font-sans antialiased selection:bg-[#09090B] selection:text-white;
+    background-color: #FAFAFA;
+    color: #09090B;
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
 
   h1, h2, h3, h4, .font-serif, .font-editorial {
-    font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+    font-family: 'Playfair Display', Georgia, serif;
     letter-spacing: -0.02em;
   }
 }
@@ -37,7 +35,7 @@
     transform: scale(1);
   }
   50% {
-    transform: scale(1.06);
+    transform: scale(1.04);
   }
   100% {
     transform: scale(1);
@@ -48,11 +46,11 @@
   animation: kenBurnsSlow 24s ease-in-out infinite alternate;
 }
 
-/* Slow Fade In Reveal */
+/* Reveal Animation */
 @keyframes fadeInSlideUp {
   from {
     opacity: 0;
-    transform: translateY(16px);
+    transform: translateY(12px);
   }
   to {
     opacity: 1;
@@ -61,39 +59,39 @@
 }
 
 .animate-reveal {
-  animation: fadeInSlideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fadeInSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Custom Minimal Scrollbar */
+/* Clean Minimal Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #F3EFEA;
+  background: #FAFAFA;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #D8D0C5;
+  background: #D4D4D8;
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #C4683C;
+  background: #71717A;
 }
 
 /* Editorial Minimal Utilities */
 .editorial-card {
   background-color: #FFFFFF;
-  border: 1px solid #E8E2D8;
-  border-radius: 6px;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease-out;
+  border: 1px solid #E4E4E7;
+  border-radius: 8px;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease-out;
 }
 
 .editorial-card:hover {
-  border-color: #121212;
-  box-shadow: 0 16px 32px -8px rgba(18, 18, 18, 0.08);
+  border-color: #09090B;
+  box-shadow: 0 10px 24px -6px rgba(0, 0, 0, 0.06);
 }
 
 .editorial-tag {
@@ -101,7 +99,7 @@
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #6B6258;
+  color: #71717A;
 }
 
 .editorial-nav-link {
@@ -116,8 +114,8 @@
   left: 0;
   width: 0%;
   height: 1.5px;
-  background-color: #C4683C;
-  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  background-color: #09090B;
+  transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .editorial-nav-link:hover::after,
@@ -125,7 +123,7 @@
   width: 100%;
 }
 
-/* 35mm Film Frame Outline Aesthetic */
+/* Film Frame Marker for Photography Showcase */
 .film-frame-marker {
   position: relative;
 }
@@ -134,23 +132,23 @@
 .film-frame-marker::after {
   content: '';
   position: absolute;
-  width: 10px;
-  height: 10px;
-  border-color: rgba(18, 18, 18, 0.3);
+  width: 8px;
+  height: 8px;
+  border-color: rgba(9, 9, 11, 0.25);
   pointer-events: none;
   z-index: 10;
 }
 
 .film-frame-marker::before {
-  top: 10px;
-  left: 10px;
+  top: 8px;
+  left: 8px;
   border-top: 1.5px solid;
   border-left: 1.5px solid;
 }
 
 .film-frame-marker::after {
-  bottom: 10px;
-  right: 10px;
+  bottom: 8px;
+  right: 8px;
   border-bottom: 1.5px solid;
   border-right: 1.5px solid;
 }
