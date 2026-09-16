@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import { X, Camera, MapPin, ExternalLink, ChevronLeft, ChevronRight, Tag } from 'lucide-react';
-import Button from './Button';
+import { X, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const LightboxModal = ({ isOpen, onClose, item, onNext, onPrev, hasNext, hasPrev, creatorName, creatorId }) => {
   useEffect(() => {
@@ -22,7 +21,7 @@ const LightboxModal = ({ isOpen, onClose, item, onNext, onPrev, hasNext, hasPrev
       {/* Top Header Controls */}
       <div className="absolute top-0 left-0 right-0 p-4 sm:p-6 flex items-center justify-between text-white z-20">
         <div className="flex items-center gap-3">
-          <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#C4683C] bg-white/10 px-2.5 py-1 rounded">
+          <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-zinc-300 bg-white/10 px-2.5 py-1 rounded border border-white/10">
             {item.category || 'Portfolio Master'}
           </span>
           <span className="text-xs sm:text-sm font-serif font-bold text-white/90 truncate max-w-xs sm:max-w-md">
@@ -66,7 +65,7 @@ const LightboxModal = ({ isOpen, onClose, item, onNext, onPrev, hasNext, hasPrev
         {hasPrev && (
           <button
             onClick={onPrev}
-            className="absolute left-2 sm:-left-12 p-3 rounded-full bg-black/60 hover:bg-[#C4683C] text-white border border-white/20 transition-all"
+            className="absolute left-2 sm:-left-12 p-3 rounded-full bg-black/70 hover:bg-white text-white hover:text-black border border-white/20 transition-all"
             title="Previous (Left Arrow)"
           >
             <ChevronLeft className="w-5 h-5" />
@@ -75,7 +74,7 @@ const LightboxModal = ({ isOpen, onClose, item, onNext, onPrev, hasNext, hasPrev
         {hasNext && (
           <button
             onClick={onNext}
-            className="absolute right-2 sm:-right-12 p-3 rounded-full bg-black/60 hover:bg-[#C4683C] text-white border border-white/20 transition-all"
+            className="absolute right-2 sm:-right-12 p-3 rounded-full bg-black/70 hover:bg-white text-white hover:text-black border border-white/20 transition-all"
             title="Next (Right Arrow)"
           >
             <ChevronRight className="w-5 h-5" />
@@ -88,8 +87,8 @@ const LightboxModal = ({ isOpen, onClose, item, onNext, onPrev, hasNext, hasPrev
         <div className="text-left space-y-0.5">
           <h4 className="text-base font-serif font-bold text-white">{item.title}</h4>
           {creatorName && (
-            <p className="text-xs text-white/60">
-              Captured & Color Graded by <span className="text-[#C4683C] font-semibold">{creatorName}</span>
+            <p className="text-xs text-zinc-400">
+              Captured & Curated by <span className="text-white font-medium">{creatorName}</span>
             </p>
           )}
         </div>
@@ -97,7 +96,7 @@ const LightboxModal = ({ isOpen, onClose, item, onNext, onPrev, hasNext, hasPrev
         {creatorId && (
           <a
             href={`/professionals/${creatorId}`}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded bg-white text-[#121212] text-xs font-semibold hover:bg-[#C4683C] hover:text-white transition-all shadow-lg"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded bg-white text-zinc-900 text-xs font-semibold hover:bg-zinc-200 transition-all shadow-lg"
           >
             <span>View Full Studio</span>
             <ExternalLink className="w-3.5 h-3.5" />

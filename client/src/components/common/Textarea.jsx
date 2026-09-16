@@ -7,7 +7,7 @@ const Textarea = forwardRef(
     return (
       <div className="w-full space-y-1.5 text-left">
         {label && (
-          <label htmlFor={textareaId} className="block text-xs font-semibold uppercase tracking-wider text-[#6B6258]">
+          <label htmlFor={textareaId} className="block text-xs font-semibold uppercase tracking-wider text-zinc-600">
             {label}
           </label>
         )}
@@ -16,12 +16,12 @@ const Textarea = forwardRef(
           ref={ref}
           rows={rows}
           className={`w-full rounded-md bg-white border ${
-            error ? 'border-[#99453F]' : 'border-[#E5E0D8] focus:border-[#171717] focus:ring-1 focus:ring-[#171717]'
-          } px-3.5 py-2.5 text-sm text-[#171717] placeholder-[#8C8276] transition-all focus:outline-none ${className}`}
+            error ? 'border-red-500' : 'border-zinc-300 focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900'
+          } px-3.5 py-2 text-sm text-zinc-900 placeholder-zinc-400 transition-all focus:outline-none ${className}`}
           {...props}
         />
-        {error && <p className="text-xs text-[#99453F] mt-1 font-medium">{error}</p>}
-        {helperText && !error && <p className="text-xs text-[#6B6258] mt-1">{helperText}</p>}
+        {error && <p className="text-xs text-red-600 mt-1 font-medium">{error}</p>}
+        {helperText && !error && <p className="text-xs text-zinc-500 mt-1">{helperText}</p>}
       </div>
     );
   }

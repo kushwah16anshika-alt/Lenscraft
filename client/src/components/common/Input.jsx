@@ -20,13 +20,13 @@ const Input = forwardRef(
     return (
       <div className="w-full space-y-1.5 text-left">
         {label && (
-          <label htmlFor={inputId} className="block text-xs font-semibold uppercase tracking-wider text-[#6B6258]">
+          <label htmlFor={inputId} className="block text-xs font-semibold uppercase tracking-wider text-zinc-600">
             {label}
           </label>
         )}
         <div className="relative rounded-md">
           {leftIcon && (
-            <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#8C8276]">
+            <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-zinc-400">
               {leftIcon}
             </div>
           )}
@@ -35,20 +35,20 @@ const Input = forwardRef(
             ref={ref}
             type={type}
             className={`w-full rounded-md bg-white border ${
-              error ? 'border-[#99453F] focus:ring-[#99453F] focus:border-[#99453F]' : 'border-[#E5E0D8] focus:border-[#171717] focus:ring-1 focus:ring-[#171717]'
-            } px-3.5 py-2.5 text-sm text-[#171717] placeholder-[#8C8276] transition-all focus:outline-none ${
+              error ? 'border-red-500 focus:ring-1 focus:ring-red-500' : 'border-zinc-300 focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900'
+            } px-3.5 py-2 text-sm text-zinc-900 placeholder-zinc-400 transition-all focus:outline-none ${
               leftIcon ? 'pl-10' : ''
             } ${rightIcon ? 'pr-10' : ''} ${className}`}
             {...props}
           />
           {rightIcon && (
-            <div className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-[#8C8276]">
+            <div className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-zinc-400">
               {rightIcon}
             </div>
           )}
         </div>
-        {error && <p className="text-xs text-[#99453F] mt-1 font-medium">{error}</p>}
-        {helperText && !error && <p className="text-xs text-[#6B6258] mt-1">{helperText}</p>}
+        {error && <p className="text-xs text-red-600 mt-1 font-medium">{error}</p>}
+        {helperText && !error && <p className="text-xs text-zinc-500 mt-1">{helperText}</p>}
       </div>
     );
   }

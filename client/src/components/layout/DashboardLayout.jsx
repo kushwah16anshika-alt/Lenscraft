@@ -8,7 +8,7 @@ const DashboardLayout = () => {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#F7F5F2] text-[#171717] flex">
+    <div className="min-h-screen bg-zinc-50 text-zinc-900 flex">
       {/* Sidebar */}
       <Sidebar
         isCollapsed={isCollapsed}
@@ -19,7 +19,7 @@ const DashboardLayout = () => {
 
       {/* Main Content Area */}
       <div
-        className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ${
+        className={`flex-1 flex flex-col min-w-0 transition-all duration-200 ${
           isCollapsed ? 'lg:pl-20' : 'lg:pl-64'
         }`}
       >

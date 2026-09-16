@@ -1,21 +1,13 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-  Camera,
-  Video,
-  Film,
   Sparkles,
   ShieldCheck,
   Award,
-  CalendarCheck,
   ArrowRight,
   Star,
   CheckCircle,
-  Aperture,
-  Compass,
   Clock,
-  Zap,
-  ArrowUpRight,
   Maximize2,
   PlusCircle,
 } from 'lucide-react';
@@ -137,47 +129,46 @@ const HomePage = () => {
       {/* ─────────────────────────────────────────────────────────────
           HERO SECTION (Full-Bleed Cinematic Editorial)
          ───────────────────────────────────────────────────────────── */}
-      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-[#121212] text-white">
+      <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-zinc-950 text-white">
         {/* Cinematic Background Image with Ken Burns zoom */}
         <div className="absolute inset-0 z-0 overflow-hidden">
           <img
             src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=2000&q=85"
             alt="Cinematic Wedding & Commercial Shoot"
-            className="w-full h-full object-cover opacity-45 animate-ken-burns"
+            className="w-full h-full object-cover opacity-40 animate-ken-burns"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-[#121212]/50 to-black/70" />
-          <div className="absolute inset-0 bg-radial from-transparent via-black/30 to-black/80" />
+          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-black/80" />
         </div>
 
         {/* Film Frame Markers */}
-        <div className="absolute top-8 left-8 hidden lg:flex items-center gap-2 text-[10px] font-mono text-white/50 tracking-widest uppercase z-10">
+        <div className="absolute top-8 left-8 hidden lg:flex items-center gap-2 text-[10px] font-mono text-zinc-400 tracking-widest uppercase z-10">
           <span>LAT 18°55' N · LON 72°50' E</span>
-          <span className="w-8 h-px bg-white/30" />
+          <span className="w-8 h-px bg-zinc-700" />
           <span>CURATED ROSTER 2025</span>
         </div>
-        <div className="absolute top-8 right-8 hidden lg:flex items-center gap-2 text-[10px] font-mono text-white/50 tracking-widest uppercase z-10">
+        <div className="absolute top-8 right-8 hidden lg:flex items-center gap-2 text-[10px] font-mono text-zinc-400 tracking-widest uppercase z-10">
           <span>100% ESCROW PROTECTED</span>
-          <span className="w-2 h-2 rounded-full bg-[#C4683C] animate-pulse" />
+          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
         </div>
 
         {/* Hero Content Container */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center flex flex-col items-center py-20">
           {/* Eyebrow Pill */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[#EAE4DC] text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] mb-6 shadow-xl">
-            <Sparkles className="w-3.5 h-3.5 text-[#C4683C]" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-zinc-200 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] mb-6 shadow-xl">
+            <Sparkles className="w-3.5 h-3.5 text-zinc-300" />
             <span>The Premier Creative Services Marketplace</span>
           </div>
 
           {/* Editorial Headline */}
           <h1 className="text-5xl sm:text-7xl lg:text-8xl font-serif font-bold tracking-tight text-white max-w-5xl leading-[1.05] mb-6 uppercase">
             MAKE MOMENTS <br />
-            <span className="italic font-normal text-[#EAE4DC] font-serif lowercase tracking-normal">
+            <span className="italic font-normal text-zinc-300 font-serif lowercase tracking-normal">
               timeless.
             </span>
           </h1>
 
           {/* Subtitle */}
-          <p className="text-sm sm:text-base md:text-lg text-white/80 max-w-2xl mx-auto mb-10 leading-relaxed font-normal">
+          <p className="text-sm sm:text-base md:text-lg text-zinc-300 max-w-2xl mx-auto mb-10 leading-relaxed font-normal">
             Discover verified Photographers, Cinematographers, and Video Editors who turn your celebrations, campaigns, and vision into unforgettable visual stories.
           </p>
 
@@ -192,7 +183,7 @@ const HomePage = () => {
               <Button
                 variant="primary"
                 size="lg"
-                className="bg-[#C4683C] hover:bg-[#B2592F] text-white border-none shadow-xl px-8"
+                className="bg-white hover:bg-zinc-200 text-zinc-950 border-none shadow-xl px-8 font-bold"
                 rightIcon={<ArrowRight className="w-4 h-4" />}
               >
                 Explore All Creators
@@ -201,16 +192,16 @@ const HomePage = () => {
 
             <button
               onClick={() => setCreatorModalOpen(true)}
-              className="px-6 py-3 rounded bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/30 transition-all flex items-center gap-2"
+              className="px-6 py-2.5 rounded-md bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/25 transition-all flex items-center gap-2 text-sm font-medium"
             >
-              <PlusCircle className="w-4 h-4 text-[#C4683C]" />
+              <PlusCircle className="w-4 h-4 text-zinc-300" />
               <span>Become a Creator</span>
             </button>
           </div>
 
           {/* Quick Trending Tags */}
-          <div className="flex flex-wrap items-center justify-center gap-2 mt-8 text-xs text-white/70">
-            <span className="font-semibold uppercase tracking-wider text-white/50 text-[10px]">
+          <div className="flex flex-wrap items-center justify-center gap-2 mt-8 text-xs text-zinc-400">
+            <span className="font-semibold uppercase tracking-wider text-zinc-400 text-[10px]">
               Trending Disciplines:
             </span>
             <Link
@@ -244,66 +235,66 @@ const HomePage = () => {
       {/* ─────────────────────────────────────────────────────────────
           TRUST & QUALITY ASSURANCE STRIP
          ───────────────────────────────────────────────────────────── */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-12 relative z-20">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-6 sm:p-8 rounded-xl bg-white border border-[#E8E2D8] shadow-xl">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 relative z-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-6 sm:p-8 rounded-xl bg-white border border-zinc-200 shadow-soft-lg">
           <div className="flex items-center gap-3.5 p-2">
-            <div className="w-11 h-11 rounded-md bg-[#FAF8F5] border border-[#E8E2D8] flex items-center justify-center text-[#C4683C] shrink-0">
+            <div className="w-10 h-10 rounded-md bg-zinc-100 border border-zinc-200 flex items-center justify-center text-zinc-900 shrink-0">
               <ShieldCheck className="w-5 h-5 stroke-[1.75]" />
             </div>
             <div>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[#121212]">100% Escrow Protection</h4>
-              <p className="text-[11px] text-[#6B6258]">Funds held safely until deliverable sign-off</p>
+              <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-900">100% Escrow Protection</h4>
+              <p className="text-[11px] text-zinc-500">Funds held safely until deliverable sign-off</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3.5 p-2 border-t sm:border-t-0 sm:border-l border-[#E8E2D8]">
-            <div className="w-11 h-11 rounded-md bg-[#FAF8F5] border border-[#E8E2D8] flex items-center justify-center text-[#C4683C] shrink-0">
+          <div className="flex items-center gap-3.5 p-2 border-t sm:border-t-0 sm:border-l border-zinc-200">
+            <div className="w-10 h-10 rounded-md bg-zinc-100 border border-zinc-200 flex items-center justify-center text-zinc-900 shrink-0">
               <Award className="w-5 h-5 stroke-[1.75]" />
             </div>
             <div>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[#121212]">Verified Editorial Talent</h4>
-              <p className="text-[11px] text-[#6B6258]">Strict gear & craftsmanship audit</p>
+              <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-900">Verified Editorial Talent</h4>
+              <p className="text-[11px] text-zinc-500">Strict gear & craftsmanship audit</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3.5 p-2 border-t lg:border-t-0 lg:border-l border-[#E8E2D8]">
-            <div className="w-11 h-11 rounded-md bg-[#FAF8F5] border border-[#E8E2D8] flex items-center justify-center text-[#C4683C] shrink-0">
+          <div className="flex items-center gap-3.5 p-2 border-t lg:border-t-0 lg:border-l border-zinc-200">
+            <div className="w-10 h-10 rounded-md bg-zinc-100 border border-zinc-200 flex items-center justify-center text-zinc-900 shrink-0">
               <Clock className="w-5 h-5 stroke-[1.75]" />
             </div>
             <div>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[#121212]">48h Fast Teaser Turnaround</h4>
-              <p className="text-[11px] text-[#6B6258]">Early social selects delivered on time</p>
+              <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-900">48h Fast Teaser Turnaround</h4>
+              <p className="text-[11px] text-zinc-500">Early social selects delivered on time</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3.5 p-2 border-t sm:border-t-0 sm:border-l border-[#E8E2D8]">
-            <div className="w-11 h-11 rounded-md bg-[#FAF8F5] border border-[#E8E2D8] flex items-center justify-center text-[#C4683C] shrink-0">
+          <div className="flex items-center gap-3.5 p-2 border-t sm:border-t-0 sm:border-l border-zinc-200">
+            <div className="w-10 h-10 rounded-md bg-zinc-100 border border-zinc-200 flex items-center justify-center text-zinc-900 shrink-0">
               <Star className="w-5 h-5 stroke-[1.75]" />
             </div>
             <div>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[#121212]">4.96 Client Satisfaction</h4>
-              <p className="text-[11px] text-[#6B6258]">Trusted across 12,000+ shoots</p>
+              <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-900">4.96 Client Satisfaction</h4>
+              <p className="text-[11px] text-zinc-500">Trusted across 12,000+ shoots</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
-          SECTION 01: SPOTLIGHT CREATORS (Asymmetric Masonry Grid)
+          SECTION 01: SPOTLIGHT CREATORS
          ───────────────────────────────────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4 border-b border-[#E8E2D8]">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4 border-b border-zinc-200">
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#C4683C] block mb-1">
+            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-zinc-500 block mb-1">
               01 — Spotlight Talent
             </span>
-            <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#121212]">
+            <h2 className="text-3xl sm:text-4xl font-serif font-bold text-zinc-900">
               Featured Master Creators
             </h2>
           </div>
 
           {/* Role Filter Tabs */}
-          <div className="flex items-center gap-1.5 p-1 rounded-md bg-[#F3EFEA] border border-[#E8E2D8]">
+          <div className="flex items-center gap-1.5 p-1 rounded-md bg-zinc-100 border border-zinc-200">
             {[
               { id: 'all', label: 'All Creatives' },
               { id: ROLES.PHOTOGRAPHER, label: 'Photographers' },
@@ -313,10 +304,10 @@ const HomePage = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveRoleFilter(tab.id)}
-                className={`px-3 py-1.5 rounded text-xs font-semibold transition-all ${
+                className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${
                   activeRoleFilter === tab.id
-                    ? 'bg-[#121212] text-white shadow-2xs'
-                    : 'text-[#6B6258] hover:text-[#121212]'
+                    ? 'bg-zinc-900 text-white shadow-xs'
+                    : 'text-zinc-600 hover:text-zinc-900'
                 }`}
               >
                 {tab.label}
@@ -345,16 +336,16 @@ const HomePage = () => {
           SECTION 02: CURATED DISCIPLINES & MEDIUMS
          ───────────────────────────────────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4 border-b border-[#E8E2D8]">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4 border-b border-zinc-200">
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#C4683C] block mb-1">
+            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-zinc-500 block mb-1">
               02 — Disciplines Directory
             </span>
-            <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#121212]">
+            <h2 className="text-3xl sm:text-4xl font-serif font-bold text-zinc-900">
               Explore by Specialization
             </h2>
           </div>
-          <Link to="/services" className="text-xs font-semibold text-[#C4683C] hover:underline flex items-center gap-1">
+          <Link to="/services" className="text-xs font-semibold text-zinc-900 hover:underline flex items-center gap-1">
             <span>Browse Full Catalog</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
@@ -364,17 +355,17 @@ const HomePage = () => {
           {CREATIVE_CATEGORIES.slice(0, 4).map((cat, idx) => (
             <div
               key={cat.id}
-              className="group rounded-lg bg-white border border-[#E8E2D8] overflow-hidden shadow-2xs hover:border-[#121212] hover:shadow-xl transition-all flex flex-col justify-between"
+              className="group rounded-lg bg-white border border-zinc-200 overflow-hidden shadow-subtle hover:border-zinc-900 hover:shadow-soft-md transition-all flex flex-col justify-between"
             >
               <div>
-                <div className="relative h-52 bg-[#F3EFEA] overflow-hidden">
+                <div className="relative h-52 bg-zinc-100 overflow-hidden">
                   <img
                     src={cat.image}
                     alt={cat.name}
-                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-106"
+                    className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-104"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                  <div className="absolute top-3 left-3 px-2 py-0.5 rounded bg-white/90 font-serif font-bold text-[10px] text-[#121212]">
+                  <div className="absolute top-3 left-3 px-2 py-0.5 rounded bg-white/90 font-serif font-bold text-[10px] text-zinc-900">
                     0{idx + 1}
                   </div>
                   <div className="absolute bottom-3 left-3 right-3 text-white text-xs font-bold">
@@ -383,10 +374,10 @@ const HomePage = () => {
                 </div>
 
                 <div className="p-5 space-y-2">
-                  <h3 className="text-base font-serif font-bold text-[#121212] group-hover:text-[#C4683C] transition-colors">
+                  <h3 className="text-base font-serif font-bold text-zinc-900 group-hover:text-zinc-600 transition-colors">
                     {cat.name}
                   </h3>
-                  <p className="text-xs text-[#6B6258] leading-relaxed line-clamp-2">
+                  <p className="text-xs text-zinc-500 leading-relaxed line-clamp-2">
                     {cat.description}
                   </p>
                 </div>
@@ -399,7 +390,7 @@ const HomePage = () => {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="w-full justify-between group-hover:bg-[#121212] group-hover:text-white group-hover:border-[#121212] transition-all"
+                    className="w-full justify-between hover:bg-zinc-900 hover:text-white hover:border-zinc-900 transition-all"
                     rightIcon={<ArrowRight className="w-3.5 h-3.5" />}
                   >
                     <span>Explore Talent</span>
@@ -415,16 +406,16 @@ const HomePage = () => {
           SECTION 03: LENSCRAFT LOOKBOOK (Interactive Fullscreen Lightbox)
          ───────────────────────────────────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4 border-b border-[#E8E2D8]">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4 border-b border-zinc-200">
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#C4683C] block mb-1">
+            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-zinc-500 block mb-1">
               03 — Master Gallery
             </span>
-            <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#121212]">
+            <h2 className="text-3xl sm:text-4xl font-serif font-bold text-zinc-900">
               LensCraft Recent Lookbook
             </h2>
           </div>
-          <p className="text-xs text-[#6B6258] max-w-md">
+          <p className="text-xs text-zinc-500 max-w-md">
             Click any still to open the cinematic fullscreen master viewer with creator attribution.
           </p>
         </div>
@@ -437,17 +428,17 @@ const HomePage = () => {
                 setActiveLightboxIndex(idx);
                 setLightboxOpen(true);
               }}
-              className="group relative h-72 rounded-lg overflow-hidden bg-[#121212] cursor-pointer shadow-md border border-[#E8E2D8] hover:border-[#121212] transition-all"
+              className="group relative h-72 rounded-lg overflow-hidden bg-zinc-950 cursor-pointer shadow-subtle border border-zinc-200 hover:border-zinc-900 transition-all"
             >
               <img
                 src={item.url}
                 alt={item.title}
-                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-106 opacity-90 group-hover:opacity-100"
+                className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-104 opacity-90 group-hover:opacity-100"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent transition-opacity" />
 
               {/* Top Category Tag */}
-              <div className="absolute top-3.5 left-3.5 px-2.5 py-1 rounded bg-black/60 backdrop-blur-md text-white text-[10px] uppercase font-bold tracking-wider border border-white/20">
+              <div className="absolute top-3.5 left-3.5 px-2.5 py-1 rounded-md bg-black/60 backdrop-blur-md text-white text-[10px] uppercase font-bold tracking-wider border border-white/20">
                 {item.category}
               </div>
 
@@ -458,11 +449,11 @@ const HomePage = () => {
 
               {/* Bottom Details */}
               <div className="absolute bottom-4 left-4 right-4 text-white text-left">
-                <h4 className="text-sm font-serif font-bold leading-snug group-hover:text-[#EAE4DC] transition-colors">
+                <h4 className="text-sm font-serif font-bold leading-snug group-hover:text-zinc-200 transition-colors">
                   {item.title}
                 </h4>
-                <p className="text-[11px] text-white/70 mt-0.5">
-                  Captured by <span className="text-[#C4683C] font-semibold">{item.creatorName}</span>
+                <p className="text-[11px] text-zinc-300 mt-0.5">
+                  Captured by <span className="text-white font-semibold">{item.creatorName}</span>
                 </p>
               </div>
             </div>
@@ -471,51 +462,51 @@ const HomePage = () => {
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
-          SECTION 04: HOW IT WORKS (Minimalist 4-Step Flow)
+          SECTION 04: HOW IT WORKS
          ───────────────────────────────────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="p-8 sm:p-14 rounded-2xl bg-[#121212] text-white border border-[#242424] shadow-2xl space-y-12">
+        <div className="p-8 sm:p-14 rounded-2xl bg-zinc-950 text-white border border-zinc-800 shadow-2xl space-y-12">
           <div className="max-w-2xl space-y-2">
-            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#C4683C] block">
+            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-zinc-400 block">
               04 — Workflow Protocol
             </span>
             <h2 className="text-3xl sm:text-5xl font-serif font-bold text-white tracking-tight">
               Seamless. Protected. World-Class.
             </h2>
-            <p className="text-xs sm:text-sm text-[#8C8276] leading-relaxed">
+            <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
               How LensCraft connects you with top-tier talent through a certified escrow workflow.
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="p-6 rounded-lg bg-[#1A1A1A] border border-[#2B2B2B] space-y-3">
-              <span className="text-3xl font-serif font-bold text-[#C4683C] block">01</span>
+            <div className="p-6 rounded-lg bg-zinc-900 border border-zinc-800 space-y-3">
+              <span className="text-3xl font-serif font-bold text-zinc-400 block">01</span>
               <h4 className="text-base font-bold text-white uppercase tracking-wide">Discover</h4>
-              <p className="text-xs text-[#8C8276] leading-relaxed">
+              <p className="text-xs text-zinc-400 leading-relaxed">
                 Filter verified creators by gear, city, past portfolio galleries, and genuine client reviews.
               </p>
             </div>
 
-            <div className="p-6 rounded-lg bg-[#1A1A1A] border border-[#2B2B2B] space-y-3">
-              <span className="text-3xl font-serif font-bold text-[#C4683C] block">02</span>
+            <div className="p-6 rounded-lg bg-zinc-900 border border-zinc-800 space-y-3">
+              <span className="text-3xl font-serif font-bold text-zinc-400 block">02</span>
               <h4 className="text-base font-bold text-white uppercase tracking-wide">Connect</h4>
-              <p className="text-xs text-[#8C8276] leading-relaxed">
+              <p className="text-xs text-zinc-400 leading-relaxed">
                 Coordinate call-sheets, shot lists, and mood boards directly with your creator studio.
               </p>
             </div>
 
-            <div className="p-6 rounded-lg bg-[#1A1A1A] border border-[#2B2B2B] space-y-3">
-              <span className="text-3xl font-serif font-bold text-[#C4683C] block">03</span>
+            <div className="p-6 rounded-lg bg-zinc-900 border border-zinc-800 space-y-3">
+              <span className="text-3xl font-serif font-bold text-zinc-400 block">03</span>
               <h4 className="text-base font-bold text-white uppercase tracking-wide">Book Escrow</h4>
-              <p className="text-xs text-[#8C8276] leading-relaxed">
+              <p className="text-xs text-zinc-400 leading-relaxed">
                 Lock your shoot date. 100% of your funds remain held in escrow until you approve final edits.
               </p>
             </div>
 
-            <div className="p-6 rounded-lg bg-[#1A1A1A] border border-[#2B2B2B] space-y-3">
-              <span className="text-3xl font-serif font-bold text-[#C4683C] block">04</span>
+            <div className="p-6 rounded-lg bg-zinc-900 border border-zinc-800 space-y-3">
+              <span className="text-3xl font-serif font-bold text-zinc-400 block">04</span>
               <h4 className="text-base font-bold text-white uppercase tracking-wide">Create</h4>
-              <p className="text-xs text-[#8C8276] leading-relaxed">
+              <p className="text-xs text-zinc-400 leading-relaxed">
                 Receive 48h teasers and full-resolution master cloud downloads with commercial licenses.
               </p>
             </div>
@@ -524,19 +515,19 @@ const HomePage = () => {
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
-          SECTION 05: LENSCRAFT STORIES & EDITORIAL MAGAZINE
+          SECTION 05: STORIES & EDITORIAL MAGAZINE
          ───────────────────────────────────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4 border-b border-[#E8E2D8]">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4 border-b border-zinc-200">
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#C4683C] block mb-1">
+            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-zinc-500 block mb-1">
               05 — LensCraft Stories
             </span>
-            <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#121212]">
+            <h2 className="text-3xl sm:text-4xl font-serif font-bold text-zinc-900">
               Behind the Lens & Creative Culture
             </h2>
           </div>
-          <Link to="/about" className="text-xs font-semibold text-[#C4683C] hover:underline flex items-center gap-1">
+          <Link to="/about" className="text-xs font-semibold text-zinc-900 hover:underline flex items-center gap-1">
             <span>Read Editorial Journal</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
@@ -546,30 +537,30 @@ const HomePage = () => {
           {editorialStories.map((story) => (
             <div
               key={story.id}
-              className="group rounded-lg bg-white border border-[#E8E2D8] overflow-hidden shadow-2xs hover:border-[#121212] hover:shadow-xl transition-all flex flex-col justify-between"
+              className="group rounded-lg bg-white border border-zinc-200 overflow-hidden shadow-subtle hover:border-zinc-900 hover:shadow-soft-md transition-all flex flex-col justify-between"
             >
               <div>
-                <div className="relative h-56 bg-[#F3EFEA] overflow-hidden">
+                <div className="relative h-56 bg-zinc-100 overflow-hidden">
                   <img
                     src={story.image}
                     alt={story.title}
-                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-106"
+                    className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-104"
                   />
-                  <div className="absolute top-3 left-3 px-2.5 py-1 rounded bg-black/70 backdrop-blur-md text-white text-[9px] uppercase font-bold tracking-wider">
+                  <div className="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-black/70 backdrop-blur-md text-white text-[9px] uppercase font-bold tracking-wider">
                     {story.tag}
                   </div>
                 </div>
 
                 <div className="p-6 space-y-2.5">
-                  <div className="flex items-center gap-2 text-[11px] text-[#8C8276]">
+                  <div className="flex items-center gap-2 text-[11px] text-zinc-400">
                     <span>By {story.author}</span>
                     <span>·</span>
                     <span>{story.readTime}</span>
                   </div>
-                  <h3 className="text-lg font-serif font-bold text-[#121212] group-hover:text-[#C4683C] transition-colors leading-snug">
+                  <h3 className="text-lg font-serif font-bold text-zinc-900 group-hover:text-zinc-600 transition-colors leading-snug">
                     {story.title}
                   </h3>
-                  <p className="text-xs text-[#6B6258] leading-relaxed line-clamp-2">
+                  <p className="text-xs text-zinc-500 leading-relaxed line-clamp-2">
                     {story.snippet}
                   </p>
                 </div>
@@ -578,7 +569,7 @@ const HomePage = () => {
               <div className="p-6 pt-0">
                 <Link
                   to="/about"
-                  className="inline-flex items-center gap-1.5 text-xs font-bold text-[#121212] hover:text-[#C4683C] transition-colors"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-zinc-900 hover:text-zinc-600 transition-colors"
                 >
                   <span>Read Article</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -590,62 +581,62 @@ const HomePage = () => {
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
-          SECTION 06: CLIENT TESTIMONIALS & SOCIAL PROOF
+          SECTION 06: CLIENT TESTIMONIALS
          ───────────────────────────────────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="p-8 sm:p-14 rounded-2xl bg-gradient-to-r from-[#FAF8F5] via-white to-[#F3EFEA] border border-[#E8E2D8] shadow-sm space-y-10">
+        <div className="p-8 sm:p-14 rounded-2xl bg-zinc-100 border border-zinc-200 space-y-10">
           <div className="text-center max-w-2xl mx-auto space-y-2">
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#C4683C] block">
+            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-zinc-500 block">
               06 — Proven Trust
             </span>
-            <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#121212]">
+            <h2 className="text-3xl sm:text-4xl font-serif font-bold text-zinc-900">
               Loved by Discerning Couples & Brand Directors
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
-            <div className="p-6 rounded-lg bg-white border border-[#E8E2D8] space-y-4 shadow-2xs">
-              <div className="flex items-center gap-1 text-[#C4683C]">
+            <div className="p-6 rounded-lg bg-white border border-zinc-200 space-y-4 shadow-subtle">
+              <div className="flex items-center gap-1 text-amber-500">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-3.5 h-3.5 fill-[#C4683C]" />
+                  <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
                 ))}
               </div>
-              <p className="text-xs text-[#4A433B] italic font-serif leading-relaxed">
+              <p className="text-xs text-zinc-700 italic font-serif leading-relaxed">
                 "Booking Aarav through LensCraft made our Udaipur royal wedding completely stress-free. The 48h teaser video had all our guests in tears."
               </p>
-              <div className="pt-2 border-t border-[#E8E2D8] text-xs">
-                <h5 className="font-bold text-[#121212]">Rhea & Vikram Kapoor</h5>
-                <span className="text-[11px] text-[#8C8276]">Destination Wedding, Rajasthan</span>
+              <div className="pt-2 border-t border-zinc-100 text-xs">
+                <h5 className="font-bold text-zinc-900">Rhea & Vikram Kapoor</h5>
+                <span className="text-[11px] text-zinc-500">Destination Wedding, Rajasthan</span>
               </div>
             </div>
 
-            <div className="p-6 rounded-lg bg-white border border-[#E8E2D8] space-y-4 shadow-2xs">
-              <div className="flex items-center gap-1 text-[#C4683C]">
+            <div className="p-6 rounded-lg bg-white border border-zinc-200 space-y-4 shadow-subtle">
+              <div className="flex items-center gap-1 text-amber-500">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-3.5 h-3.5 fill-[#C4683C]" />
+                  <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
                 ))}
               </div>
-              <p className="text-xs text-[#4A433B] italic font-serif leading-relaxed">
+              <p className="text-xs text-zinc-700 italic font-serif leading-relaxed">
                 "We hired Kabir for our luxury fragrance launch video. The cinema camera rig and color grading exceeded every commercial benchmark."
               </p>
-              <div className="pt-2 border-t border-[#E8E2D8] text-xs">
-                <h5 className="font-bold text-[#121212]">Elena Rostova</h5>
-                <span className="text-[11px] text-[#8C8276]">Brand Director, Aura Paris</span>
+              <div className="pt-2 border-t border-zinc-100 text-xs">
+                <h5 className="font-bold text-zinc-900">Elena Rostova</h5>
+                <span className="text-[11px] text-zinc-500">Brand Director, Aura Paris</span>
               </div>
             </div>
 
-            <div className="p-6 rounded-lg bg-white border border-[#E8E2D8] space-y-4 shadow-2xs">
-              <div className="flex items-center gap-1 text-[#C4683C]">
+            <div className="p-6 rounded-lg bg-white border border-zinc-200 space-y-4 shadow-subtle">
+              <div className="flex items-center gap-1 text-amber-500">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-3.5 h-3.5 fill-[#C4683C]" />
+                  <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
                 ))}
               </div>
-              <p className="text-xs text-[#4A433B] italic font-serif leading-relaxed">
+              <p className="text-xs text-zinc-700 italic font-serif leading-relaxed">
                 "Sanya edited a pack of 5 Reels for our campaign. Three of them crossed 1.2M views on Instagram within a week. Outstanding work."
               </p>
-              <div className="pt-2 border-t border-[#E8E2D8] text-xs">
-                <h5 className="font-bold text-[#121212]">Karan Singhania</h5>
-                <span className="text-[11px] text-[#8C8276]">Founder, D2C Apparel Co.</span>
+              <div className="pt-2 border-t border-zinc-100 text-xs">
+                <h5 className="font-bold text-zinc-900">Karan Singhania</h5>
+                <span className="text-[11px] text-zinc-500">Founder, D2C Apparel Co.</span>
               </div>
             </div>
           </div>
@@ -656,31 +647,31 @@ const HomePage = () => {
           SECTION 07: BECOME A CREATOR SPLIT BANNER
          ───────────────────────────────────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 rounded-2xl overflow-hidden bg-[#121212] text-white border border-[#242424] shadow-2xl">
+        <div className="grid grid-cols-1 lg:grid-cols-2 rounded-2xl overflow-hidden bg-zinc-950 text-white border border-zinc-800 shadow-2xl">
           <div className="p-8 sm:p-14 flex flex-col justify-between space-y-6">
             <div className="space-y-3">
-              <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#C4683C] block">
+              <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-zinc-400 block">
                 07 — Creator Studio Accreditation
               </span>
               <h2 className="text-3xl sm:text-4xl font-serif font-bold text-white tracking-tight">
                 Are You a Master of the Visual Craft?
               </h2>
-              <p className="text-xs sm:text-sm text-[#8C8276] leading-relaxed">
+              <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
                 Join our curated roster of Photographers, Cinematographers, and Video Editors. Get discovered by high-budget weddings, brand campaigns, and creative agencies with guaranteed escrow payouts.
               </p>
             </div>
 
             <div className="space-y-3">
-              <div className="flex items-center gap-2.5 text-xs text-[#EAE4DC]">
-                <CheckCircle className="w-4 h-4 text-[#C4683C]" />
+              <div className="flex items-center gap-2.5 text-xs text-zinc-300">
+                <CheckCircle className="w-4 h-4 text-emerald-400" />
                 <span>Zero platform commission on your first 3 bookings</span>
               </div>
-              <div className="flex items-center gap-2.5 text-xs text-[#EAE4DC]">
-                <CheckCircle className="w-4 h-4 text-[#C4683C]" />
+              <div className="flex items-center gap-2.5 text-xs text-zinc-300">
+                <CheckCircle className="w-4 h-4 text-emerald-400" />
                 <span>Guaranteed advance escrow payouts with dispute protection</span>
               </div>
-              <div className="flex items-center gap-2.5 text-xs text-[#EAE4DC]">
-                <CheckCircle className="w-4 h-4 text-[#C4683C]" />
+              <div className="flex items-center gap-2.5 text-xs text-zinc-300">
+                <CheckCircle className="w-4 h-4 text-emerald-400" />
                 <span>Custom portfolio studio page with full media hosting</span>
               </div>
             </div>
@@ -688,7 +679,7 @@ const HomePage = () => {
             <div>
               <button
                 onClick={() => setCreatorModalOpen(true)}
-                className="px-6 py-3 rounded bg-white hover:bg-[#C4683C] text-[#121212] hover:text-white font-bold text-xs transition-all shadow-xl inline-flex items-center gap-2"
+                className="px-6 py-3 rounded-md bg-white hover:bg-zinc-200 text-zinc-950 font-bold text-xs transition-all shadow-xl inline-flex items-center gap-2"
               >
                 <span>Apply as a Creator</span>
                 <ArrowRight className="w-4 h-4" />
@@ -696,13 +687,13 @@ const HomePage = () => {
             </div>
           </div>
 
-          <div className="relative min-h-[320px] lg:min-h-full bg-[#1C1C1C]">
+          <div className="relative min-h-[320px] lg:min-h-full bg-zinc-900">
             <img
               src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&q=80"
               alt="Professional Photographer Studio"
               className="w-full h-full object-cover opacity-75"
             />
-            <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-l from-transparent to-[#121212]" />
+            <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-l from-transparent to-zinc-950" />
           </div>
         </div>
       </section>
@@ -711,15 +702,15 @@ const HomePage = () => {
           SECTION 08: FINAL FULL-WIDTH CALL TO ACTION
          ───────────────────────────────────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="p-10 sm:p-16 rounded-2xl bg-gradient-to-b from-[#FAF8F5] via-white to-[#F3EFEA] border border-[#E8E2D8] text-center space-y-6 shadow-sm">
+        <div className="p-10 sm:p-16 rounded-2xl bg-zinc-100 border border-zinc-200 text-center space-y-6 shadow-subtle">
           <div className="max-w-2xl mx-auto space-y-3">
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#C4683C] block">
+            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-zinc-500 block">
               Start Your Journey
             </span>
-            <h2 className="text-3xl sm:text-5xl font-serif font-bold text-[#121212] tracking-tight uppercase">
+            <h2 className="text-3xl sm:text-5xl font-serif font-bold text-zinc-900 tracking-tight uppercase">
               Bring Your Visual Vision to Life.
             </h2>
-            <p className="text-xs sm:text-sm text-[#6B6258] leading-relaxed">
+            <p className="text-xs sm:text-sm text-zinc-500 leading-relaxed">
               Explore verified creative talent across India with instant date availability and 100% escrow protection.
             </p>
           </div>

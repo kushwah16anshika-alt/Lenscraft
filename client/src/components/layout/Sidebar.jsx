@@ -9,7 +9,6 @@ import {
   Clock,
   Star,
   Users,
-  Shield,
   FileText,
   Tag,
   Settings,
@@ -23,7 +22,7 @@ import {
   TrendingUp,
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
-import { ROLES, ROLE_LABELS } from '../../constants/roles';
+import { ROLES } from '../../constants/roles';
 import Avatar from '../common/Avatar';
 
 const Sidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOpen }) => {
@@ -78,36 +77,36 @@ const Sidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOpen })
       {/* Mobile Backdrop */}
       {isMobileOpen && (
         <div
-          className="fixed inset-0 z-40 bg-[#171717]/60 backdrop-blur-xs lg:hidden"
+          className="fixed inset-0 z-40 bg-zinc-950/70 backdrop-blur-xs lg:hidden"
           onClick={() => setIsMobileOpen(false)}
         />
       )}
 
       {/* Sidebar Container */}
       <aside
-        className={`fixed top-0 bottom-0 left-0 z-40 flex flex-col bg-[#171717] text-white border-r border-[#262626] transition-all duration-300 ${
+        className={`fixed top-0 bottom-0 left-0 z-40 flex flex-col bg-zinc-950 text-white border-r border-zinc-800 transition-all duration-200 ${
           isCollapsed ? 'w-20' : 'w-64'
         } ${
           isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
       >
         {/* Brand Header */}
-        <div className="flex items-center justify-between h-20 px-4 border-b border-[#262626]">
+        <div className="flex items-center justify-between h-16 px-4 border-b border-zinc-800">
           <Link
             to="/"
             className={`flex items-center gap-3 overflow-hidden ${
               isCollapsed ? 'justify-center w-full' : ''
             }`}
           >
-            <div className="w-8 h-8 rounded bg-[#242424] border border-[#333333] flex items-center justify-center text-[#C4683C] shrink-0">
+            <div className="w-8 h-8 rounded-md bg-zinc-900 border border-zinc-700 flex items-center justify-center text-white shrink-0">
               <Camera className="w-4 h-4 stroke-[1.75]" />
             </div>
             {!isCollapsed && (
               <div className="text-left">
                 <span className="text-base font-serif font-bold tracking-tight text-white block leading-none">
-                  LENS<span className="text-[#C4683C]">·</span>CRAFT
+                  LENS<span className="text-zinc-400">·</span>CRAFT
                 </span>
-                <span className="text-[9px] text-[#8C8276] uppercase tracking-widest block font-semibold mt-1">
+                <span className="text-[9px] text-zinc-400 uppercase tracking-widest block font-semibold mt-1">
                   {user?.role === ROLES.ADMIN ? 'Admin Portal' : 'Studio Workspace'}
                 </span>
               </div>
@@ -118,7 +117,7 @@ const Sidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOpen })
           {!isMobileOpen && (
             <button
               onClick={() => setIsCollapsed(!isCollapsed)}
-              className="hidden lg:flex p-1.5 rounded hover:bg-[#242424] text-[#8C8276] hover:text-white transition-colors"
+              className="hidden lg:flex p-1.5 rounded-md hover:bg-zinc-900 text-zinc-400 hover:text-white transition-colors"
             >
               {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
             </button>
@@ -126,9 +125,9 @@ const Sidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOpen })
         </div>
 
         {/* User Card */}
-        <div className="p-3 border-b border-[#242424]">
+        <div className="p-3 border-b border-zinc-800">
           <div
-            className={`flex items-center gap-3 p-2 rounded bg-[#1C1C1C] border border-[#2B2B2B] ${
+            className={`flex items-center gap-3 p-2 rounded-md bg-zinc-900 border border-zinc-800 ${
               isCollapsed ? 'justify-center' : 'text-left'
             }`}
           >
@@ -136,7 +135,7 @@ const Sidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOpen })
             {!isCollapsed && (
               <div className="flex-1 min-w-0">
                 <p className="text-xs font-bold text-white truncate">{user?.name}</p>
-                <span className="inline-block text-[9px] px-1.5 py-0.2 rounded-xs uppercase font-bold text-[#C4683C] bg-[#2A241F] border border-[#42362C]">
+                <span className="inline-block text-[9px] px-1.5 py-0.2 rounded-xs uppercase font-bold text-zinc-300 bg-zinc-800 border border-zinc-700">
                   {user?.role}
                 </span>
               </div>
@@ -154,12 +153,12 @@ const Sidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOpen })
                 to={item.path}
                 onClick={() => setIsMobileOpen && setIsMobileOpen(false)}
                 className={({ isActive }) =>
-                  `flex items-center gap-3 px-3 py-2.5 rounded text-xs font-semibold tracking-wide transition-all ${
+                  `flex items-center gap-3 px-3 py-2 rounded-md text-xs font-medium tracking-wide transition-all ${
                     isCollapsed ? 'justify-center px-2' : ''
                   } ${
                     isActive
-                      ? 'bg-[#242424] text-[#C4683C] border border-[#38332E] font-bold'
-                      : 'text-[#8C8276] hover:text-white hover:bg-[#1C1C1C] border border-transparent'
+                      ? 'bg-white text-zinc-950 font-bold shadow-xs'
+                      : 'text-zinc-400 hover:text-white hover:bg-zinc-900'
                   }`
                 }
                 title={isCollapsed ? item.label : undefined}
@@ -172,13 +171,13 @@ const Sidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOpen })
         </nav>
 
         {/* Bottom Footer Actions */}
-        <div className="p-3 border-t border-[#262626]">
+        <div className="p-3 border-t border-zinc-800">
           <button
             onClick={() => {
               logout();
               navigate('/');
             }}
-            className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-xs font-medium text-[#C2736D] hover:bg-[#261E1D] transition-colors ${
+            className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-xs font-medium text-red-400 hover:bg-zinc-900 transition-colors ${
               isCollapsed ? 'justify-center' : ''
             }`}
             title="Log out"

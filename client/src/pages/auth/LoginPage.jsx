@@ -62,53 +62,53 @@ const LoginPage = () => {
   return (
     <div className="space-y-6 text-left">
       <div>
-        <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#171717]">
+        <h2 className="text-2xl sm:text-3xl font-serif font-bold text-zinc-900 tracking-tight">
           Sign in to LensCraft
         </h2>
-        <p className="text-xs text-[#6B6258] mt-1">
+        <p className="text-sm text-zinc-500 mt-1.5">
           Access your bookings, studio workspace, or test the platform instantly.
         </p>
       </div>
 
       {/* Quick Demo Logins Box */}
-      <div className="p-4 rounded-md bg-[#FAF7F3] border border-[#E8DBCA] space-y-2.5 shadow-2xs">
-        <div className="flex items-center gap-1.5 text-[10px] font-bold text-[#B88A5A] uppercase tracking-[0.15em]">
-          <Sparkles className="w-3 h-3 text-[#B88A5A]" />
-          <span>1-Click Demo Login (Instant Role Testing):</span>
+      <div className="p-4 rounded-xl bg-zinc-50 border border-zinc-200 space-y-3">
+        <div className="flex items-center gap-1.5 text-[11px] font-semibold text-zinc-600 uppercase tracking-wider">
+          <Sparkles className="w-3.5 h-3.5 text-zinc-900" />
+          <span>Instant Demo Logins:</span>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
           <button
             type="button"
             onClick={() => handleDemoLogin(ROLES.USER)}
-            className="p-2 rounded-xs bg-white hover:bg-[#F7F5F2] border border-[#E5E0D8] hover:border-[#171717] text-xs font-semibold text-[#171717] text-center transition-all shadow-2xs"
+            className="p-2.5 rounded-lg bg-white hover:bg-zinc-100/70 border border-zinc-200 hover:border-zinc-300 text-xs font-medium text-zinc-900 text-center transition shadow-2xs"
           >
             👤 Client
           </button>
           <button
             type="button"
             onClick={() => handleDemoLogin(ROLES.PHOTOGRAPHER)}
-            className="p-2 rounded-xs bg-white hover:bg-[#F7F5F2] border border-[#E5E0D8] hover:border-[#171717] text-xs font-semibold text-[#171717] text-center transition-all shadow-2xs"
+            className="p-2.5 rounded-lg bg-white hover:bg-zinc-100/70 border border-zinc-200 hover:border-zinc-300 text-xs font-medium text-zinc-900 text-center transition shadow-2xs"
           >
             📸 Photographer
           </button>
           <button
             type="button"
             onClick={() => handleDemoLogin(ROLES.VIDEOGRAPHER)}
-            className="p-2 rounded-xs bg-white hover:bg-[#F7F5F2] border border-[#E5E0D8] hover:border-[#171717] text-xs font-semibold text-[#171717] text-center transition-all shadow-2xs"
+            className="p-2.5 rounded-lg bg-white hover:bg-zinc-100/70 border border-zinc-200 hover:border-zinc-300 text-xs font-medium text-zinc-900 text-center transition shadow-2xs"
           >
             🎥 Videographer
           </button>
           <button
             type="button"
             onClick={() => handleDemoLogin(ROLES.EDITOR)}
-            className="p-2 rounded-xs bg-white hover:bg-[#F7F5F2] border border-[#E5E0D8] hover:border-[#171717] text-xs font-semibold text-[#171717] text-center transition-all shadow-2xs"
+            className="p-2.5 rounded-lg bg-white hover:bg-zinc-100/70 border border-zinc-200 hover:border-zinc-300 text-xs font-medium text-zinc-900 text-center transition shadow-2xs"
           >
             🎬 Video Editor
           </button>
           <button
             type="button"
             onClick={() => handleDemoLogin(ROLES.ADMIN)}
-            className="p-2 rounded-xs bg-white hover:bg-[#F7F5F2] border border-[#E5E0D8] hover:border-[#171717] text-xs font-semibold text-[#171717] text-center transition-all shadow-2xs col-span-2 sm:col-span-1"
+            className="p-2.5 rounded-lg bg-white hover:bg-zinc-100/70 border border-zinc-200 hover:border-zinc-300 text-xs font-medium text-zinc-900 text-center transition shadow-2xs col-span-2 sm:col-span-1"
           >
             🛡️ Platform Admin
           </button>
@@ -116,8 +116,8 @@ const LoginPage = () => {
       </div>
 
       <div className="relative flex items-center justify-center">
-        <div className="w-full border-t border-[#E5E0D8]" />
-        <span className="bg-[#F7F5F2] px-3 text-[10px] font-bold text-[#8C8276] uppercase tracking-wider relative">
+        <div className="w-full border-t border-zinc-200" />
+        <span className="bg-white px-3 text-[11px] font-semibold text-zinc-400 uppercase tracking-wider relative">
           Or with credentials
         </span>
       </div>
@@ -129,7 +129,7 @@ const LoginPage = () => {
           type="email"
           required
           placeholder="your.email@example.com"
-          leftIcon={<Mail className="w-4 h-4" />}
+          leftIcon={<Mail className="w-4 h-4 text-zinc-400" />}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -139,17 +139,17 @@ const LoginPage = () => {
           type="password"
           required
           placeholder="••••••••"
-          leftIcon={<Lock className="w-4 h-4" />}
+          leftIcon={<Lock className="w-4 h-4 text-zinc-400" />}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
 
         <div className="flex items-center justify-between text-xs">
-          <label className="flex items-center gap-2 text-[#6B6258] cursor-pointer">
-            <input type="checkbox" className="rounded bg-white border-[#E5E0D8] text-[#171717] focus:ring-0" />
+          <label className="flex items-center gap-2 text-zinc-600 cursor-pointer">
+            <input type="checkbox" className="rounded border-zinc-300 text-zinc-900 focus:ring-zinc-900" />
             <span>Remember me</span>
           </label>
-          <a href="#" className="text-[#B88A5A] hover:underline font-semibold">
+          <a href="#" className="text-zinc-900 hover:underline font-medium">
             Forgot password?
           </a>
         </div>
@@ -166,9 +166,9 @@ const LoginPage = () => {
         </Button>
       </form>
 
-      <p className="text-xs text-[#6B6258] text-center">
+      <p className="text-xs text-zinc-500 text-center">
         Don't have an account?{' '}
-        <Link to="/register" className="text-[#171717] font-bold hover:underline">
+        <Link to="/register" className="text-zinc-900 font-semibold hover:underline">
           Join LensCraft
         </Link>
       </p>

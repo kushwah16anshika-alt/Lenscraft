@@ -38,16 +38,16 @@ const SettingsPage = () => {
 
   return (
     <div className="max-w-3xl space-y-6 text-left">
-      <div className="pb-4 border-b border-[#E5E0D8]">
-        <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#B88A5A] block mb-1">
+      <div className="pb-4 border-b border-zinc-200">
+        <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 block mb-1">
           Studio Profile
         </span>
-        <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#171717]">
+        <h1 className="text-2xl sm:text-3xl font-serif font-bold text-zinc-900 tracking-tight">
           Public Profile Settings
         </h1>
       </div>
 
-      <Card className="p-6 sm:p-8 bg-white border border-[#E5E0D8] shadow-2xs">
+      <Card className="p-6 sm:p-8 bg-white border border-zinc-200 shadow-2xs">
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
             label="Studio / Brand Name"

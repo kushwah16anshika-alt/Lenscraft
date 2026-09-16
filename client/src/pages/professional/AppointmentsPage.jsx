@@ -44,11 +44,11 @@ const AppointmentsPage = () => {
 
   return (
     <div className="space-y-6 text-left">
-      <div className="pb-4 border-b border-[#E5E0D8]">
-        <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#B88A5A] block mb-1">
+      <div className="pb-4 border-b border-zinc-200">
+        <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 block mb-1">
           Calendar Schedule
         </span>
-        <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#171717]">
+        <h1 className="text-2xl sm:text-3xl font-serif font-bold text-zinc-900 tracking-tight">
           Appointments & Shoot Inquiries
         </h1>
       </div>
@@ -58,7 +58,7 @@ const AppointmentsPage = () => {
       <div className="space-y-4">
         {filtered.length > 0 ? (
           filtered.map((b) => (
-            <Card key={b.id} className="p-6 bg-white border border-[#E5E0D8] space-y-4 shadow-2xs">
+            <Card key={b.id} className="p-6 bg-white border border-zinc-200 space-y-4 shadow-2xs">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
                   <Avatar
@@ -67,9 +67,9 @@ const AppointmentsPage = () => {
                     size="lg"
                   />
                   <div>
-                    <h3 className="text-base font-bold text-[#171717]">{b.user?.name || b.userName}</h3>
-                    <p className="text-xs text-[#6B6258]">
-                      {b.service?.title || b.serviceTitle} · <span className="font-semibold text-[#B88A5A]">{b.eventType}</span>
+                    <h3 className="text-base font-semibold text-zinc-900">{b.user?.name || b.userName}</h3>
+                    <p className="text-xs text-zinc-500">
+                      {b.service?.title || b.serviceTitle} · <span className="font-medium text-zinc-900">{b.eventType}</span>
                     </p>
                   </div>
                 </div>
@@ -103,7 +103,7 @@ const AppointmentsPage = () => {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="text-[#99453F] hover:bg-[#FDF2F1]"
+                        className="text-red-600 hover:bg-red-50"
                         onClick={() => handleDecline(b.id, b.bookingNumber || b.bookingReference)}
                         leftIcon={<X className="w-3.5 h-3.5" />}
                       >
@@ -117,7 +117,7 @@ const AppointmentsPage = () => {
                       variant="outline"
                       size="sm"
                       onClick={() => handleComplete(b.id, b.bookingNumber || b.bookingReference)}
-                      leftIcon={<CheckCircle2 className="w-3.5 h-3.5 text-[#3D7055]" />}
+                      leftIcon={<CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />}
                     >
                       Mark Completed
                     </Button>
@@ -125,35 +125,35 @@ const AppointmentsPage = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 p-4 rounded-md bg-[#F7F5F2] border border-[#E5E0D8] text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 p-4 rounded-xl bg-zinc-50 border border-zinc-200 text-xs">
                 <div>
-                  <span className="text-[10px] uppercase font-semibold text-[#8C8276] block">Client Contact</span>
-                  <span className="font-bold text-[#171717]">{b.userEmail || b.user?.email || 'client@example.com'}</span>
+                  <span className="text-[11px] uppercase font-semibold text-zinc-400 block">Client Contact</span>
+                  <span className="font-medium text-zinc-900">{b.userEmail || b.user?.email || 'client@example.com'}</span>
                 </div>
                 <div>
-                  <span className="text-[10px] uppercase font-semibold text-[#8C8276] block">Shoot Date</span>
-                  <span className="font-bold text-[#171717]">{formatDate(b.eventDate)} ({b.eventTime || 'Full Day'})</span>
+                  <span className="text-[11px] uppercase font-semibold text-zinc-400 block">Shoot Date</span>
+                  <span className="font-medium text-zinc-900">{formatDate(b.eventDate)} ({b.eventTime || 'Full Day'})</span>
                 </div>
                 <div>
-                  <span className="text-[10px] uppercase font-semibold text-[#8C8276] block">Location</span>
-                  <span className="font-bold text-[#171717]">{b.location?.city || 'Mumbai'}</span>
+                  <span className="text-[11px] uppercase font-semibold text-zinc-400 block">Location</span>
+                  <span className="font-medium text-zinc-900">{b.location?.city || 'Mumbai'}</span>
                 </div>
                 <div>
-                  <span className="text-[10px] uppercase font-semibold text-[#8C8276] block">Payout Amount</span>
-                  <span className="font-bold text-[#171717]">{formatCurrency(b.totalAmount)}</span>
+                  <span className="text-[11px] uppercase font-semibold text-zinc-400 block">Payout Amount</span>
+                  <span className="font-semibold text-zinc-900">{formatCurrency(b.totalAmount)}</span>
                 </div>
               </div>
 
               {b.notes && (
-                <p className="text-xs text-[#6B6258] italic border-l-2 border-[#B88A5A] pl-3">
+                <p className="text-xs text-zinc-600 italic border-l-2 border-zinc-900 pl-3">
                   "{b.notes}"
                 </p>
               )}
             </Card>
           ))
         ) : (
-          <div className="p-12 text-center bg-white rounded-lg border border-[#E5E0D8]">
-            <p className="text-xs text-[#6B6258]">No appointments match the selected filter.</p>
+          <div className="p-12 text-center bg-white rounded-xl border border-zinc-200">
+            <p className="text-xs text-zinc-500">No appointments match the selected filter.</p>
           </div>
         )}
       </div>

@@ -18,21 +18,21 @@ const AdminReviewsPage = () => {
 
   return (
     <div className="space-y-6 text-left">
-      <div className="pb-4 border-b border-[#E5E0D8]">
-        <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#B88A5A] block mb-1">
+      <div className="pb-4 border-b border-zinc-200">
+        <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 block mb-1">
           Review Moderation
         </span>
-        <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#171717]">
+        <h1 className="text-2xl sm:text-3xl font-serif font-bold text-zinc-900 tracking-tight">
           Published Testimonials
         </h1>
       </div>
 
       <div className="space-y-4">
         {reviews.map((r) => (
-          <Card key={r.id} className="p-6 bg-white border border-[#E5E0D8] space-y-3 shadow-2xs">
+          <Card key={r.id} className="p-6 bg-white border border-zinc-200 space-y-3 shadow-2xs">
             <div className="flex items-start justify-between">
               <div>
-                <h4 className="text-sm font-bold text-[#171717]">{r.client} → {r.creator}</h4>
+                <h4 className="text-sm font-semibold text-zinc-900">{r.client} → {r.creator}</h4>
                 <div className="mt-1">
                   <StarRating rating={r.rating} size="xs" />
                 </div>
@@ -41,7 +41,7 @@ const AdminReviewsPage = () => {
                 {r.status}
               </Badge>
             </div>
-            <p className="text-xs text-[#6B6258] italic font-serif">"{r.comment}"</p>
+            <p className="text-xs text-zinc-600 italic">"{r.comment}"</p>
           </Card>
         ))}
       </div>

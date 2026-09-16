@@ -37,12 +37,12 @@ const MyBookingsPage = () => {
 
   return (
     <div className="space-y-6 text-left">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#E5E0D8]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-zinc-200">
         <div>
-          <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#B88A5A] block mb-1">
+          <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 block mb-1">
             Bookings Manager
           </span>
-          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#171717]">
+          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-zinc-900 tracking-tight">
             My Creative Bookings
           </h1>
         </div>
@@ -58,7 +58,7 @@ const MyBookingsPage = () => {
       <div className="space-y-4">
         {filtered.length > 0 ? (
           filtered.map((b) => (
-            <Card key={b.id} className="p-6 bg-white border border-[#E5E0D8] space-y-4 shadow-2xs">
+            <Card key={b.id} className="p-6 bg-white border border-zinc-200 space-y-4 shadow-2xs">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
                   <Avatar
@@ -67,11 +67,11 @@ const MyBookingsPage = () => {
                     size="lg"
                   />
                   <div>
-                    <h3 className="text-base font-bold text-[#171717]">
+                    <h3 className="text-base font-semibold text-zinc-900">
                       {b.professional?.name || b.professionalName}
                     </h3>
-                    <p className="text-xs text-[#6B6258]">
-                      {b.service?.title || b.serviceTitle} · <span className="font-semibold">{b.eventType}</span>
+                    <p className="text-xs text-zinc-500">
+                      {b.service?.title || b.serviceTitle} · <span className="font-medium text-zinc-900">{b.eventType}</span>
                     </p>
                   </div>
                 </div>
@@ -96,7 +96,7 @@ const MyBookingsPage = () => {
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="text-[#99453F] hover:bg-[#FDF2F1]"
+                      className="text-red-600 hover:bg-red-50"
                       onClick={() => handleCancel(b.id, b.bookingNumber || b.bookingReference)}
                       leftIcon={<Ban className="w-3.5 h-3.5" />}
                     >
@@ -123,35 +123,35 @@ const MyBookingsPage = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 p-4 rounded-md bg-[#F7F5F2] border border-[#E5E0D8] text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 p-4 rounded-xl bg-zinc-50 border border-zinc-200 text-xs">
                 <div>
-                  <span className="text-[10px] uppercase font-semibold text-[#8C8276] block">Booking Ref</span>
-                  <span className="font-mono font-bold text-[#171717]">{b.bookingNumber || b.bookingReference}</span>
+                  <span className="text-[11px] uppercase font-semibold text-zinc-400 block">Booking Ref</span>
+                  <span className="font-mono font-medium text-zinc-900">{b.bookingNumber || b.bookingReference}</span>
                 </div>
                 <div>
-                  <span className="text-[10px] uppercase font-semibold text-[#8C8276] block">Event Date</span>
-                  <span className="font-bold text-[#171717]">{formatDate(b.eventDate)}</span>
+                  <span className="text-[11px] uppercase font-semibold text-zinc-400 block">Event Date</span>
+                  <span className="font-medium text-zinc-900">{formatDate(b.eventDate)}</span>
                 </div>
                 <div>
-                  <span className="text-[10px] uppercase font-semibold text-[#8C8276] block">Location / City</span>
-                  <span className="font-bold text-[#171717]">{b.location?.city || 'Mumbai, MH'}</span>
+                  <span className="text-[11px] uppercase font-semibold text-zinc-400 block">Location / City</span>
+                  <span className="font-medium text-zinc-900">{b.location?.city || 'Mumbai, MH'}</span>
                 </div>
                 <div>
-                  <span className="text-[10px] uppercase font-semibold text-[#8C8276] block">Total Amount</span>
-                  <span className="font-bold text-[#171717]">{formatCurrency(b.totalAmount)}</span>
+                  <span className="text-[11px] uppercase font-semibold text-zinc-400 block">Total Amount</span>
+                  <span className="font-semibold text-zinc-900">{formatCurrency(b.totalAmount)}</span>
                 </div>
               </div>
 
               {b.notes && (
-                <p className="text-xs text-[#6B6258] italic border-l-2 border-[#B88A5A] pl-3">
+                <p className="text-xs text-zinc-600 italic border-l-2 border-zinc-900 pl-3">
                   "{b.notes}"
                 </p>
               )}
             </Card>
           ))
         ) : (
-          <div className="p-12 text-center bg-white rounded-lg border border-[#E5E0D8]">
-            <p className="text-xs text-[#6B6258] mb-3">No bookings found in this view.</p>
+          <div className="p-12 text-center bg-white rounded-xl border border-zinc-200">
+            <p className="text-xs text-zinc-500 mb-3">No bookings found in this view.</p>
             <Link to="/photographers">
               <Button variant="primary" size="sm">
                 Explore Creative Studios

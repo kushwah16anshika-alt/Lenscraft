@@ -249,6 +249,45 @@ export const MOCK_BOOKINGS = [
   },
 ];
 
+export const MOCK_REVIEWS = [
+  {
+    id: 'rev-1',
+    creatorId: 'pro-1',
+    creatorName: 'Aarav Mehta',
+    creatorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
+    clientName: 'Pooja & Rohan',
+    clientAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80',
+    rating: 5,
+    date: '2025-06-15',
+    event: 'Udaipur Palace Wedding',
+    comment: 'Aarav and his team were absolutely phenomenal at our Udaipur wedding. Every photograph looks like high fashion.',
+  },
+  {
+    id: 'rev-2',
+    creatorId: 'pro-2',
+    creatorName: 'Kabir Varma',
+    creatorAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80',
+    clientName: 'Vikram Sethi',
+    clientAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80',
+    rating: 5,
+    date: '2025-05-20',
+    event: 'Goa Sunset Cinematography',
+    comment: 'The 4K cinematic film brought tears to our eyes. Masterful sound design, grading, and drone shots.',
+  },
+  {
+    id: 'rev-3',
+    creatorId: 'pro-3',
+    creatorName: 'Sanya Kapoor',
+    creatorAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
+    clientName: 'StyleCo Luxury',
+    clientAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
+    rating: 5,
+    date: '2025-04-10',
+    event: 'Fashion Week Campaign',
+    comment: 'Sanya turned around 5 viral reels in 48 hours. Our engagement spiked 300% on Instagram.',
+  },
+];
+
 export const MOCK_STATS = {
   admin: {
     totalUsers: 1420,

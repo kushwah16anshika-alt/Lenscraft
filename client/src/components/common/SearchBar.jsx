@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, MapPin, ArrowRight, SlidersHorizontal } from 'lucide-react';
+import { Search, MapPin, ArrowRight } from 'lucide-react';
 import Button from './Button';
 
 const SearchBar = ({
@@ -23,11 +23,11 @@ const SearchBar = ({
   return (
     <form
       onSubmit={handleSubmit}
-      className={`w-full max-w-4xl p-2 rounded-lg bg-white border border-[#E5E0D8] shadow-sm flex flex-col md:flex-row items-center gap-2 ${className}`}
+      className={`w-full max-w-4xl p-2 rounded-lg bg-white border border-zinc-200 shadow-soft flex flex-col md:flex-row items-center gap-2 ${className}`}
     >
       {/* Search keyword input */}
       <div className="relative flex-1 w-full">
-        <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#8C8276]">
+        <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-zinc-400">
           <Search className="w-4 h-4" />
         </div>
         <input
@@ -35,18 +35,18 @@ const SearchBar = ({
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={placeholder}
-          className="w-full bg-transparent pl-10 pr-4 py-2.5 text-sm text-[#171717] placeholder-[#8C8276] focus:outline-none"
+          className="w-full bg-transparent pl-10 pr-4 py-2 text-sm text-zinc-900 placeholder-zinc-400 focus:outline-none"
         />
       </div>
 
       {showCityFilter && (
-        <div className="hidden md:block w-px h-7 bg-[#E5E0D8]" />
+        <div className="hidden md:block w-px h-6 bg-zinc-200" />
       )}
 
       {/* City location input */}
       {showCityFilter && (
         <div className="relative flex-1 w-full">
-          <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#8C8276]">
+          <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-zinc-400">
             <MapPin className="w-4 h-4" />
           </div>
           <input
@@ -54,7 +54,7 @@ const SearchBar = ({
             value={city}
             onChange={(e) => setCity(e.target.value)}
             placeholder="City or location (e.g. Mumbai, Goa)"
-            className="w-full bg-transparent pl-10 pr-4 py-2.5 text-sm text-[#171717] placeholder-[#8C8276] focus:outline-none"
+            className="w-full bg-transparent pl-10 pr-4 py-2 text-sm text-zinc-900 placeholder-zinc-400 focus:outline-none"
           />
         </div>
       )}

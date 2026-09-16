@@ -18,15 +18,15 @@ const UserDashboard = () => {
   return (
     <div className="space-y-8 text-left">
       {/* Welcome Banner */}
-      <div className="p-6 sm:p-8 rounded-md bg-white border border-[#E5E0D8] shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="p-6 sm:p-8 rounded-xl bg-white border border-zinc-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#B88A5A] block mb-1">
+          <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 block mb-1">
             Client Portal
           </span>
-          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#171717]">
+          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-zinc-900 tracking-tight">
             Welcome back, {user?.name}
           </h1>
-          <p className="text-xs text-[#6B6258] mt-1">
+          <p className="text-sm text-zinc-500 mt-1">
             Track your shoot dates, creative deliverables, and saved creators.
           </p>
         </div>
@@ -61,22 +61,22 @@ const UserDashboard = () => {
 
       {/* Recent Bookings Section */}
       <div className="space-y-4">
-        <div className="flex items-center justify-between pb-2 border-b border-[#E5E0D8]">
-          <h2 className="text-lg font-serif font-bold text-[#171717]">Your Recent Bookings</h2>
-          <Link to="/user/bookings" className="text-xs font-semibold text-[#B88A5A] hover:underline">
+        <div className="flex items-center justify-between pb-2 border-b border-zinc-200">
+          <h2 className="text-lg font-serif font-bold text-zinc-900">Your Recent Bookings</h2>
+          <Link to="/user/bookings" className="text-xs font-semibold text-zinc-900 hover:underline">
             View All Bookings
           </Link>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {userBookings.map((b) => (
-            <Card key={b.id} className="p-5 bg-white border border-[#E5E0D8] space-y-4 shadow-2xs">
+            <Card key={b.id} className="p-5 bg-white border border-zinc-200 space-y-4 shadow-2xs">
               <div className="flex items-start justify-between gap-2">
                 <div className="flex items-center gap-3">
                   <Avatar src={b.professional?.avatar || b.professionalAvatar} name={b.professional?.name || b.professionalName} size="md" />
                   <div>
-                    <h4 className="text-sm font-bold text-[#171717]">{b.professional?.name || b.professionalName}</h4>
-                    <span className="text-[11px] text-[#6B6258]">{b.service?.title || b.serviceTitle}</span>
+                    <h4 className="text-sm font-semibold text-zinc-900">{b.professional?.name || b.professionalName}</h4>
+                    <span className="text-xs text-zinc-500">{b.service?.title || b.serviceTitle}</span>
                   </div>
                 </div>
                 <Badge
@@ -93,23 +93,23 @@ const UserDashboard = () => {
                 </Badge>
               </div>
 
-              <div className="grid grid-cols-2 gap-2 text-xs py-3 border-y border-[#E5E0D8] text-[#6B6258]">
+              <div className="grid grid-cols-2 gap-2 text-xs py-3 border-y border-zinc-100 text-zinc-500">
                 <div>
-                  <span className="block text-[10px] uppercase font-semibold text-[#8C8276]">Event Date</span>
-                  <span className="font-bold text-[#171717]">{formatDate(b.eventDate)}</span>
+                  <span className="block text-[11px] uppercase font-semibold text-zinc-400">Event Date</span>
+                  <span className="font-semibold text-zinc-900">{formatDate(b.eventDate)}</span>
                 </div>
                 <div>
-                  <span className="block text-[10px] uppercase font-semibold text-[#8C8276]">Total Amount</span>
-                  <span className="font-bold text-[#171717]">{formatCurrency(b.totalAmount)}</span>
+                  <span className="block text-[11px] uppercase font-semibold text-zinc-400">Total Amount</span>
+                  <span className="font-semibold text-zinc-900">{formatCurrency(b.totalAmount)}</span>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between text-xs text-[#6B6258]">
-                <span className="flex items-center gap-1">
-                  <Clock className="w-3.5 h-3.5 text-[#B88A5A]" />
-                  <span>Deliverables pending</span>
+              <div className="flex items-center justify-between text-xs text-zinc-500">
+                <span className="flex items-center gap-1.5">
+                  <Clock className="w-3.5 h-3.5 text-zinc-400" />
+                  <span>Deliverables in progress</span>
                 </span>
-                <Link to={`/professionals/${b.professional?.id || b.professionalId || 'pro-1'}`} className="text-[#171717] font-bold hover:underline">
+                <Link to={`/professionals/${b.professional?.id || b.professionalId || 'pro-1'}`} className="text-zinc-900 font-semibold hover:underline">
                   Contact Creator →
                 </Link>
               </div>

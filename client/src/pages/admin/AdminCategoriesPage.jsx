@@ -38,12 +38,12 @@ const AdminCategoriesPage = () => {
 
   return (
     <div className="space-y-6 text-left">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#E5E0D8]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-zinc-200">
         <div>
-          <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#B88A5A] block mb-1">
+          <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 block mb-1">
             Taxonomy & Catalog
           </span>
-          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#171717]">
+          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-zinc-900 tracking-tight">
             Creative Categories ({categories.length})
           </h1>
         </div>
@@ -54,8 +54,8 @@ const AdminCategoriesPage = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {categories.map((cat) => (
-          <Card key={cat.id} className="p-4 bg-white border border-[#E5E0D8] space-y-3 shadow-2xs">
-            <div className="h-36 rounded-sm overflow-hidden bg-[#EEEAE4]">
+          <Card key={cat.id} className="p-4 bg-white border border-zinc-200 space-y-3 shadow-2xs">
+            <div className="h-36 rounded-lg overflow-hidden bg-zinc-100">
               <img
                 src={cat.image || 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80'}
                 alt={cat.name}
@@ -64,14 +64,14 @@ const AdminCategoriesPage = () => {
             </div>
             <div className="flex items-start justify-between">
               <div>
-                <span className="text-[10px] uppercase font-bold text-[#B88A5A]">{cat.role}</span>
-                <h3 className="text-sm font-serif font-bold text-[#171717]">{cat.name}</h3>
-                <p className="text-[11px] text-[#6B6258] mt-0.5">{cat.count || 'Active Catalog'}</p>
+                <span className="text-[11px] uppercase font-semibold text-zinc-400 tracking-wider block">{cat.role}</span>
+                <h3 className="text-sm font-semibold text-zinc-900 mt-0.5">{cat.name}</h3>
+                <p className="text-xs text-zinc-500 mt-0.5">{cat.count || 'Active Catalog'}</p>
               </div>
               <button
                 type="button"
                 onClick={() => handleDelete(cat.id, cat.name)}
-                className="p-1.5 rounded hover:bg-[#FDF2F1] text-[#6B6258] hover:text-[#99453F] transition-colors"
+                className="p-1.5 rounded-lg hover:bg-red-50 text-zinc-400 hover:text-red-600 transition-colors"
                 title="Delete Category"
               >
                 <Trash2 className="w-4 h-4" />
@@ -107,7 +107,7 @@ const AdminCategoriesPage = () => {
             value={newCat.image}
             onChange={(e) => setNewCat({ ...newCat, image: e.target.value })}
           />
-          <div className="pt-2 flex justify-end gap-2 border-t border-[#E5E0D8]">
+          <div className="pt-2 flex justify-end gap-2 border-t border-zinc-200">
             <Button variant="ghost" size="sm" type="button" onClick={() => setModalOpen(false)}>
               Cancel
             </Button>

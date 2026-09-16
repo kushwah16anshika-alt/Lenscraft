@@ -54,12 +54,12 @@ const ServicesManagePage = () => {
 
   return (
     <div className="space-y-6 text-left">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#E5E0D8]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-zinc-200">
         <div>
-          <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#B88A5A] block mb-1">
+          <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 block mb-1">
             Package Offerings
           </span>
-          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#171717]">
+          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-zinc-900 tracking-tight">
             Services & Tiered Packages ({services.length})
           </h1>
         </div>
@@ -71,23 +71,23 @@ const ServicesManagePage = () => {
       {services.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {services.map((srv) => (
-            <Card key={srv.id} className="p-6 bg-white border border-[#E5E0D8] space-y-4 shadow-2xs">
+            <Card key={srv.id} className="p-6 bg-white border border-zinc-200 space-y-4 shadow-2xs">
               <div className="flex items-start justify-between">
                 <div>
-                  <h3 className="text-base font-serif font-bold text-[#171717]">{srv.title}</h3>
-                  <span className="text-xs text-[#B88A5A] font-semibold flex items-center gap-1 mt-0.5">
-                    <Clock className="w-3 h-3" /> {srv.deliveryDays} days turnaround
+                  <h3 className="text-base font-serif font-bold text-zinc-900">{srv.title}</h3>
+                  <span className="text-xs text-zinc-500 font-medium flex items-center gap-1 mt-0.5">
+                    <Clock className="w-3.5 h-3.5 text-zinc-400" /> {srv.deliveryDays} days turnaround
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="text-right">
-                    <span className="text-base font-bold text-[#171717]">{formatCurrency(srv.price)}</span>
-                    <span className="text-[10px] text-[#6B6258] block">{formatPriceUnit(srv.pricingType)}</span>
+                    <span className="text-base font-bold text-zinc-900">{formatCurrency(srv.price)}</span>
+                    <span className="text-[11px] text-zinc-400 block">{formatPriceUnit(srv.pricingType)}</span>
                   </div>
                   <button
                     type="button"
                     onClick={() => handleDelete(srv.id)}
-                    className="p-1.5 rounded-md hover:bg-[#FDF2F1] text-[#6B6258] hover:text-[#99453F] transition-colors ml-2"
+                    className="p-1.5 rounded-lg hover:bg-red-50 text-zinc-400 hover:text-red-600 transition-colors ml-2"
                     title="Delete package"
                   >
                     <Trash2 className="w-4 h-4" />
@@ -95,13 +95,13 @@ const ServicesManagePage = () => {
                 </div>
               </div>
 
-              <p className="text-xs text-[#6B6258] leading-relaxed">{srv.description}</p>
+              <p className="text-xs text-zinc-600 leading-relaxed">{srv.description}</p>
 
               {srv.inclusions && (
-                <div className="space-y-1.5 pt-3 border-t border-[#E5E0D8]">
+                <div className="space-y-1.5 pt-3 border-t border-zinc-100">
                   {srv.inclusions.map((inc, idx) => (
-                    <div key={idx} className="flex items-center gap-2 text-xs text-[#171717]">
-                      <Check className="w-3.5 h-3.5 text-[#3D7055]" />
+                    <div key={idx} className="flex items-center gap-2 text-xs text-zinc-700">
+                      <Check className="w-3.5 h-3.5 text-emerald-600" />
                       <span>{inc}</span>
                     </div>
                   ))}
@@ -111,8 +111,8 @@ const ServicesManagePage = () => {
           ))}
         </div>
       ) : (
-        <div className="p-12 text-center bg-white rounded-lg border border-[#E5E0D8]">
-          <p className="text-xs text-[#6B6258] mb-3">No packages created yet.</p>
+        <div className="p-12 text-center bg-white rounded-xl border border-zinc-200">
+          <p className="text-xs text-zinc-500 mb-3">No packages created yet.</p>
           <Button variant="primary" size="sm" onClick={() => setModalOpen(true)}>
             Create First Package
           </Button>
@@ -154,7 +154,7 @@ const ServicesManagePage = () => {
             value={newService.description}
             onChange={(e) => setNewService({ ...newService, description: e.target.value })}
           />
-          <div className="pt-2 flex justify-end gap-2 border-t border-[#E5E0D8]">
+          <div className="pt-2 flex justify-end gap-2 border-t border-zinc-200">
             <Button variant="ghost" size="sm" type="button" onClick={() => setModalOpen(false)}>
               Cancel
             </Button>

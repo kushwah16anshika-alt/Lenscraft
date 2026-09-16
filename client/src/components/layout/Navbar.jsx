@@ -7,14 +7,11 @@ import {
   Compass,
   Menu,
   X,
-  User,
   LogOut,
   LayoutDashboard,
   ChevronDown,
   Sparkles,
-  Search,
   BookOpen,
-  ArrowUpRight,
   PlusCircle,
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
@@ -63,38 +60,34 @@ const Navbar = () => {
     { label: 'About', path: '/about', icon: BookOpen },
   ];
 
-  const isHeroPage = location.pathname === '/';
-
   return (
     <>
       <header
-        className={`sticky top-0 z-40 w-full transition-all duration-300 ${
+        className={`sticky top-0 z-40 w-full transition-all duration-200 ${
           isScrolled
-            ? 'bg-[#FAF8F5]/95 backdrop-blur-md border-b border-[#E8E2D8] shadow-xs py-3.5'
-            : isHeroPage
-            ? 'bg-[#FAF8F5]/80 backdrop-blur-xs border-b border-[#E8E2D8]/60 py-5'
-            : 'bg-[#FAF8F5] border-b border-[#E8E2D8] py-4'
+            ? 'bg-white/95 backdrop-blur-md border-b border-zinc-200 shadow-subtle py-3.5'
+            : 'bg-white border-b border-zinc-200 py-4'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             {/* Left: Brand Editorial Logo */}
             <Link to="/" className="flex items-center gap-3 group text-left">
-              <div className="w-8 h-8 rounded bg-[#121212] flex items-center justify-center text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
+              <div className="w-8 h-8 rounded-md bg-zinc-900 flex items-center justify-center text-white shadow-xs transition-transform duration-200 group-hover:scale-105">
                 <Camera className="w-4 h-4 stroke-[1.75]" />
               </div>
               <div>
-                <span className="text-lg sm:text-xl font-serif font-extrabold tracking-tight text-[#121212] block leading-none">
-                  LENS<span className="text-[#C4683C]">·</span>CRAFT
+                <span className="text-lg sm:text-xl font-serif font-extrabold tracking-tight text-zinc-900 block leading-none">
+                  LENS<span className="text-zinc-400">·</span>CRAFT
                 </span>
-                <span className="text-[9px] text-[#6B6258] uppercase tracking-[0.2em] block font-semibold mt-0.5">
+                <span className="text-[9px] text-zinc-500 uppercase tracking-[0.2em] block font-semibold mt-0.5">
                   Editorial Creative Roster
                 </span>
               </div>
             </Link>
 
             {/* Center: Curated Navigation Links */}
-            <nav className="hidden lg:flex items-center gap-7">
+            <nav className="hidden lg:flex items-center gap-8">
               {navLinks.map((link) => (
                 <NavLink
                   key={link.path}
@@ -102,8 +95,8 @@ const Navbar = () => {
                   className={({ isActive }) =>
                     `text-xs font-semibold uppercase tracking-wider transition-colors py-1 editorial-nav-link ${
                       isActive
-                        ? 'text-[#121212] active font-bold'
-                        : 'text-[#6B6258] hover:text-[#121212]'
+                        ? 'text-zinc-900 active font-bold'
+                        : 'text-zinc-500 hover:text-zinc-900'
                     }`
                   }
                 >
@@ -117,31 +110,31 @@ const Navbar = () => {
               {/* Become a Creator CTA */}
               <button
                 onClick={() => setCreatorModalOpen(true)}
-                className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-[#6B6258] hover:text-[#121212] hover:bg-[#F3EFEA] transition-all"
+                className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 transition-all"
               >
-                <PlusCircle className="w-3.5 h-3.5 text-[#C4683C]" />
+                <PlusCircle className="w-3.5 h-3.5 text-zinc-700" />
                 <span>Become a Creator</span>
               </button>
 
-              {/* Demo Role Switcher (Dev Sandbox) */}
+              {/* Demo Role Switcher */}
               <div className="relative">
                 <button
                   type="button"
                   onClick={() => setDemoDropdownOpen(!demoDropdownOpen)}
-                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded bg-[#F3EFEA] border border-[#E8E2D8] text-[11px] font-semibold text-[#6B6258] hover:text-[#121212] transition-all"
+                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-zinc-100 border border-zinc-200 text-[11px] font-semibold text-zinc-700 hover:text-zinc-900 hover:border-zinc-300 transition-all"
                   title="Switch test role"
                 >
-                  <Sparkles className="w-3 h-3 text-[#C4683C]" />
+                  <Sparkles className="w-3 h-3 text-zinc-800" />
                   <span>Demo Roles</span>
-                  <ChevronDown className="w-3 h-3 text-[#8C8276]" />
+                  <ChevronDown className="w-3 h-3 text-zinc-500" />
                 </button>
 
                 {demoDropdownOpen && (
                   <div
-                    className="absolute right-0 mt-2 w-52 rounded bg-white border border-[#E8E2D8] shadow-xl p-1.5 z-50 animate-reveal text-left"
+                    className="absolute right-0 mt-2 w-52 rounded-md bg-white border border-zinc-200 shadow-soft-lg p-1.5 z-50 animate-reveal text-left"
                     onMouseLeave={() => setDemoDropdownOpen(false)}
                   >
-                    <span className="text-[10px] uppercase font-bold text-[#8C8276] px-3 py-1.5 block border-b border-[#E8E2D8] mb-1">
+                    <span className="text-[10px] uppercase font-bold text-zinc-400 px-3 py-1.5 block border-b border-zinc-100 mb-1">
                       Instant Role Switcher
                     </span>
                     {Object.values(ROLES).map((roleKey) => (
@@ -152,10 +145,10 @@ const Navbar = () => {
                           setDemoDropdownOpen(false);
                           navigate(getDashboardPath(roleKey));
                         }}
-                        className="w-full text-left px-3 py-2 text-xs rounded hover:bg-[#FAF8F5] flex items-center justify-between text-[#121212] font-medium"
+                        className="w-full text-left px-3 py-2 text-xs rounded hover:bg-zinc-50 flex items-center justify-between text-zinc-900 font-medium"
                       >
                         <span>{ROLE_LABELS[roleKey]}</span>
-                        <span className="text-[9px] px-1.5 py-0.2 rounded border uppercase font-bold text-[#6B6258] bg-[#F3EFEA] border-[#E8E2D8]">
+                        <span className="text-[9px] px-1.5 py-0.2 rounded border uppercase font-bold text-zinc-600 bg-zinc-100 border-zinc-200">
                           {roleKey}
                         </span>
                       </button>
@@ -170,24 +163,24 @@ const Navbar = () => {
                   <button
                     type="button"
                     onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                    className="flex items-center gap-2 p-1 pl-1.5 pr-2.5 rounded-full bg-white border border-[#E8E2D8] hover:border-[#121212] transition-all shadow-2xs"
+                    className="flex items-center gap-2 p-1 pl-1.5 pr-2.5 rounded-full bg-white border border-zinc-200 hover:border-zinc-900 transition-all shadow-subtle"
                   >
                     <Avatar src={user?.avatar?.url} name={user?.name} size="xs" />
-                    <span className="text-xs font-semibold text-[#121212] max-w-[110px] truncate">
+                    <span className="text-xs font-semibold text-zinc-900 max-w-[110px] truncate">
                       {user?.name}
                     </span>
-                    <ChevronDown className="w-3 h-3 text-[#8C8276]" />
+                    <ChevronDown className="w-3 h-3 text-zinc-400" />
                   </button>
 
                   {userDropdownOpen && (
                     <div
-                      className="absolute right-0 mt-2 w-56 rounded bg-white border border-[#E8E2D8] shadow-xl p-1.5 z-50 animate-reveal text-left"
+                      className="absolute right-0 mt-2 w-56 rounded-md bg-white border border-zinc-200 shadow-soft-lg p-1.5 z-50 animate-reveal text-left"
                       onMouseLeave={() => setUserDropdownOpen(false)}
                     >
-                      <div className="px-3 py-2 border-b border-[#E8E2D8] mb-1">
-                        <p className="text-xs font-bold text-[#121212] truncate">{user?.name}</p>
-                        <p className="text-[11px] text-[#6B6258] truncate">{user?.email}</p>
-                        <span className="inline-block mt-1.5 text-[9px] px-2 py-0.5 rounded border uppercase font-bold bg-[#FAF8F5] text-[#C4683C] border-[#E8E2D8]">
+                      <div className="px-3 py-2 border-b border-zinc-100 mb-1">
+                        <p className="text-xs font-bold text-zinc-900 truncate">{user?.name}</p>
+                        <p className="text-[11px] text-zinc-500 truncate">{user?.email}</p>
+                        <span className="inline-block mt-1.5 text-[9px] px-2 py-0.5 rounded border uppercase font-bold bg-zinc-100 text-zinc-700 border-zinc-200">
                           {ROLE_LABELS[user?.role] || user?.role}
                         </span>
                       </div>
@@ -195,9 +188,9 @@ const Navbar = () => {
                       <Link
                         to={getDashboardPath(user?.role)}
                         onClick={() => setUserDropdownOpen(false)}
-                        className="flex items-center gap-2 px-3 py-2 text-xs text-[#121212] hover:bg-[#FAF8F5] rounded transition-colors font-medium"
+                        className="flex items-center gap-2 px-3 py-2 text-xs text-zinc-900 hover:bg-zinc-50 rounded transition-colors font-medium"
                       >
-                        <LayoutDashboard className="w-4 h-4 text-[#C4683C]" />
+                        <LayoutDashboard className="w-4 h-4 text-zinc-700" />
                         <span>Studio Dashboard</span>
                       </Link>
 
@@ -207,7 +200,7 @@ const Navbar = () => {
                           setUserDropdownOpen(false);
                           navigate('/');
                         }}
-                        className="w-full flex items-center gap-2 px-3 py-2 text-xs text-[#99453F] hover:bg-[#FDF2F1] rounded transition-colors mt-1 font-medium"
+                        className="w-full flex items-center gap-2 px-3 py-2 text-xs text-red-700 hover:bg-red-50 rounded transition-colors mt-1 font-medium"
                       >
                         <LogOut className="w-4 h-4" />
                         <span>Sign Out</span>
@@ -235,7 +228,7 @@ const Navbar = () => {
             <div className="flex lg:hidden items-center gap-2">
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-2 rounded bg-white border border-[#E8E2D8] text-[#121212]"
+                className="p-2 rounded-md bg-white border border-zinc-200 text-zinc-900"
               >
                 {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
@@ -245,7 +238,7 @@ const Navbar = () => {
 
         {/* Mobile Navigation Drawer */}
         {mobileMenuOpen && (
-          <div className="lg:hidden bg-white border-b border-[#E8E2D8] px-4 pt-4 pb-6 space-y-4 animate-reveal text-left">
+          <div className="lg:hidden bg-white border-b border-zinc-200 px-4 pt-4 pb-6 space-y-4 animate-reveal text-left">
             <div className="space-y-1">
               {navLinks.map((link) => (
                 <NavLink
@@ -253,8 +246,8 @@ const Navbar = () => {
                   to={link.path}
                   onClick={() => setMobileMenuOpen(false)}
                   className={({ isActive }) =>
-                    `flex items-center gap-3 px-3 py-2.5 rounded text-xs font-semibold uppercase tracking-wider ${
-                      isActive ? 'text-[#121212] bg-[#F3EFEA]' : 'text-[#6B6258] hover:bg-[#FAF8F5]'
+                    `flex items-center gap-3 px-3 py-2.5 rounded-md text-xs font-semibold uppercase tracking-wider ${
+                      isActive ? 'text-zinc-900 bg-zinc-100 font-bold' : 'text-zinc-600 hover:bg-zinc-50'
                     }`
                   }
                 >
@@ -263,15 +256,15 @@ const Navbar = () => {
               ))}
             </div>
 
-            <div className="pt-3 border-t border-[#E8E2D8] space-y-2">
+            <div className="pt-3 border-t border-zinc-200 space-y-2">
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
                   setCreatorModalOpen(true);
                 }}
-                className="w-full flex items-center justify-center gap-2 p-2.5 rounded bg-[#F3EFEA] text-xs font-bold text-[#121212]"
+                className="w-full flex items-center justify-center gap-2 p-2.5 rounded-md bg-zinc-100 text-xs font-bold text-zinc-900"
               >
-                <PlusCircle className="w-4 h-4 text-[#C4683C]" />
+                <PlusCircle className="w-4 h-4 text-zinc-700" />
                 <span>Apply as Creator</span>
               </button>
 
@@ -289,7 +282,7 @@ const Navbar = () => {
                   <Button
                     variant="outline"
                     size="md"
-                    className="w-full text-[#99453F]"
+                    className="w-full text-red-600"
                     onClick={() => {
                       logout();
                       setMobileMenuOpen(false);

@@ -42,12 +42,12 @@ const PortfolioPage = () => {
 
   return (
     <div className="space-y-6 text-left">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#E5E0D8]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-zinc-200">
         <div>
-          <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#B88A5A] block mb-1">
+          <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 block mb-1">
             Media Management
           </span>
-          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#171717]">
+          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-zinc-900 tracking-tight">
             Studio Portfolio Gallery ({items.length} items)
           </h1>
         </div>
@@ -59,21 +59,21 @@ const PortfolioPage = () => {
       {items.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {items.map((item) => (
-            <div key={item.id} className="group relative rounded-md overflow-hidden bg-white border border-[#E5E0D8] shadow-2xs">
-              <div className="aspect-square bg-[#EEEAE4] overflow-hidden">
+            <div key={item.id} className="group relative rounded-xl overflow-hidden bg-white border border-zinc-200 shadow-2xs">
+              <div className="aspect-square bg-zinc-100 overflow-hidden">
                 <img src={item.url} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               </div>
-              <div className="p-4 flex items-center justify-between bg-white">
+              <div className="p-4 flex items-center justify-between bg-white border-t border-zinc-100">
                 <div>
-                  <span className="text-[10px] uppercase font-bold text-[#B88A5A] tracking-wider block">
+                  <span className="text-[11px] uppercase font-semibold text-zinc-400 tracking-wider block">
                     {item.category}
                   </span>
-                  <h4 className="text-xs font-bold text-[#171717]">{item.title}</h4>
+                  <h4 className="text-xs font-semibold text-zinc-900">{item.title}</h4>
                 </div>
                 <button
                   type="button"
                   onClick={() => handleDelete(item.id)}
-                  className="p-1.5 rounded-md hover:bg-[#FDF2F1] text-[#6B6258] hover:text-[#99453F] transition-colors"
+                  className="p-1.5 rounded-lg hover:bg-red-50 text-zinc-400 hover:text-red-600 transition-colors"
                   title="Delete media"
                 >
                   <Trash2 className="w-4 h-4" />
@@ -83,8 +83,8 @@ const PortfolioPage = () => {
           ))}
         </div>
       ) : (
-        <div className="p-12 text-center bg-white rounded-lg border border-[#E5E0D8]">
-          <p className="text-xs text-[#6B6258] mb-3">No portfolio media uploaded yet.</p>
+        <div className="p-12 text-center bg-white rounded-xl border border-zinc-200">
+          <p className="text-xs text-zinc-500 mb-3">No portfolio media uploaded yet.</p>
           <Button variant="primary" size="sm" onClick={() => setModalOpen(true)}>
             Upload First Item
           </Button>
@@ -97,7 +97,7 @@ const PortfolioPage = () => {
           <Input
             label="Work / Shoot Title"
             required
-            placeholder="e.g. Jaipur Palace Sunset Bridal Session"
+            placeholder="e.g. Udaipur Palace Sunset Bridal Session"
             value={newItem.title}
             onChange={(e) => setNewItem({ ...newItem, title: e.target.value })}
           />
@@ -120,7 +120,7 @@ const PortfolioPage = () => {
               { label: 'Events & Parties', value: 'Events' },
             ]}
           />
-          <div className="pt-2 flex justify-end gap-2 border-t border-[#E5E0D8]">
+          <div className="pt-2 flex justify-end gap-2 border-t border-zinc-200">
             <Button variant="ghost" size="sm" type="button" onClick={() => setModalOpen(false)}>
               Cancel
             </Button>

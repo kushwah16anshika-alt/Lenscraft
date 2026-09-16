@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Camera, Search, SlidersHorizontal, MapPin, Sparkles, Filter, Award } from 'lucide-react';
+import { Camera, Search } from 'lucide-react';
 import ProfessionalCard from '../../components/cards/ProfessionalCard';
 import Button from '../../components/common/Button';
 import { ROLES } from '../../constants/roles';
@@ -34,16 +34,16 @@ const PhotographersPage = () => {
   return (
     <div className="space-y-12 pb-24 text-left">
       {/* Header Banner */}
-      <section className="bg-[#121212] text-white py-16 px-4 sm:px-6 lg:px-8 border-b border-[#242424]">
+      <section className="bg-zinc-950 text-white py-16 px-4 sm:px-6 lg:px-8 border-b border-zinc-800">
         <div className="max-w-7xl mx-auto space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-[#C4683C] text-[10px] font-bold uppercase tracking-[0.2em] border border-white/10">
-            <Camera className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-zinc-300 text-[10px] font-semibold uppercase tracking-[0.2em] border border-white/10">
+            <Camera className="w-3.5 h-3.5 text-zinc-300" />
             <span>Curated Photography Roster</span>
           </div>
           <h1 className="text-4xl sm:text-5xl font-serif font-bold tracking-tight text-white">
             Fine Art & Commercial Photographers
           </h1>
-          <p className="text-xs sm:text-sm text-[#8C8276] max-w-2xl leading-relaxed">
+          <p className="text-xs sm:text-sm text-zinc-400 max-w-2xl leading-relaxed">
             Discover verified wedding, editorial, fashion, portrait, and commercial photographers ready to shoot your next project with certified escrow protection.
           </p>
         </div>
@@ -51,17 +51,17 @@ const PhotographersPage = () => {
 
       {/* Discovery & Filter Controls */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-        <div className="p-5 rounded-xl bg-white border border-[#E8E2D8] shadow-2xs space-y-4">
+        <div className="p-5 rounded-xl bg-white border border-zinc-200 shadow-subtle space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
             {/* Search Input */}
             <div className="relative">
-              <Search className="w-4 h-4 text-[#8C8276] absolute left-3 top-1/2 -translate-y-1/2" />
+              <Search className="w-4 h-4 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 placeholder="Search by name, style, gear..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-9 pr-3 py-2.5 rounded bg-[#FAF8F5] border border-[#E8E2D8] text-xs focus:outline-none focus:border-[#121212] transition-all"
+                className="w-full pl-9 pr-3 py-2 rounded-md bg-zinc-50 border border-zinc-200 text-xs text-zinc-900 focus:outline-none focus:border-zinc-900 transition-all"
               />
             </div>
 
@@ -69,7 +69,7 @@ const PhotographersPage = () => {
             <select
               value={cityFilter}
               onChange={(e) => setCityFilter(e.target.value)}
-              className="w-full px-3 py-2.5 rounded bg-[#FAF8F5] border border-[#E8E2D8] text-xs focus:outline-none focus:border-[#121212] transition-all"
+              className="w-full px-3 py-2 rounded-md bg-zinc-50 border border-zinc-200 text-xs text-zinc-900 focus:outline-none focus:border-zinc-900 transition-all"
             >
               <option value="all">All Cities / Regions</option>
               <option value="Mumbai">Mumbai, Maharashtra</option>
@@ -84,7 +84,7 @@ const PhotographersPage = () => {
             <select
               value={specialtyFilter}
               onChange={(e) => setSpecialtyFilter(e.target.value)}
-              className="w-full px-3 py-2.5 rounded bg-[#FAF8F5] border border-[#E8E2D8] text-xs focus:outline-none focus:border-[#121212] transition-all"
+              className="w-full px-3 py-2 rounded-md bg-zinc-50 border border-zinc-200 text-xs text-zinc-900 focus:outline-none focus:border-zinc-900 transition-all"
             >
               <option value="all">All Photography Genres</option>
               <option value="Royal Weddings">Royal & Destination Weddings</option>
@@ -98,7 +98,7 @@ const PhotographersPage = () => {
             <select
               value={maxBudget}
               onChange={(e) => setMaxBudget(e.target.value)}
-              className="w-full px-3 py-2.5 rounded bg-[#FAF8F5] border border-[#E8E2D8] text-xs focus:outline-none focus:border-[#121212] transition-all"
+              className="w-full px-3 py-2 rounded-md bg-zinc-50 border border-zinc-200 text-xs text-zinc-900 focus:outline-none focus:border-zinc-900 transition-all"
             >
               <option value="all">Any Budget Tier</option>
               <option value="under20k">Under ₹20,000 / day</option>
@@ -107,8 +107,8 @@ const PhotographersPage = () => {
             </select>
           </div>
 
-          <div className="flex items-center justify-between pt-3 border-t border-[#E8E2D8]/60 text-xs text-[#6B6258]">
-            <span>Showing <strong className="text-[#121212]">{filtered.length}</strong> master photographers</span>
+          <div className="flex items-center justify-between pt-3 border-t border-zinc-100 text-xs text-zinc-500">
+            <span>Showing <strong className="text-zinc-900">{filtered.length}</strong> master photographers</span>
             {(search || cityFilter !== 'all' || specialtyFilter !== 'all' || maxBudget !== 'all') && (
               <button
                 onClick={() => {
@@ -117,7 +117,7 @@ const PhotographersPage = () => {
                   setSpecialtyFilter('all');
                   setMaxBudget('all');
                 }}
-                className="text-xs font-bold text-[#C4683C] hover:underline"
+                className="text-xs font-semibold text-zinc-900 hover:underline"
               >
                 Reset All Filters
               </button>
@@ -127,10 +127,10 @@ const PhotographersPage = () => {
 
         {/* Results Grid */}
         {filtered.length === 0 ? (
-          <div className="p-16 text-center bg-white rounded-xl border border-[#E8E2D8] space-y-4">
-            <Camera className="w-10 h-10 text-[#8C8276] mx-auto opacity-50" />
-            <h3 className="text-lg font-serif font-bold text-[#121212]">No photographers found</h3>
-            <p className="text-xs text-[#6B6258] max-w-sm mx-auto">
+          <div className="p-16 text-center bg-white rounded-xl border border-zinc-200 space-y-4">
+            <Camera className="w-10 h-10 text-zinc-400 mx-auto opacity-50" />
+            <h3 className="text-lg font-serif font-bold text-zinc-900">No photographers found</h3>
+            <p className="text-xs text-zinc-500 max-w-sm mx-auto">
               We couldn't find any photographers matching your search. Try resetting your filter criteria.
             </p>
             <Button

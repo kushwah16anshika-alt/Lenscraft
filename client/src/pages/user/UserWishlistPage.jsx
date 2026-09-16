@@ -13,14 +13,14 @@ const UserWishlistPage = () => {
 
   return (
     <div className="space-y-6 text-left">
-      <div className="pb-4 border-b border-[#E5E0D8]">
-        <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#B88A5A] block mb-1">
+      <div className="pb-4 border-b border-zinc-200">
+        <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 block mb-1">
           Saved Talents
         </span>
-        <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#171717]">
+        <h1 className="text-2xl sm:text-3xl font-serif font-bold text-zinc-900 tracking-tight">
           My Curated Creators ({wishlistedPros.length})
         </h1>
-        <p className="text-xs text-[#6B6258] mt-1">
+        <p className="text-sm text-zinc-500 mt-1">
           Keep track of photographers, videographers, and editors you want to hire for upcoming projects.
         </p>
       </div>

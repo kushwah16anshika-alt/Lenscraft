@@ -7,16 +7,11 @@ import {
   CheckCircle2,
   ArrowRight,
   ArrowLeft,
-  Sparkles,
-  MapPin,
-  DollarSign,
-  ShieldCheck,
-  Award,
 } from 'lucide-react';
 import Button from './Button';
 import Input from './Input';
 import Textarea from './Textarea';
-import { ROLES, ROLE_LABELS } from '../../constants/roles';
+import { ROLES } from '../../constants/roles';
 import { useToast } from '../../hooks/useToast';
 
 const CreatorOnboardingModal = ({ isOpen, onClose }) => {
@@ -48,21 +43,21 @@ const CreatorOnboardingModal = ({ isOpen, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-4 overflow-y-auto">
-      <div className="relative w-full max-w-2xl bg-white rounded-lg border border-[#E8E2D8] shadow-2xl overflow-hidden my-8 text-left animate-reveal">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-950/75 backdrop-blur-xs p-4 overflow-y-auto">
+      <div className="relative w-full max-w-2xl bg-white rounded-lg border border-zinc-200 shadow-2xl overflow-hidden my-8 text-left animate-reveal">
         {/* Header */}
-        <div className="p-6 border-b border-[#E8E2D8] bg-[#FAF8F5] flex items-center justify-between">
+        <div className="p-6 border-b border-zinc-200 bg-zinc-50/70 flex items-center justify-between">
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#C4683C] block">
+            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-zinc-500 block">
               Creator Studio Accreditation
             </span>
-            <h2 className="text-xl font-serif font-bold text-[#121212]">
+            <h2 className="text-xl font-serif font-bold text-zinc-900">
               Join the LensCraft Creator Roster
             </h2>
           </div>
           <button
             onClick={onClose}
-            className="p-2 rounded-full hover:bg-[#EAE4DC] text-[#6B6258] transition-colors"
+            className="p-2 rounded-full hover:bg-zinc-200 text-zinc-500 hover:text-zinc-900 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -73,7 +68,7 @@ const CreatorOnboardingModal = ({ isOpen, onClose }) => {
           {/* Step 1: Discipline & Bio */}
           {step === 1 && (
             <div className="space-y-4">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-[#121212]">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-900">
                 1. Select Your Primary Creative Discipline
               </h3>
 
@@ -92,11 +87,11 @@ const CreatorOnboardingModal = ({ isOpen, onClose }) => {
                       onClick={() => setFormData({ ...formData, role: item.role })}
                       className={`p-4 rounded-md border flex flex-col items-center gap-2 text-center transition-all ${
                         isSelected
-                          ? 'border-[#121212] bg-[#FAF8F5] ring-1 ring-[#121212] font-bold text-[#121212]'
-                          : 'border-[#E8E2D8] bg-white text-[#6B6258] hover:border-[#121212]/50'
+                          ? 'border-zinc-900 bg-zinc-50 ring-1 ring-zinc-900 font-bold text-zinc-900'
+                          : 'border-zinc-200 bg-white text-zinc-600 hover:border-zinc-400'
                       }`}
                     >
-                      <Icon className={`w-5 h-5 ${isSelected ? 'text-[#C4683C]' : 'text-[#8C8276]'}`} />
+                      <Icon className={`w-5 h-5 ${isSelected ? 'text-zinc-900' : 'text-zinc-400'}`} />
                       <span className="text-xs">{item.label}</span>
                     </button>
                   );
@@ -124,7 +119,7 @@ const CreatorOnboardingModal = ({ isOpen, onClose }) => {
           {/* Step 2: Experience, Rates & Gear */}
           {step === 2 && (
             <div className="space-y-4">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-[#121212]">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-900">
                 2. Rates, Base City & Primary Camera Kit
               </h3>
 
@@ -176,7 +171,7 @@ const CreatorOnboardingModal = ({ isOpen, onClose }) => {
         </form>
 
         {/* Footer */}
-        <div className="p-6 border-t border-[#E8E2D8] bg-[#FAF8F5] flex items-center justify-between">
+        <div className="p-6 border-t border-zinc-200 bg-zinc-50/70 flex items-center justify-between">
           {step === 2 ? (
             <Button
               variant="outline"

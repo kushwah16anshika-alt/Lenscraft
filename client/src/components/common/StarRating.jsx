@@ -37,10 +37,10 @@ const StarRating = ({
               <Star
                 className={`${sizes[size] || sizes.sm} ${
                   isFilled
-                    ? 'fill-[#B88A5A] text-[#B88A5A]'
+                    ? 'fill-amber-400 text-amber-400'
                     : isHalf
-                    ? 'fill-[#B88A5A]/50 text-[#B88A5A]'
-                    : 'text-[#D6CFC4]'
+                    ? 'fill-amber-400/50 text-amber-400'
+                    : 'text-zinc-300'
                 }`}
               />
             </button>
@@ -48,10 +48,10 @@ const StarRating = ({
         })}
       </div>
       {showText && (
-        <span className="text-xs font-bold text-[#171717] ml-0.5">
+        <span className="text-xs font-bold text-zinc-900 ml-0.5">
           {Number(rating).toFixed(1)}
           {reviewsCount !== undefined && (
-            <span className="text-[#6B6258] font-normal ml-1">({reviewsCount})</span>
+            <span className="text-zinc-500 font-normal ml-1">({reviewsCount})</span>
           )}
         </span>
       )}

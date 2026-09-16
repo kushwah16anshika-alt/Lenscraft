@@ -19,16 +19,16 @@ const PricingPage = () => {
 
   return (
     <div className="max-w-3xl space-y-6 text-left">
-      <div className="pb-4 border-b border-[#E5E0D8]">
-        <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#B88A5A] block mb-1">
+      <div className="pb-4 border-b border-zinc-200">
+        <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 block mb-1">
           Rate Cards
         </span>
-        <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#171717]">
+        <h1 className="text-2xl sm:text-3xl font-serif font-bold text-zinc-900 tracking-tight">
           Standard Studio Pricing
         </h1>
       </div>
 
-      <Card className="p-6 sm:p-8 bg-white border border-[#E5E0D8] shadow-2xs">
+      <Card className="p-6 sm:p-8 bg-white border border-zinc-200 shadow-2xs">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Input
@@ -63,7 +63,7 @@ const PricingPage = () => {
             />
           </div>
 
-          <div className="pt-4 border-t border-[#E5E0D8]">
+          <div className="pt-4 border-t border-zinc-200">
             <Button type="submit" variant="primary" size="md" leftIcon={<Save className="w-4 h-4" />}>
               Save Rate Card
             </Button>

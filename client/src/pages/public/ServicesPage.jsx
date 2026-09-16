@@ -6,29 +6,23 @@ import {
   ShieldCheck,
   Zap,
   Clock,
-  Sparkles,
   Camera,
   Video,
   Film,
   CheckCircle2,
   Search,
-  Layers,
-  ChevronRight,
-  HelpCircle,
   ChevronDown,
   Award,
   SlidersHorizontal,
 } from 'lucide-react';
 import { CREATIVE_CATEGORIES } from '../../constants/categories';
 import Button from '../../components/common/Button';
-import Badge from '../../components/common/Badge';
 
 const ServicesPage = () => {
   const [selectedRole, setSelectedRole] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [openFaq, setOpenFaq] = useState(null);
 
-  // Extended metadata for enhanced professional display
   const categoryDetails = {
     weddings: {
       startingPrice: '₹25,000 / day',
@@ -173,37 +167,37 @@ const ServicesPage = () => {
   return (
     <div className="space-y-16 pb-20 text-left">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-[#FAF7F3] via-white to-[#F7F5F2] border-b border-[#E5E0D8] pt-16 pb-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <section className="bg-zinc-950 text-white border-b border-zinc-800 pt-16 pb-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
           <div className="max-w-3xl space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF7F3] border border-[#E8DBCA] text-[#B88A5A] text-xs font-bold uppercase tracking-wider shadow-2xs">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-zinc-300 text-xs font-semibold uppercase tracking-wider">
               <Compass className="w-3.5 h-3.5" />
               <span>Verified Creative Services & Packages</span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-[#171717] tracking-tight leading-[1.1]">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-white tracking-tight leading-[1.1]">
               Bespoke Photography, Cinema & Post-Production
             </h1>
 
-            <p className="text-sm sm:text-base text-[#6B6258] leading-relaxed max-w-2xl">
+            <p className="text-sm sm:text-base text-zinc-400 leading-relaxed max-w-2xl">
               Browse transparent rate cards, vetted creative disciplines, and verified talent with 100% escrow protection and guaranteed delivery timelines.
             </p>
 
             {/* Quick Filter & Search Bar */}
             <div className="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
               <div className="relative flex-1">
-                <Search className="w-4 h-4 text-[#8C8276] absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <Search className="w-4 h-4 text-zinc-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   placeholder="Search disciplines (e.g., Weddings, Commercial, Color Grading)..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 rounded-md bg-white border border-[#E5E0D8] text-xs text-[#171717] placeholder-[#8C8276] focus:outline-none focus:border-[#171717] focus:ring-1 focus:ring-[#171717] transition-all shadow-2xs"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-md bg-zinc-900 border border-zinc-700 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-white transition-all shadow-subtle"
                 />
               </div>
 
               {/* Role Filter Buttons */}
-              <div className="flex items-center gap-1.5 p-1 rounded-md bg-[#EEEAE4] border border-[#E5E0D8] overflow-x-auto no-scrollbar">
+              <div className="flex items-center gap-1.5 p-1 rounded-md bg-zinc-900 border border-zinc-800 overflow-x-auto no-scrollbar">
                 {[
                   { id: 'all', label: 'All Services', icon: SlidersHorizontal },
                   { id: 'photographer', label: 'Photography', icon: Camera },
@@ -216,10 +210,10 @@ const ServicesPage = () => {
                     <button
                       key={tab.id}
                       onClick={() => setSelectedRole(tab.id)}
-                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-semibold whitespace-nowrap transition-all ${
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap transition-all ${
                         isActive
-                          ? 'bg-[#171717] text-white shadow-2xs'
-                          : 'text-[#6B6258] hover:text-[#171717] hover:bg-white/60'
+                          ? 'bg-white text-zinc-950 font-bold'
+                          : 'text-zinc-400 hover:text-white'
                       }`}
                     >
                       <Icon className="w-3.5 h-3.5" />
@@ -235,50 +229,50 @@ const ServicesPage = () => {
 
       {/* Trust & Guarantee Banner */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-6 rounded-lg bg-white border border-[#E5E0D8] shadow-2xs">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-6 rounded-xl bg-white border border-zinc-200 shadow-subtle">
           <div className="flex items-start gap-3.5 p-2">
-            <div className="w-10 h-10 rounded-md bg-[#FAF7F3] border border-[#E8DBCA] flex items-center justify-center text-[#B88A5A] shrink-0">
+            <div className="w-10 h-10 rounded-md bg-zinc-100 border border-zinc-200 flex items-center justify-center text-zinc-900 shrink-0">
               <ShieldCheck className="w-5 h-5 stroke-[1.75]" />
             </div>
             <div>
-              <h4 className="text-xs font-bold text-[#171717] uppercase tracking-wide">100% Escrow Protection</h4>
-              <p className="text-[11px] text-[#6B6258] mt-0.5 leading-snug">
+              <h4 className="text-xs font-bold text-zinc-900 uppercase tracking-wide">100% Escrow Protection</h4>
+              <p className="text-[11px] text-zinc-500 mt-0.5 leading-snug">
                 Funds remain held securely until you inspect & approve final deliverables.
               </p>
             </div>
           </div>
 
-          <div className="flex items-start gap-3.5 p-2">
-            <div className="w-10 h-10 rounded-md bg-[#FAF7F3] border border-[#E8DBCA] flex items-center justify-center text-[#B88A5A] shrink-0">
+          <div className="flex items-start gap-3.5 p-2 border-t sm:border-t-0 sm:border-l border-zinc-200">
+            <div className="w-10 h-10 rounded-md bg-zinc-100 border border-zinc-200 flex items-center justify-center text-zinc-900 shrink-0">
               <Award className="w-5 h-5 stroke-[1.75]" />
             </div>
             <div>
-              <h4 className="text-xs font-bold text-[#171717] uppercase tracking-wide">Editorial Vetted Talent</h4>
-              <p className="text-[11px] text-[#6B6258] mt-0.5 leading-snug">
+              <h4 className="text-xs font-bold text-zinc-900 uppercase tracking-wide">Editorial Vetted Talent</h4>
+              <p className="text-[11px] text-zinc-500 mt-0.5 leading-snug">
                 Gear, past portfolios & identity thoroughly verified by our creative board.
               </p>
             </div>
           </div>
 
-          <div className="flex items-start gap-3.5 p-2">
-            <div className="w-10 h-10 rounded-md bg-[#FAF7F3] border border-[#E8DBCA] flex items-center justify-center text-[#B88A5A] shrink-0">
+          <div className="flex items-start gap-3.5 p-2 border-t lg:border-t-0 lg:border-l border-zinc-200">
+            <div className="w-10 h-10 rounded-md bg-zinc-100 border border-zinc-200 flex items-center justify-center text-zinc-900 shrink-0">
               <Clock className="w-5 h-5 stroke-[1.75]" />
             </div>
             <div>
-              <h4 className="text-xs font-bold text-[#171717] uppercase tracking-wide">48h Fast Previews</h4>
-              <p className="text-[11px] text-[#6B6258] mt-0.5 leading-snug">
+              <h4 className="text-xs font-bold text-zinc-900 uppercase tracking-wide">48h Fast Previews</h4>
+              <p className="text-[11px] text-zinc-500 mt-0.5 leading-snug">
                 Receive initial social teasers & selects within 48 hours of shoot wrap.
               </p>
             </div>
           </div>
 
-          <div className="flex items-start gap-3.5 p-2">
-            <div className="w-10 h-10 rounded-md bg-[#FAF7F3] border border-[#E8DBCA] flex items-center justify-center text-[#B88A5A] shrink-0">
+          <div className="flex items-start gap-3.5 p-2 border-t sm:border-t-0 sm:border-l border-zinc-200">
+            <div className="w-10 h-10 rounded-md bg-zinc-100 border border-zinc-200 flex items-center justify-center text-zinc-900 shrink-0">
               <Zap className="w-5 h-5 stroke-[1.75]" />
             </div>
             <div>
-              <h4 className="text-xs font-bold text-[#171717] uppercase tracking-wide">Commercial Rights</h4>
-              <p className="text-[11px] text-[#6B6258] mt-0.5 leading-snug">
+              <h4 className="text-xs font-bold text-zinc-900 uppercase tracking-wide">Commercial Rights</h4>
+              <p className="text-[11px] text-zinc-500 mt-0.5 leading-snug">
                 Clear license terms with optional uncompressed RAW footage transfer.
               </p>
             </div>
@@ -288,16 +282,16 @@ const ServicesPage = () => {
 
       {/* Featured Signature Packages */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 pb-4 border-b border-[#E5E0D8]">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 pb-4 border-b border-zinc-200">
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#B88A5A] block mb-1">
+            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-zinc-500 block mb-1">
               Curated Production Packages
             </span>
-            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#171717]">
+            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-zinc-900">
               Signature Creative Tiers
             </h2>
           </div>
-          <p className="text-xs text-[#6B6258] max-w-md">
+          <p className="text-xs text-zinc-500 max-w-md">
             Complete turnkey solutions with pre-negotiated deliverables, transparent pricing, and guaranteed turnaround.
           </p>
         </div>
@@ -306,46 +300,46 @@ const ServicesPage = () => {
           {signaturePackages.map((pkg) => (
             <div
               key={pkg.id}
-              className="rounded-lg bg-white border border-[#E5E0D8] p-7 shadow-2xs hover:border-[#171717] transition-all flex flex-col justify-between relative group hover:shadow-md"
+              className="rounded-xl bg-white border border-zinc-200 p-7 shadow-subtle hover:border-zinc-900 transition-all flex flex-col justify-between relative group hover:shadow-soft-md"
             >
               <div className="space-y-5">
                 <div className="flex items-center justify-between">
-                  <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#FAF7F3] text-[#B88A5A] border border-[#E8DBCA]">
+                  <span className="inline-block px-2.5 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-zinc-100 text-zinc-800 border border-zinc-200">
                     {pkg.badge}
                   </span>
-                  <span className="text-[11px] text-[#8C8276] font-medium flex items-center gap-1">
-                    <Clock className="w-3 h-3 text-[#B88A5A]" />
+                  <span className="text-[11px] text-zinc-500 font-medium flex items-center gap-1">
+                    <Clock className="w-3 h-3 text-zinc-400" />
                     {pkg.turnaround}
                   </span>
                 </div>
 
                 <div>
-                  <h3 className="text-xl font-serif font-bold text-[#171717] group-hover:text-[#B88A5A] transition-colors">
+                  <h3 className="text-xl font-serif font-bold text-zinc-900 group-hover:text-zinc-600 transition-colors">
                     {pkg.title}
                   </h3>
-                  <p className="text-xs text-[#6B6258] mt-1 leading-relaxed">
+                  <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
                     {pkg.tagline}
                   </p>
                 </div>
 
-                <div className="py-4 border-y border-[#E5E0D8]">
+                <div className="py-4 border-y border-zinc-100">
                   <div className="flex items-baseline gap-1.5">
-                    <span className="text-3xl font-serif font-bold text-[#171717]">{pkg.price}</span>
-                    <span className="text-xs text-[#8C8276]">/ {pkg.period}</span>
+                    <span className="text-3xl font-serif font-bold text-zinc-900">{pkg.price}</span>
+                    <span className="text-xs text-zinc-400">/ {pkg.period}</span>
                   </div>
-                  <span className="text-[10px] text-[#8C8276] uppercase tracking-wider font-semibold block mt-0.5">
+                  <span className="text-[10px] text-zinc-400 uppercase tracking-wider font-semibold block mt-0.5">
                     Starting Base Price
                   </span>
                 </div>
 
                 <div className="space-y-2.5">
-                  <span className="text-[10px] uppercase font-bold text-[#8C8276] tracking-wider block">
+                  <span className="text-[10px] uppercase font-bold text-zinc-400 tracking-wider block">
                     What's Included:
                   </span>
-                  <ul className="space-y-2 text-xs text-[#4A433B]">
+                  <ul className="space-y-2 text-xs text-zinc-700">
                     {pkg.features.map((feat, fIdx) => (
                       <li key={fIdx} className="flex items-start gap-2 leading-snug">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#B88A5A] shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
                         <span>{feat}</span>
                       </li>
                     ))}
@@ -353,7 +347,7 @@ const ServicesPage = () => {
                 </div>
               </div>
 
-              <div className="pt-6 mt-6 border-t border-[#E5E0D8]">
+              <div className="pt-6 mt-6 border-t border-zinc-100">
                 <Link to={`/${pkg.roleTarget}?category=${pkg.slug}`}>
                   <Button
                     variant="primary"
@@ -372,25 +366,25 @@ const ServicesPage = () => {
 
       {/* Main Disciplines Grid */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 pb-4 border-b border-[#E5E0D8]">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 pb-4 border-b border-zinc-200">
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#B88A5A] block mb-1">
+            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-zinc-500 block mb-1">
               Disciplines Directory
             </span>
-            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#171717]">
+            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-zinc-900">
               All Specialty Disciplines ({filteredCategories.length})
             </h2>
           </div>
-          <p className="text-xs text-[#6B6258]">
+          <p className="text-xs text-zinc-500">
             Filter by specialty to view available creators, portfolios, and rates.
           </p>
         </div>
 
         {filteredCategories.length === 0 ? (
-          <div className="p-12 text-center bg-white rounded-lg border border-[#E5E0D8] space-y-3">
-            <Compass className="w-8 h-8 text-[#8C8276] mx-auto opacity-50" />
-            <h3 className="text-base font-bold text-[#171717]">No categories match your search</h3>
-            <p className="text-xs text-[#6B6258]">Try adjusting your search keywords or switching category filters.</p>
+          <div className="p-12 text-center bg-white rounded-xl border border-zinc-200 space-y-3">
+            <Compass className="w-8 h-8 text-zinc-400 mx-auto opacity-50" />
+            <h3 className="text-base font-bold text-zinc-900">No categories match your search</h3>
+            <p className="text-xs text-zinc-500">Try adjusting your search keywords or switching category filters.</p>
             <Button variant="outline" size="sm" onClick={() => { setSelectedRole('all'); setSearchQuery(''); }}>
               Reset Filters
             </Button>
@@ -413,54 +407,54 @@ const ServicesPage = () => {
               return (
                 <div
                   key={cat.id}
-                  className="rounded-lg bg-white border border-[#E5E0D8] overflow-hidden shadow-2xs hover:border-[#171717] hover:shadow-md transition-all flex flex-col justify-between group"
+                  className="rounded-xl bg-white border border-zinc-200 overflow-hidden shadow-subtle hover:border-zinc-900 hover:shadow-soft-md transition-all flex flex-col justify-between group"
                 >
                   <div>
                     {/* Media Thumbnail */}
-                    <div className="relative h-48 bg-[#EEEAE4] overflow-hidden">
+                    <div className="relative h-48 bg-zinc-100 overflow-hidden">
                       <img
                         src={cat.image}
                         alt={cat.name}
-                        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-106"
+                        className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-104"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60" />
 
                       {/* Number Tag */}
-                      <div className="absolute top-3 left-3 px-2 py-0.5 rounded bg-white/90 backdrop-blur-xs text-[#171717] font-serif font-bold text-[10px] shadow-2xs">
+                      <div className="absolute top-3 left-3 px-2 py-0.5 rounded-md bg-white/90 backdrop-blur-xs text-zinc-900 font-serif font-bold text-[10px]">
                         0{idx + 1}
                       </div>
 
                       {/* Role Badge */}
-                      <div className="absolute top-3 right-3 px-2 py-0.5 rounded bg-black/70 backdrop-blur-xs text-white text-[9px] uppercase font-bold tracking-wider">
+                      <div className="absolute top-3 right-3 px-2 py-0.5 rounded-md bg-black/70 backdrop-blur-xs text-white text-[9px] uppercase font-bold tracking-wider">
                         {cat.role}
                       </div>
 
                       {/* Price / Pro Count Strip */}
-                      <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-white text-[11px] font-medium drop-shadow-sm">
+                      <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-white text-[11px] font-medium">
                         <span>{details.startingPrice}</span>
-                        <span className="text-[#E8DBCA] font-bold">{cat.count}</span>
+                        <span className="text-zinc-200 font-bold">{cat.count}</span>
                       </div>
                     </div>
 
                     {/* Card Content */}
                     <div className="p-5 space-y-3">
-                      <h3 className="text-base font-serif font-bold text-[#171717] group-hover:text-[#B88A5A] transition-colors leading-snug">
+                      <h3 className="text-base font-serif font-bold text-zinc-900 group-hover:text-zinc-600 transition-colors leading-snug">
                         {cat.name}
                       </h3>
 
-                      <p className="text-xs text-[#6B6258] leading-relaxed line-clamp-2">
+                      <p className="text-xs text-zinc-500 leading-relaxed line-clamp-2">
                         {cat.description}
                       </p>
 
                       {/* Highlights Chips */}
-                      <div className="pt-2 border-t border-[#E5E0D8] space-y-1.5">
-                        <span className="text-[9px] uppercase font-bold text-[#8C8276] tracking-wider block">
+                      <div className="pt-2 border-t border-zinc-100 space-y-1.5">
+                        <span className="text-[9px] uppercase font-bold text-zinc-400 tracking-wider block">
                           Included Deliverables:
                         </span>
-                        <ul className="space-y-1 text-[11px] text-[#4A433B]">
+                        <ul className="space-y-1 text-[11px] text-zinc-700">
                           {details.highlights.slice(0, 2).map((h, hIdx) => (
                             <li key={hIdx} className="flex items-center gap-1.5 truncate">
-                              <span className="w-1 h-1 rounded-full bg-[#B88A5A]" />
+                              <span className="w-1 h-1 rounded-full bg-zinc-900" />
                               <span className="truncate">{h}</span>
                             </li>
                           ))}
@@ -475,7 +469,7 @@ const ServicesPage = () => {
                       <Button
                         variant="outline"
                         size="sm"
-                        className="w-full justify-between group-hover:bg-[#171717] group-hover:text-white group-hover:border-[#171717] transition-all"
+                        className="w-full justify-between hover:bg-zinc-900 hover:text-white hover:border-zinc-900 transition-all"
                         rightIcon={<ArrowRight className="w-3.5 h-3.5" />}
                       >
                         <span>View {cat.name.split(' ')[0]}</span>
@@ -491,48 +485,48 @@ const ServicesPage = () => {
 
       {/* How Booking Works Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="p-8 sm:p-12 rounded-xl bg-[#171717] text-white border border-[#2B2B2B] shadow-lg space-y-10">
+        <div className="p-8 sm:p-12 rounded-2xl bg-zinc-950 text-white border border-zinc-800 shadow-2xl space-y-10">
           <div className="max-w-2xl space-y-2">
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#B88A5A] block">
+            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-zinc-400 block">
               Workflow Protocol
             </span>
             <h2 className="text-2xl sm:text-4xl font-serif font-bold tracking-tight text-white">
               How LensCraft Service Booking Operates
             </h2>
-            <p className="text-xs sm:text-sm text-[#A39B91]">
+            <p className="text-xs sm:text-sm text-zinc-400">
               A seamless, protected four-step workflow designed for corporate brands, event planners, and discerning clients.
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="p-5 rounded-md bg-[#212121] border border-[#2E2E2E] space-y-3 relative">
-              <span className="text-2xl font-serif font-bold text-[#B88A5A] block">01</span>
+            <div className="p-5 rounded-lg bg-zinc-900 border border-zinc-800 space-y-3 relative">
+              <span className="text-2xl font-serif font-bold text-zinc-400 block">01</span>
               <h4 className="text-sm font-bold text-white">Discover & Shortlist</h4>
-              <p className="text-xs text-[#A39B91] leading-relaxed">
+              <p className="text-xs text-zinc-400 leading-relaxed">
                 Filter creators by verified gear, portfolio galleries, verified client reviews, and transparent day rates.
               </p>
             </div>
 
-            <div className="p-5 rounded-md bg-[#212121] border border-[#2E2E2E] space-y-3 relative">
-              <span className="text-2xl font-serif font-bold text-[#B88A5A] block">02</span>
+            <div className="p-5 rounded-lg bg-zinc-900 border border-zinc-800 space-y-3 relative">
+              <span className="text-2xl font-serif font-bold text-zinc-400 block">02</span>
               <h4 className="text-sm font-bold text-white">Escrow Payment Lock</h4>
-              <p className="text-xs text-[#A39B91] leading-relaxed">
+              <p className="text-xs text-zinc-400 leading-relaxed">
                 Secure your shoot date with advance payment held in escrow. Creators are only funded upon your delivery sign-off.
               </p>
             </div>
 
-            <div className="p-5 rounded-md bg-[#212121] border border-[#2E2E2E] space-y-3 relative">
-              <span className="text-2xl font-serif font-bold text-[#B88A5A] block">03</span>
+            <div className="p-5 rounded-lg bg-zinc-900 border border-zinc-800 space-y-3 relative">
+              <span className="text-2xl font-serif font-bold text-zinc-400 block">03</span>
               <h4 className="text-sm font-bold text-white">Production & Shoot Day</h4>
-              <p className="text-xs text-[#A39B91] leading-relaxed">
+              <p className="text-xs text-zinc-400 leading-relaxed">
                 Coordinate call-sheets, shot lists, and mood boards directly with your creator through our built-in workspace.
               </p>
             </div>
 
-            <div className="p-5 rounded-md bg-[#212121] border border-[#2E2E2E] space-y-3 relative">
-              <span className="text-2xl font-serif font-bold text-[#B88A5A] block">04</span>
+            <div className="p-5 rounded-lg bg-zinc-900 border border-zinc-800 space-y-3 relative">
+              <span className="text-2xl font-serif font-bold text-zinc-400 block">04</span>
               <h4 className="text-sm font-bold text-white">Master Deliverables</h4>
-              <p className="text-xs text-[#A39B91] leading-relaxed">
+              <p className="text-xs text-zinc-400 leading-relaxed">
                 Receive 48h teasers and final high-res cloud downloads with full commercial license certificates.
               </p>
             </div>
@@ -543,13 +537,13 @@ const ServicesPage = () => {
       {/* FAQ Accordion Section */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         <div className="text-center space-y-2">
-          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#B88A5A] block">
+          <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-zinc-500 block">
             Got Questions?
           </span>
-          <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#171717]">
+          <h2 className="text-2xl sm:text-3xl font-serif font-bold text-zinc-900">
             Frequently Asked Questions
           </h2>
-          <p className="text-xs text-[#6B6258] max-w-md mx-auto">
+          <p className="text-xs text-zinc-500 max-w-md mx-auto">
             Everything you need to know about package bookings, guarantees, and deliverables.
           </p>
         </div>
@@ -560,22 +554,22 @@ const ServicesPage = () => {
             return (
               <div
                 key={fIdx}
-                className="rounded-md bg-white border border-[#E5E0D8] overflow-hidden transition-all shadow-2xs"
+                className="rounded-lg bg-white border border-zinc-200 overflow-hidden transition-all shadow-subtle"
               >
                 <button
                   type="button"
                   onClick={() => setOpenFaq(isOpen ? null : fIdx)}
-                  className="w-full p-4 sm:p-5 flex items-center justify-between text-left gap-4 hover:bg-[#FAF7F3]/50 transition-colors"
+                  className="w-full p-4 sm:p-5 flex items-center justify-between text-left gap-4 hover:bg-zinc-50 transition-colors"
                 >
-                  <span className="text-sm font-bold text-[#171717]">{faq.q}</span>
+                  <span className="text-sm font-bold text-zinc-900">{faq.q}</span>
                   <ChevronDown
-                    className={`w-4 h-4 text-[#8C8276] shrink-0 transition-transform duration-200 ${
-                      isOpen ? 'rotate-180 text-[#B88A5A]' : ''
+                    className={`w-4 h-4 text-zinc-400 shrink-0 transition-transform duration-200 ${
+                      isOpen ? 'rotate-180 text-zinc-900' : ''
                     }`}
                   />
                 </button>
                 {isOpen && (
-                  <div className="px-4 sm:px-5 pb-5 pt-1 text-xs text-[#6B6258] leading-relaxed border-t border-[#E5E0D8]/60 animate-slide-up">
+                  <div className="px-4 sm:px-5 pb-5 pt-1 text-xs text-zinc-600 leading-relaxed border-t border-zinc-100 animate-slide-up">
                     {faq.a}
                   </div>
                 )}
@@ -587,15 +581,15 @@ const ServicesPage = () => {
 
       {/* Custom Enterprise Callout */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="p-8 sm:p-10 rounded-lg bg-gradient-to-r from-[#FAF7F3] via-white to-[#F7F5F2] border border-[#E8DBCA] flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xs">
+        <div className="p-8 sm:p-10 rounded-2xl bg-zinc-100 border border-zinc-200 flex flex-col md:flex-row items-center justify-between gap-6 shadow-subtle">
           <div className="space-y-2 max-w-xl">
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#B88A5A] block">
+            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-zinc-500 block">
               Custom Commercial & Multi-City Shoots
             </span>
-            <h3 className="text-xl sm:text-2xl font-serif font-bold text-[#171717]">
+            <h3 className="text-xl sm:text-2xl font-serif font-bold text-zinc-900">
               Need a bespoke production team or multi-camera setup?
             </h3>
-            <p className="text-xs text-[#6B6258] leading-relaxed">
+            <p className="text-xs text-zinc-500 leading-relaxed">
               Our creative concierge assists with high-scale weddings, brand commercial retainers, and multi-city campaign shoots.
             </p>
           </div>

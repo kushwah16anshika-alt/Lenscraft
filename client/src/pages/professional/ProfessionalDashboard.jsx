@@ -26,19 +26,19 @@ const ProfessionalDashboard = () => {
   return (
     <div className="space-y-8 text-left">
       {/* Studio Header Banner */}
-      <div className="p-6 sm:p-8 rounded-md bg-white border border-[#E5E0D8] shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="p-6 sm:p-8 rounded-xl bg-white border border-zinc-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#B88A5A] block mb-1">
+          <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 block mb-1">
             Studio Creator Workspace
           </span>
-          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#171717]">
+          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-zinc-900 tracking-tight">
             {user?.name || 'Studio Admin'}
           </h1>
-          <p className="text-xs text-[#6B6258] mt-1">
+          <p className="text-sm text-zinc-500 mt-1">
             Overview of upcoming shoots, milestone earnings, and client inquiries.
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2.5">
           <Link to="/professional/portfolio">
             <Button variant="outline" size="sm" leftIcon={<Plus className="w-3.5 h-3.5" />}>
               Add Media
@@ -86,31 +86,31 @@ const ProfessionalDashboard = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left 2 cols: Recent Inquiries & Bookings */}
         <div className="lg:col-span-2 space-y-4">
-          <div className="flex items-center justify-between pb-2 border-b border-[#E5E0D8]">
-            <h2 className="text-lg font-serif font-bold text-[#171717]">Recent Inquiries & Shoots</h2>
-            <Link to="/professional/appointments" className="text-xs font-semibold text-[#B88A5A] hover:underline">
+          <div className="flex items-center justify-between pb-2 border-b border-zinc-200">
+            <h2 className="text-lg font-serif font-bold text-zinc-900">Recent Inquiries & Shoots</h2>
+            <Link to="/professional/appointments" className="text-xs font-semibold text-zinc-900 hover:underline">
               Manage All Shoots
             </Link>
           </div>
 
           <div className="space-y-3">
             {proBookings.map((b) => (
-              <Card key={b.id} className="p-4 bg-white border border-[#E5E0D8] shadow-2xs hover:border-[#171717] transition-all">
+              <Card key={b.id} className="p-4 bg-white border border-zinc-200 shadow-2xs hover:border-zinc-300 transition-all">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div className="flex items-center gap-3">
                     <Avatar src={b.userAvatar} name={b.userName} size="md" />
                     <div>
-                      <h4 className="text-sm font-bold text-[#171717]">{b.userName}</h4>
-                      <p className="text-xs text-[#6B6258]">{b.serviceTitle} • {b.location?.city}</p>
+                      <h4 className="text-sm font-semibold text-zinc-900">{b.userName}</h4>
+                      <p className="text-xs text-zinc-500">{b.serviceTitle} • {b.location?.city}</p>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-3">
                     <div className="text-right sm:block hidden">
-                      <span className="text-xs font-bold text-[#171717] block">
+                      <span className="text-xs font-semibold text-zinc-900 block">
                         {formatCurrency(b.totalAmount)}
                       </span>
-                      <span className="text-[10px] text-[#8C8276]">{formatDate(b.eventDate)}</span>
+                      <span className="text-[11px] text-zinc-400">{formatDate(b.eventDate)}</span>
                     </div>
 
                     <Badge
@@ -134,26 +134,26 @@ const ProfessionalDashboard = () => {
 
         {/* Right 1 col: Quick Action & Studio Checklist */}
         <div className="space-y-6">
-          <Card className="p-6 bg-white border border-[#E5E0D8] shadow-2xs space-y-4">
-            <h3 className="text-sm font-bold uppercase tracking-wider text-[#171717] pb-3 border-b border-[#E5E0D8]">
+          <Card className="p-6 bg-white border border-zinc-200 shadow-2xs space-y-4">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-900 pb-3 border-b border-zinc-200">
               Studio Health Checklist
             </h3>
 
-            <div className="space-y-3 text-xs text-[#6B6258]">
-              <div className="flex items-center gap-2.5 text-[#171717]">
-                <CheckCircle className="w-4 h-4 text-[#3D7055] shrink-0" />
+            <div className="space-y-3 text-xs text-zinc-600">
+              <div className="flex items-center gap-2.5 text-zinc-900">
+                <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
                 <span>Identity & Portfolio Verified</span>
               </div>
-              <div className="flex items-center gap-2.5 text-[#171717]">
-                <CheckCircle className="w-4 h-4 text-[#3D7055] shrink-0" />
+              <div className="flex items-center gap-2.5 text-zinc-900">
+                <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
                 <span>Active 2025 Calendar Configured</span>
               </div>
-              <div className="flex items-center gap-2.5 text-[#171717]">
-                <CheckCircle className="w-4 h-4 text-[#3D7055] shrink-0" />
+              <div className="flex items-center gap-2.5 text-zinc-900">
+                <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
                 <span>Bank Payout Account Connected</span>
               </div>
-              <div className="flex items-center gap-2.5 text-[#B88A5A]">
-                <Clock className="w-4 h-4 text-[#B88A5A] shrink-0" />
+              <div className="flex items-center gap-2.5 text-zinc-700">
+                <Clock className="w-4 h-4 text-amber-600 shrink-0" />
                 <span>1 Deliverable Gallery Upload Pending</span>
               </div>
             </div>
