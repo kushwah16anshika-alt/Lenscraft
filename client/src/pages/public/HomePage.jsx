@@ -10,12 +10,16 @@ import {
   Clock,
   Maximize2,
   PlusCircle,
+  Sliders,
+  Layers,
+  Lock,
 } from 'lucide-react';
 import SearchBar from '../../components/common/SearchBar';
 import ProfessionalCard from '../../components/cards/ProfessionalCard';
 import Button from '../../components/common/Button';
 import LightboxModal from '../../components/common/LightboxModal';
 import CreatorOnboardingModal from '../../components/common/CreatorOnboardingModal';
+import AiMatchmakerModal from '../../components/common/AiMatchmakerModal';
 import { CREATIVE_CATEGORIES } from '../../constants/categories';
 import { MOCK_PROFESSIONALS } from '../../constants/mockData';
 import { ROLES } from '../../constants/roles';
@@ -25,6 +29,7 @@ const HomePage = () => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [activeLightboxIndex, setActiveLightboxIndex] = useState(0);
   const [creatorModalOpen, setCreatorModalOpen] = useState(false);
+  const [matchmakerOpen, setMatchmakerOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleSearch = ({ query, city }) => {
@@ -178,25 +183,37 @@ const HomePage = () => {
           </div>
 
           {/* Primary & Secondary CTAs */}
-          <div className="flex flex-wrap items-center justify-center gap-4 text-xs font-semibold">
+          <div className="flex flex-wrap items-center justify-center gap-3 text-xs font-semibold">
             <Link to="/photographers">
               <Button
                 variant="primary"
                 size="lg"
-                className="bg-white hover:bg-zinc-200 text-zinc-950 border-none shadow-xl px-8 font-bold"
+                className="bg-white hover:bg-zinc-200 text-zinc-950 border-none shadow-xl px-7 font-bold"
                 rightIcon={<ArrowRight className="w-4 h-4" />}
               >
                 Explore All Creators
               </Button>
             </Link>
 
-            <button
-              onClick={() => setCreatorModalOpen(true)}
-              className="px-6 py-2.5 rounded-md bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/25 transition-all flex items-center gap-2 text-sm font-medium"
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={() => setMatchmakerOpen(true)}
+              className="bg-white/10 hover:bg-white/20 text-white border-white/25 backdrop-blur-md px-6 font-semibold"
+              rightIcon={<Sparkles className="w-4 h-4 text-zinc-300" />}
             >
-              <PlusCircle className="w-4 h-4 text-zinc-300" />
-              <span>Become a Creator</span>
-            </button>
+              AI Creator Matchmaker
+            </Button>
+
+            <Link to="/features">
+              <button
+                type="button"
+                className="px-5 py-2.5 rounded-md bg-transparent hover:bg-white/10 text-zinc-300 hover:text-white border border-zinc-700 transition-all flex items-center gap-1.5 text-xs font-medium"
+              >
+                <Sliders className="w-3.5 h-3.5" />
+                <span>Shoot Estimator</span>
+              </button>
+            </Link>
           </div>
 
           {/* Quick Trending Tags */}
@@ -515,6 +532,87 @@ const HomePage = () => {
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
+          FEATURE HIGHLIGHT BANNER (Interactive Estimator & Matchmaker)
+         ───────────────────────────────────────────────────────────── */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="p-8 sm:p-12 rounded-2xl bg-white border border-zinc-200 shadow-soft-lg space-y-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-zinc-100">
+            <div className="space-y-2">
+              <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-zinc-500 block">
+                Platform Innovation
+              </span>
+              <h3 className="text-2xl sm:text-3xl font-serif font-bold text-zinc-900">
+                Next-Generation Creative Production Tools
+              </h3>
+              <p className="text-xs text-zinc-500 max-w-xl leading-relaxed">
+                Transparent live pricing, multi-discipline team coordination, and intelligent aesthetic matchmaking built into every booking.
+              </p>
+            </div>
+
+            <Link to="/features">
+              <Button variant="outline" size="sm" rightIcon={<ArrowRight className="w-3.5 h-3.5" />}>
+                Explore All Features
+              </Button>
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="p-6 rounded-xl bg-zinc-50 border border-zinc-200/80 space-y-4 hover:border-zinc-900 transition-all">
+              <div className="w-10 h-10 rounded-lg bg-zinc-900 text-white flex items-center justify-center">
+                <Sliders className="w-5 h-5 stroke-[1.75]" />
+              </div>
+              <div className="space-y-1.5">
+                <h4 className="text-sm font-bold text-zinc-900">Interactive Shoot Estimator</h4>
+                <p className="text-xs text-zinc-500 leading-relaxed">
+                  Calculate equipment, crew size, drone options, and turnaround timelines before locking your dates.
+                </p>
+              </div>
+              <Link to="/features#estimator" className="inline-flex items-center gap-1 text-xs font-bold text-zinc-900 hover:underline">
+                <span>Calculate My Shoot</span>
+                <ArrowRight className="w-3 h-3" />
+              </Link>
+            </div>
+
+            <div className="p-6 rounded-xl bg-zinc-50 border border-zinc-200/80 space-y-4 hover:border-zinc-900 transition-all">
+              <div className="w-10 h-10 rounded-lg bg-zinc-900 text-white flex items-center justify-center">
+                <Sparkles className="w-5 h-5 stroke-[1.75]" />
+              </div>
+              <div className="space-y-1.5">
+                <h4 className="text-sm font-bold text-zinc-900">AI Creator Matchmaker</h4>
+                <p className="text-xs text-zinc-500 leading-relaxed">
+                  Pinpoint studios based on visual moodboards (Cinematic, Moody Fine-Art, Bold Fashion, Candid).
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setMatchmakerOpen(true)}
+                className="inline-flex items-center gap-1 text-xs font-bold text-zinc-900 hover:underline"
+              >
+                <span>Launch Matchmaker</span>
+                <ArrowRight className="w-3 h-3" />
+              </button>
+            </div>
+
+            <div className="p-6 rounded-xl bg-zinc-50 border border-zinc-200/80 space-y-4 hover:border-zinc-900 transition-all">
+              <div className="w-10 h-10 rounded-lg bg-zinc-900 text-white flex items-center justify-center">
+                <ShieldCheck className="w-5 h-5 stroke-[1.75]" />
+              </div>
+              <div className="space-y-1.5">
+                <h4 className="text-sm font-bold text-zinc-900">100% Escrow Vault</h4>
+                <p className="text-xs text-zinc-500 leading-relaxed">
+                  Disbursement is bonded and only released after you inspect and approve your 4K cloud master files.
+                </p>
+              </div>
+              <Link to="/features" className="inline-flex items-center gap-1 text-xs font-bold text-zinc-900 hover:underline">
+                <span>Learn About Escrow</span>
+                <ArrowRight className="w-3 h-3" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─────────────────────────────────────────────────────────────
           SECTION 05: STORIES & EDITORIAL MAGAZINE
          ───────────────────────────────────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
@@ -747,6 +845,12 @@ const HomePage = () => {
       <CreatorOnboardingModal
         isOpen={creatorModalOpen}
         onClose={() => setCreatorModalOpen(false)}
+      />
+
+      {/* AI Matchmaker Modal */}
+      <AiMatchmakerModal
+        isOpen={matchmakerOpen}
+        onClose={() => setMatchmakerOpen(false)}
       />
     </div>
   );

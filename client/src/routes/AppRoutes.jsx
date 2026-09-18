@@ -18,6 +18,7 @@ import VideographersPage from '../pages/public/VideographersPage';
 import EditorsPage from '../pages/public/EditorsPage';
 import ProfessionalProfilePage from '../pages/public/ProfessionalProfilePage';
 import ServicesPage from '../pages/public/ServicesPage';
+import FeaturesPage from '../pages/public/FeaturesPage';
 import AboutPage from '../pages/public/AboutPage';
 import ContactPage from '../pages/public/ContactPage';
 import NotFoundPage from '../pages/public/NotFoundPage';
@@ -66,6 +67,7 @@ const AppRoutes = () => {
         <Route path="/editors" element={<EditorsPage />} />
         <Route path="/professionals/:id" element={<ProfessionalProfilePage />} />
         <Route path="/services" element={<ServicesPage />} />
+        <Route path="/features" element={<FeaturesPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="*" element={<NotFoundPage />} />

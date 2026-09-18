@@ -141,6 +141,11 @@ const Footer = () => {
             </h4>
             <ul className="space-y-2.5 text-xs text-zinc-400">
               <li>
+                <Link to="/features" className="hover:text-white transition-colors flex items-center gap-1 text-zinc-200 font-semibold">
+                  <span>Platform Features</span>
+                </Link>
+              </li>
+              <li>
                 <Link to="/about" className="hover:text-white transition-colors">
                   About LensCraft
                 </Link>
@@ -151,6 +156,11 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
+                <Link to="/features#estimator" className="hover:text-white transition-colors">
+                  Shoot Cost Estimator
+                </Link>
+              </li>
+              <li>
                 <a href="#" className="hover:text-white transition-colors">
                   Escrow Guarantee Policy
                 </a>
@@ -158,11 +168,6 @@ const Footer = () => {
               <li>
                 <a href="#" className="hover:text-white transition-colors">
                   Commercial Rights License
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white transition-colors">
-                  Terms of Production
                 </a>
               </li>
             </ul>

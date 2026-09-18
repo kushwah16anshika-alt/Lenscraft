@@ -13,12 +13,14 @@ import {
   Sparkles,
   BookOpen,
   PlusCircle,
+  Sliders,
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { ROLES, ROLE_LABELS } from '../../constants/roles';
 import Button from '../common/Button';
 import Avatar from '../common/Avatar';
 import CreatorOnboardingModal from '../common/CreatorOnboardingModal';
+import AiMatchmakerModal from '../common/AiMatchmakerModal';
 
 const Navbar = () => {
   const { user, isAuthenticated, logout, quickDemoLogin } = useAuth();
@@ -27,6 +29,7 @@ const Navbar = () => {
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [demoDropdownOpen, setDemoDropdownOpen] = useState(false);
   const [creatorModalOpen, setCreatorModalOpen] = useState(false);
+  const [matchmakerModalOpen, setMatchmakerModalOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -57,6 +60,7 @@ const Navbar = () => {
     { label: 'Videographers', path: '/videographers', icon: Video },
     { label: 'Video Editors', path: '/editors', icon: Film },
     { label: 'Services', path: '/services', icon: Compass },
+    { label: 'Features', path: '/features', icon: Sparkles },
     { label: 'About', path: '/about', icon: BookOpen },
   ];
 
@@ -107,6 +111,15 @@ const Navbar = () => {
 
             {/* Right: Actions & Profile */}
             <div className="hidden sm:flex items-center gap-3">
+              {/* AI Matchmaker CTA */}
+              <button
+                onClick={() => setMatchmakerModalOpen(true)}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold text-zinc-900 bg-zinc-100 hover:bg-zinc-200 border border-zinc-200 transition-all shadow-xs"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-zinc-900" />
+                <span>Find Match</span>
+              </button>
+
               {/* Become a Creator CTA */}
               <button
                 onClick={() => setCreatorModalOpen(true)}
@@ -260,6 +273,17 @@ const Navbar = () => {
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
+                  setMatchmakerModalOpen(true);
+                }}
+                className="w-full flex items-center justify-center gap-2 p-2.5 rounded-md bg-zinc-900 text-xs font-bold text-white shadow-xs"
+              >
+                <Sparkles className="w-4 h-4 text-zinc-300" />
+                <span>AI Creator Matchmaker</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
                   setCreatorModalOpen(true);
                 }}
                 className="w-full flex items-center justify-center gap-2 p-2.5 rounded-md bg-zinc-100 text-xs font-bold text-zinc-900"
@@ -315,6 +339,12 @@ const Navbar = () => {
       <CreatorOnboardingModal
         isOpen={creatorModalOpen}
         onClose={() => setCreatorModalOpen(false)}
+      />
+
+      {/* AI Matchmaker Modal */}
+      <AiMatchmakerModal
+        isOpen={matchmakerModalOpen}
+        onClose={() => setMatchmakerModalOpen(false)}
       />
     </>
   );

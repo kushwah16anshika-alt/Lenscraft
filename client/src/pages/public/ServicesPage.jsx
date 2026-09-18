@@ -14,14 +14,20 @@ import {
   ChevronDown,
   Award,
   SlidersHorizontal,
+  Sparkles,
+  Sliders,
+  Layers,
+  Lock,
 } from 'lucide-react';
 import { CREATIVE_CATEGORIES } from '../../constants/categories';
 import Button from '../../components/common/Button';
+import AiMatchmakerModal from '../../components/common/AiMatchmakerModal';
 
 const ServicesPage = () => {
   const [selectedRole, setSelectedRole] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [openFaq, setOpenFaq] = useState(null);
+  const [matchmakerOpen, setMatchmakerOpen] = useState(false);
 
   const categoryDetails = {
     weddings: {
@@ -182,6 +188,29 @@ const ServicesPage = () => {
             <p className="text-sm sm:text-base text-zinc-400 leading-relaxed max-w-2xl">
               Browse transparent rate cards, vetted creative disciplines, and verified talent with 100% escrow protection and guaranteed delivery timelines.
             </p>
+
+            {/* Quick Action Pills */}
+            <div className="flex flex-wrap items-center gap-3 pt-2">
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={() => setMatchmakerOpen(true)}
+                className="bg-white hover:bg-zinc-200 text-zinc-950 font-bold"
+                rightIcon={<Sparkles className="w-3.5 h-3.5 text-zinc-900" />}
+              >
+                AI Creator Matchmaker
+              </Button>
+              <Link to="/features#estimator">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="bg-white/10 hover:bg-white/20 text-white border-white/25"
+                  rightIcon={<Sliders className="w-3.5 h-3.5" />}
+                >
+                  Shoot Cost Estimator
+                </Button>
+              </Link>
+            </div>
 
             {/* Quick Filter & Search Bar */}
             <div className="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
@@ -361,6 +390,69 @@ const ServicesPage = () => {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Feature Tier SLA Matrix */}
+        <div className="p-6 sm:p-8 rounded-2xl bg-zinc-50 border border-zinc-200 space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 pb-3 border-b border-zinc-200">
+            <div>
+              <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-zinc-500 block mb-1">
+                Feature & SLA Matrix
+              </span>
+              <h3 className="text-xl font-serif font-bold text-zinc-900">
+                Package Deliverable Comparison
+              </h3>
+            </div>
+            <Link to="/features" className="text-xs font-bold text-zinc-900 hover:underline flex items-center gap-1">
+              <span>View Full Platform Specs</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs">
+              <thead>
+                <tr className="border-b border-zinc-200 text-zinc-700 uppercase font-bold text-[10px] tracking-wider">
+                  <th className="py-3 px-4">Production Dimension</th>
+                  <th className="py-3 px-4">Essential Tier</th>
+                  <th className="py-3 px-4 bg-zinc-200/50 rounded-t">Signature Tier</th>
+                  <th className="py-3 px-4">Master Luxury Tier</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-zinc-200 text-zinc-600">
+                <tr>
+                  <td className="py-3 px-4 font-bold text-zinc-900">Lead Artists</td>
+                  <td className="py-3 px-4">1 Senior Lead</td>
+                  <td className="py-3 px-4 font-semibold text-zinc-900 bg-zinc-200/30">2 Master Artists</td>
+                  <td className="py-3 px-4">Full Squad (3+ Specialists)</td>
+                </tr>
+                <tr>
+                  <td className="py-3 px-4 font-bold text-zinc-900">Teaser Delivery</td>
+                  <td className="py-3 px-4">72 Hours</td>
+                  <td className="py-3 px-4 font-semibold text-zinc-900 bg-zinc-200/30">Guaranteed 48 Hours</td>
+                  <td className="py-3 px-4">Same-Day / 24 Hours</td>
+                </tr>
+                <tr>
+                  <td className="py-3 px-4 font-bold text-zinc-900">4K Drone Aerials</td>
+                  <td className="py-3 px-4">Optional Add-on</td>
+                  <td className="py-3 px-4 font-semibold text-zinc-900 bg-zinc-200/30">Included</td>
+                  <td className="py-3 px-4">Included (Dual FPV + Cinema)</td>
+                </tr>
+                <tr>
+                  <td className="py-3 px-4 font-bold text-zinc-900">Cloud Storage</td>
+                  <td className="py-3 px-4">6 Months Vault</td>
+                  <td className="py-3 px-4 font-semibold text-zinc-900 bg-zinc-200/30">1 Year Master Vault</td>
+                  <td className="py-3 px-4">Permanent Lifetime Vault</td>
+                </tr>
+                <tr>
+                  <td className="py-3 px-4 font-bold text-zinc-900">Escrow Bond</td>
+                  <td className="py-3 px-4">100% Protected</td>
+                  <td className="py-3 px-4 font-semibold text-zinc-900 bg-zinc-200/30">100% Protected</td>
+                  <td className="py-3 px-4">100% Protected + VIP Concierge</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
 
@@ -603,6 +695,12 @@ const ServicesPage = () => {
           </div>
         </div>
       </section>
+
+      {/* AI Matchmaker Modal */}
+      <AiMatchmakerModal
+        isOpen={matchmakerOpen}
+        onClose={() => setMatchmakerOpen(false)}
+      />
     </div>
   );
 };
