@@ -1,66 +1,56 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, ShieldCheck, Heart, ArrowUpRight, Star, Calendar } from 'lucide-react';
+import { MapPin, ShieldCheck, Heart, ArrowUpRight, Star, Calendar, Sparkles } from 'lucide-react';
 import Avatar from '../common/Avatar';
 import { formatCurrency, formatPriceUnit } from '../../utils/formatters';
 import { ROLE_LABELS } from '../../constants/roles';
 import BookingModal from '../common/BookingModal';
 
-const ProfessionalCard = ({
-  professional,
-  onWishlist,
-  onWishlistToggle,
-  isWishlisted = false,
-  aspectRatio = 'aspect-[4/5]',
-  featured = false
-}) => {
+const ProfessionalCard = ({ professional, onWishlist, onWishlistToggle, isWishlisted = false }) => {
   const [bookingOpen, setBookingOpen] = useState(false);
-
-  if (!professional) return null;
 
   const {
     id,
     name,
     role,
-    category,
     tagline,
-    rating = 4.9,
-    reviewCount = 18,
-    startingPrice = 25000,
-    priceUnit = 'shoot',
+    rating,
+    reviewCount,
+    startingPrice,
+    priceUnit,
     location,
     avatar,
     coverImage,
-    isVerified = true,
+    isVerified,
     specialties = [],
+    experienceYears,
   } = professional;
 
-  const city = typeof location === 'string' ? location : (location?.city || 'Indore, India');
-  const displayCategory = category || ROLE_LABELS[role] || role || 'Photographer';
-  const priceFormatted = startingPrice >= 1000 ? `₹${Math.round(startingPrice / 1000)}K` : `₹${startingPrice}`;
+  const completedShoots = Math.floor((reviewCount || 12) * 1.8);
 
   return (
     <>
-      <div className={`group flex flex-col bg-[#171717] border border-[#262626] hover:border-[#C5A059]/60 rounded-sm overflow-hidden transition-all duration-500 hover:shadow-2xl text-left relative ${featured ? 'md:row-span-2' : ''}`}>
-        
+      <div className="group flex flex-col h-full bg-[#060b19]/80 backdrop-blur-xl border border-sky-500/20 rounded-2xl overflow-hidden transition-all duration-300 hover:border-sky-400/60 hover:shadow-[0_15px_45px_-5px_rgba(0,210,255,0.2)] text-left relative">
+        {/* Subtle top glow line */}
+        <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-sky-400/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+
         {/* Visual Cover / Image Showcase */}
-        <Link to={`/professionals/${id}`} className={`relative ${aspectRatio} w-full overflow-hidden bg-[#111111] block`}>
+        <Link to={`/professionals/${id}`} className="relative h-56 sm:h-64 w-full overflow-hidden bg-slate-900 block">
           <img
             src={coverImage || 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80'}
             alt={name}
-            className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 filter brightness-95 group-hover:brightness-100"
-            loading="lazy"
+            className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-108 opacity-90 group-hover:opacity-100"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#171717] via-transparent to-black/20" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#060b19] via-[#060b19]/30 to-transparent" />
 
-          {/* Discipline Badge (top left) */}
+          {/* Role Pill */}
           <div className="absolute top-3.5 left-3.5">
-            <span className="text-[10px] font-mono uppercase tracking-widest px-2.5 py-1 rounded-xs bg-[#080808]/85 backdrop-blur-md text-[#EAE6DF] border border-[#262626]">
-              {displayCategory}
+            <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-slate-950/80 backdrop-blur-md text-sky-300 border border-sky-500/30 shadow-xs">
+              {ROLE_LABELS[role] || role}
             </span>
           </div>
 
-          {/* Favorite Heart Button (top right) */}
+          {/* Wishlist Button */}
           <button
             type="button"
             onClick={(e) => {
@@ -69,69 +59,105 @@ const ProfessionalCard = ({
               if (onWishlist) onWishlist(professional);
               else if (onWishlistToggle) onWishlistToggle(professional);
             }}
-            className="absolute top-3.5 right-3.5 p-2 rounded-full bg-[#080808]/85 hover:bg-[#171717] text-[#A39E93] hover:text-[#C5A059] backdrop-blur-md border border-[#262626] transition-all"
-            aria-label="Save Creator"
+            className="absolute top-3.5 right-3.5 p-2 rounded-full bg-slate-950/80 hover:bg-white text-slate-300 hover:text-red-500 backdrop-blur-md border border-white/10 transition-all shadow-xs"
+            title="Save Creator"
           >
-            <Heart className={`w-3.5 h-3.5 ${isWishlisted ? 'fill-[#C5A059] text-[#C5A059]' : ''}`} />
+            <Heart className={`w-3.5 h-3.5 ${isWishlisted ? 'fill-red-500 text-red-500' : ''}`} />
           </button>
-        </Link>
 
-        {/* Creator Info Area */}
-        <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-3">
-          <div>
-            {/* Header: Name & Verification */}
-            <div className="flex items-baseline justify-between gap-2">
-              <Link to={`/professionals/${id}`} className="flex items-center gap-1.5 min-w-0">
-                <h3 className="text-base sm:text-lg font-editorial font-semibold text-[#FBF9F5] group-hover:text-[#DFCA9B] transition-colors truncate">
-                  {name}
-                </h3>
-                {isVerified && (
-                  <ShieldCheck className="w-3.5 h-3.5 text-[#C5A059] shrink-0" title="Verified Creator" />
-                )}
-              </Link>
+          {/* Starting Price & Rating Badges */}
+          <div className="absolute bottom-3 left-3.5 right-3.5 flex items-center justify-between text-white">
+            <div className="flex items-center gap-1.5 text-xs font-bold bg-slate-950/85 backdrop-blur-md px-2.5 py-1 rounded-lg border border-sky-500/20">
+              <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+              <span className="text-white">{rating}</span>
+              <span className="text-slate-400 text-[10px] font-normal">({reviewCount})</span>
             </div>
 
-            {/* Sub-label: Category */}
-            <p className="text-xs text-[#C5A059] font-medium tracking-wide mt-0.5 truncate">
-              {displayCategory}
-            </p>
-
-            {/* Location + Price Line + Rating */}
-            <div className="flex items-center justify-between text-xs text-[#A39E93] mt-2 pt-2 border-t border-[#262626]/80">
-              <span className="truncate">
-                {city.split(',')[0]} · <strong className="text-[#FBF9F5] font-normal">{priceFormatted} onwards</strong>
+            <div className="text-right bg-slate-950/85 backdrop-blur-md px-3 py-1 rounded-lg border border-sky-500/20">
+              <span className="text-xs font-mono font-bold text-sky-300">
+                {formatCurrency(startingPrice)}
               </span>
-              
-              <div className="flex items-center gap-1 shrink-0">
-                <Star className="w-3 h-3 fill-[#C5A059] text-[#C5A059]" />
-                <span className="text-xs font-mono font-medium text-[#FBF9F5]">{rating}</span>
-              </div>
+              <span className="text-[10px] text-slate-400 ml-1">{formatPriceUnit(priceUnit)}</span>
             </div>
           </div>
+        </Link>
 
-          {/* Quick Actions (View Profile / Book Now) */}
-          <div className="grid grid-cols-2 gap-2 pt-2 border-t border-[#262626]/50">
+        {/* Details Area */}
+        <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between space-y-4">
+          <div>
+            {/* Avatar and Name */}
+            <div className="flex items-start gap-3">
+              <Avatar
+                src={avatar}
+                name={name}
+                size="md"
+                className="ring-2 ring-sky-500/30 shadow-xs shrink-0"
+              />
+              <div className="flex-1 min-w-0">
+                <Link to={`/professionals/${id}`}>
+                  <div className="flex items-center gap-1.5">
+                    <h3 className="text-base font-display font-bold text-white truncate group-hover:text-sky-300 transition-colors">
+                      {name}
+                    </h3>
+                    {isVerified && (
+                      <ShieldCheck className="w-4 h-4 text-sky-400 shrink-0" title="Verified Visual Master" />
+                    )}
+                  </div>
+                </Link>
+                <div className="flex items-center gap-2 text-xs text-slate-400 mt-0.5">
+                  <div className="flex items-center gap-1">
+                    <MapPin className="w-3 h-3 text-sky-400/70 shrink-0" />
+                    <span className="truncate">{location?.city || 'India'}</span>
+                  </div>
+                  <span className="text-slate-600">·</span>
+                  <span className="text-sky-400 font-mono text-[10px]">{completedShoots}+ shoots</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Tagline */}
+            <p className="text-xs text-slate-300 line-clamp-2 mt-3 leading-relaxed">
+              {tagline}
+            </p>
+
+            {/* Specialties Badges */}
+            {specialties && specialties.length > 0 && (
+              <div className="flex flex-wrap gap-1.5 mt-3 pt-3 border-t border-white/5">
+                {specialties.slice(0, 3).map((spec, sIdx) => (
+                  <span
+                    key={sIdx}
+                    className="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-slate-900 border border-sky-500/20 text-slate-300"
+                  >
+                    {spec}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Action Buttons: View Profile & Book Now */}
+          <div className="grid grid-cols-2 gap-2 pt-2">
             <Link
               to={`/professionals/${id}`}
-              className="flex items-center justify-center gap-1 py-2 px-3 rounded-xs bg-[#111111] hover:bg-[#1E1E1E] text-[#EAE6DF] hover:text-[#DFCA9B] border border-[#262626] hover:border-[#C5A059]/40 transition-all text-xs font-medium"
+              className="flex items-center justify-center gap-1 py-2 px-3 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-slate-200 hover:text-white border border-sky-500/20 hover:border-sky-400/40 transition-all text-xs font-semibold"
             >
-              <span>Portfolio</span>
-              <ArrowUpRight className="w-3 h-3 text-[#A39E93]" />
+              <span>View Profile</span>
+              <ArrowUpRight className="w-3.5 h-3.5 text-sky-400" />
             </Link>
 
             <button
               type="button"
               onClick={() => setBookingOpen(true)}
-              className="flex items-center justify-center gap-1 py-2 px-3 rounded-xs gold-btn text-[#080808] font-semibold text-xs transition-all"
+              className="flex items-center justify-center gap-1 py-2 px-3 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-bold text-xs shadow-[0_0_15px_rgba(56,189,248,0.3)] transition-all hover:scale-[1.02]"
             >
-              <Calendar className="w-3 h-3" />
-              <span>Book</span>
+              <Calendar className="w-3.5 h-3.5" />
+              <span>Book Now</span>
             </button>
           </div>
         </div>
       </div>
 
-      {/* Booking Modal Instance */}
+      {/* Direct Booking Modal for this Professional */}
       <BookingModal
         isOpen={bookingOpen}
         onClose={() => setBookingOpen(false)}
@@ -142,3 +168,4 @@ const ProfessionalCard = ({
 };
 
 export default ProfessionalCard;
+
