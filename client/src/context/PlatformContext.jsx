@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import {
   MOCK_PROFESSIONALS,
   MOCK_BOOKINGS,
@@ -8,6 +8,14 @@ import {
 import { CREATIVE_CATEGORIES } from '../constants/categories';
 
 export const PlatformContext = createContext(null);
+
+export const usePlatform = () => {
+  const context = useContext(PlatformContext);
+  if (!context) {
+    throw new Error('usePlatform must be used within a PlatformProvider');
+  }
+  return context;
+};
 
 const STORAGE_KEYS = {
   BOOKINGS: 'lenscraft_platform_bookings',
