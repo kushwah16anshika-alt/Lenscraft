@@ -1,69 +1,65 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Camera, ShieldCheck, Instagram, Youtube, Linkedin, Mail, ArrowRight, Sparkles } from 'lucide-react';
+import { Aperture, ShieldCheck, Instagram, Youtube, Linkedin, Mail, ArrowRight, Sparkles } from 'lucide-react';
 
 const Footer = () => {
   return (
-    <footer className="bg-[#02040a] text-white pt-24 pb-12 text-left border-t border-sky-500/20 relative z-20 overflow-hidden">
-      {/* Background Ambient Glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-gradient-to-b from-sky-500/10 via-indigo-500/5 to-transparent blur-[140px] pointer-events-none" />
-
+    <footer className="bg-[#080808] text-[#FBF9F5] pt-20 pb-12 text-left border-t border-[#262626] relative z-20 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16 relative z-10">
-        {/* Top Split: Newsletter & Manifesto */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 pb-12 border-b border-white/10 items-center">
-          <div className="space-y-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-950/60 border border-sky-500/30 text-sky-300 text-[10px] font-mono font-semibold uppercase tracking-[0.2em]">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>THE FUTURE OF PHOTOGRAPHY</span>
-            </div>
-            <h3 className="text-2xl sm:text-3xl font-display font-bold text-white tracking-tight leading-snug">
-              Step Into the World of Visionary Visual Storytelling.
+        {/* Top Newsletter & Manifesto Banner */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 pb-12 border-b border-[#262626] items-center">
+          <div className="space-y-2">
+            <p className="text-xs uppercase font-mono tracking-widest text-[#C5A059]">
+              The Lenscraft Journal
+            </p>
+            <h3 className="text-2xl sm:text-4xl font-cinzel font-normal text-[#FBF9F5]">
+              STEP INTO VISUAL STORYTELLING.
             </h3>
-            <p className="text-xs text-slate-400 max-w-md leading-relaxed">
-              Join our private dispatch to receive runway lookbooks, masterclass releases, and newly inducted creator portfolio showcases.
+            <p className="text-xs sm:text-sm text-[#A39E93] max-w-md leading-relaxed">
+              Join our curated dispatch to receive runway lookbooks, editorial spotlights, and newly inducted creator case studies.
             </p>
           </div>
 
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 max-w-md lg:ml-auto w-full">
             <div className="relative flex-1">
-              <Mail className="w-4 h-4 text-sky-400/60 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <Mail className="w-4 h-4 text-[#A39E93] absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
                 type="email"
                 placeholder="Enter your email address..."
-                className="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-900/80 border border-sky-500/25 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400 transition-all shadow-inner"
+                className="w-full pl-10 pr-4 py-2.5 rounded bg-[#111111] border border-[#262626] text-xs text-[#FBF9F5] placeholder-[#6B665E] focus:outline-none focus:border-[#C5A059] transition-all"
               />
             </div>
             <button
               type="button"
-              className="px-6 py-3 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-bold text-xs transition-all shadow-[0_0_20px_rgba(56,189,248,0.4)] shrink-0 flex items-center justify-center gap-1.5"
+              onClick={() => alert('Thank you for subscribing to the Lenscraft journal!')}
+              className="px-6 py-2.5 rounded gold-btn text-xs uppercase tracking-wider font-semibold shrink-0"
             >
-              <span>Subscribe</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+              Subscribe
             </button>
           </div>
         </div>
 
         {/* Directory Links Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-white/10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-[#262626]">
           {/* Brand Column */}
           <div className="lg:col-span-2 space-y-4">
-            <Link to="/" className="flex items-center gap-3 group">
-              <div className="relative w-9 h-9 rounded-xl bg-slate-900 border border-sky-500/30 flex items-center justify-center text-sky-400 shadow-[0_0_15px_rgba(56,189,248,0.3)]">
-                <Camera className="w-4.5 h-4.5 stroke-[1.75]" />
+            <Link to="/" className="flex items-center gap-2.5 group">
+              <div className="w-8 h-8 rounded bg-[#171717] border border-[#262626] group-hover:border-[#C5A059] flex items-center justify-center transition-colors">
+                <Aperture className="w-4 h-4 text-[#C5A059]" />
               </div>
-              <span className="text-xl font-display font-extrabold tracking-tight text-white">
-                LENS<span className="text-sky-400">·</span>CRAFT
+              <span className="text-xl font-cinzel font-semibold tracking-wider text-[#FBF9F5]">
+                LENSCRAFT
               </span>
             </Link>
-            <p className="text-xs text-slate-400 max-w-sm leading-relaxed">
-              The premier futuristic creative platform connecting visionary couples, luxury brands, and global directors with certified Photographers, Cinematographers, and Visual Artists.
+            <p className="text-xs text-[#A39E93] max-w-sm leading-relaxed">
+              The premier creative marketplace connecting discerning couples, visionary brands, and global directors with verified Photographers, Cinematographers, and Master Editors.
             </p>
             <div className="flex items-center gap-3 pt-2">
               <a
                 href="https://instagram.com"
                 target="_blank"
                 rel="noreferrer"
-                className="p-2.5 rounded-xl bg-slate-900/80 border border-sky-500/20 text-slate-400 hover:text-sky-400 hover:border-sky-400/50 hover:shadow-[0_0_15px_rgba(56,189,248,0.3)] transition-all"
+                className="p-2 rounded bg-[#111111] border border-[#262626] text-[#A39E93] hover:text-[#DFCA9B] hover:border-[#C5A059] transition-all"
                 title="Instagram"
               >
                 <Instagram className="w-4 h-4" />
@@ -72,7 +68,7 @@ const Footer = () => {
                 href="https://youtube.com"
                 target="_blank"
                 rel="noreferrer"
-                className="p-2.5 rounded-xl bg-slate-900/80 border border-sky-500/20 text-slate-400 hover:text-sky-400 hover:border-sky-400/50 hover:shadow-[0_0_15px_rgba(56,189,248,0.3)] transition-all"
+                className="p-2 rounded bg-[#111111] border border-[#262626] text-[#A39E93] hover:text-[#DFCA9B] hover:border-[#C5A059] transition-all"
                 title="YouTube"
               >
                 <Youtube className="w-4 h-4" />
@@ -81,7 +77,7 @@ const Footer = () => {
                 href="https://linkedin.com"
                 target="_blank"
                 rel="noreferrer"
-                className="p-2.5 rounded-xl bg-slate-900/80 border border-sky-500/20 text-slate-400 hover:text-sky-400 hover:border-sky-400/50 hover:shadow-[0_0_15px_rgba(56,189,248,0.3)] transition-all"
+                className="p-2 rounded bg-[#111111] border border-[#262626] text-[#A39E93] hover:text-[#DFCA9B] hover:border-[#C5A059] transition-all"
                 title="LinkedIn"
               >
                 <Linkedin className="w-4 h-4" />
@@ -91,113 +87,91 @@ const Footer = () => {
 
           {/* Explore Disciplines */}
           <div>
-            <h4 className="text-[10px] font-mono font-bold uppercase tracking-[0.25em] text-sky-400 mb-4">
-              Explore Disciplines
+            <h4 className="text-xs uppercase font-mono font-bold tracking-widest text-[#C5A059] mb-4">
+              Disciplines
             </h4>
-            <ul className="space-y-2.5 text-xs text-slate-400">
+            <ul className="space-y-2.5 text-xs text-[#A39E93]">
               <li>
-                <Link to="/photographers?category=weddings" className="hover:text-sky-300 transition-colors">
+                <Link to="/photographers" className="hover:text-[#FBF9F5] transition-colors">
                   Wedding Photography
                 </Link>
               </li>
               <li>
-                <Link to="/videographers?category=pre-wedding" className="hover:text-sky-300 transition-colors">
-                  Cinematic Pre-Wedding
+                <Link to="/videographers" className="hover:text-[#FBF9F5] transition-colors">
+                  4K Cinematography
                 </Link>
               </li>
               <li>
-                <Link to="/photographers?category=commercial" className="hover:text-sky-300 transition-colors">
-                  Product & Commercial
+                <Link to="/editors?type=photo" className="hover:text-[#FBF9F5] transition-colors">
+                  High-End Retouching
                 </Link>
               </li>
               <li>
-                <Link to="/editors?category=reels-editing" className="hover:text-sky-300 transition-colors">
-                  Viral Reels & Post-Production
+                <Link to="/editors?type=video" className="hover:text-[#FBF9F5] transition-colors">
+                  Video Color Grading
                 </Link>
               </li>
               <li>
-                <Link to="/services" className="hover:text-sky-300 transition-colors">
-                  Turnkey Production Services
+                <Link to="/explore" className="hover:text-[#FBF9F5] transition-colors">
+                  Complete Creator Directory
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Quick Navigation */}
+          {/* Navigation */}
           <div>
-            <h4 className="text-[10px] font-mono font-bold uppercase tracking-[0.25em] text-sky-400 mb-4">
+            <h4 className="text-xs uppercase font-mono font-bold tracking-widest text-[#C5A059] mb-4">
               Platform
             </h4>
-            <ul className="space-y-2.5 text-xs text-slate-400">
+            <ul className="space-y-2.5 text-xs text-[#A39E93]">
               <li>
-                <Link to="/" className="hover:text-sky-300 transition-colors">
-                  Home Discovery
+                <Link to="/explore" className="hover:text-[#FBF9F5] transition-colors">
+                  Explore Talent
                 </Link>
               </li>
               <li>
-                <Link to="/photographers" className="hover:text-sky-300 transition-colors">
-                  Photographers Roster
+                <Link to="/#stories" className="hover:text-[#FBF9F5] transition-colors">
+                  Stories Worth Remembering
                 </Link>
               </li>
               <li>
-                <Link to="/services" className="hover:text-sky-300 transition-colors">
-                  Services & Experiences
+                <Link to="/#how-it-works" className="hover:text-[#FBF9F5] transition-colors">
+                  How It Works
                 </Link>
               </li>
               <li>
-                <Link to="/#portfolio" className="hover:text-sky-300 transition-colors">
-                  Master Portfolio Gallery
-                </Link>
-              </li>
-              <li>
-                <Link to="/#stories" className="hover:text-sky-300 transition-colors">
-                  Behind the Lens Stories
+                <Link to="/register?role=creator" className="hover:text-[#FBF9F5] transition-colors">
+                  Join as a Creator
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Legal & Guarantee */}
+          {/* Escrow & Trust */}
           <div>
-            <h4 className="text-[10px] font-mono font-bold uppercase tracking-[0.25em] text-sky-400 mb-4">
-              Trust & Support
+            <h4 className="text-xs uppercase font-mono font-bold tracking-widest text-[#C5A059] mb-4">
+              Trust & Security
             </h4>
-            <ul className="space-y-2.5 text-xs text-slate-400">
-              <li>
-                <Link to="/about" className="hover:text-sky-300 transition-colors">
-                  About LensCraft
-                </Link>
-              </li>
-              <li>
-                <Link to="/contact" className="hover:text-sky-300 transition-colors">
-                  Creative Concierge & Briefs
-                </Link>
-              </li>
-              <li>
-                <Link to="/features" className="hover:text-sky-300 transition-colors">
-                  Platform Architecture
-                </Link>
-              </li>
-              <li>
-                <a href="#plan-shoot" className="hover:text-sky-300 transition-colors">
-                  Interactive Shoot Planner
-                </a>
-              </li>
-              <li>
-                <Link to="/register" className="hover:text-sky-300 transition-colors text-sky-400 font-semibold">
-                  Apply to Creator Roster →
-                </Link>
-              </li>
-            </ul>
+            <div className="space-y-3 text-xs text-[#A39E93]">
+              <div className="flex items-start gap-2">
+                <ShieldCheck className="w-4 h-4 text-[#C5A059] shrink-0 mt-0.5" />
+                <p>100% Escrow Milestone Payout Protection</p>
+              </div>
+              <p className="text-[11px] text-[#6B665E]">
+                All transactions are encrypted and backed by our master delivery guarantee.
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-          <p>© 2026 LensCraft Technologies Inc. All rights reserved.</p>
-          <div className="flex items-center gap-2 text-slate-400">
-            <ShieldCheck className="w-4 h-4 text-sky-400" />
-            <span className="font-mono text-[11px]">100% Escrow-Protected Global Creative Network</span>
+        {/* Bottom Copyright */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#6B665E]">
+          <p>© {new Date().getFullYear()} Lenscraft Technologies. All rights reserved.</p>
+          <div className="flex items-center gap-6">
+            <span className="hover:text-[#A39E93] cursor-pointer">Privacy Policy</span>
+            <span className="hover:text-[#A39E93] cursor-pointer">Terms of Service</span>
+            <span className="hover:text-[#A39E93] cursor-pointer">Escrow Protocols</span>
           </div>
         </div>
       </div>
@@ -206,4 +180,3 @@ const Footer = () => {
 };
 
 export default Footer;
-
