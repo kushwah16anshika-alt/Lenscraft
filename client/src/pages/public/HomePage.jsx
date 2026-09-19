@@ -228,60 +228,305 @@ const HomePage = () => {
         );
 
   // ─────────────────────────────────────────────────────────────
-  // 3. PACKAGES DATA ("Choose Your Experience")
+  // 3. PACKAGES CATALOG DATA ("Choose Your Experience")
   // ─────────────────────────────────────────────────────────────
-  const packagesList = [
-    {
-      id: 'basic',
-      name: 'Basic Experience',
-      tagline: 'Ideal for intimate portraits, couple sessions & short events.',
-      price: 18000,
-      deliveryDays: 5,
-      features: [
-        '3–4 Hours on-location shoot',
-        'Single Master Photographer',
-        '50+ Hand-Retouched High-Res Photos',
-        'Online Digital Cloud Master Gallery',
-        'Standard Color Grade & Skin Tone Polish',
-        '100% Escrow Protection Guarantee',
+  const [activePackageCategory, setActivePackageCategory] = useState('weddings');
+
+  const PACKAGE_CATALOG = {
+    weddings: {
+      label: 'Weddings & Celebrations',
+      packages: [
+        {
+          id: 'wedding-intimate',
+          name: 'Intimate Ceremony',
+          tagline: 'Ideal for haldi, mehendi, or court marriage rituals.',
+          price: 35000,
+          deliveryDays: 7,
+          features: [
+            '4–5 Hours on-location coverage',
+            'Single Master Candid Photographer',
+            '100+ Hand-Retouched High-Res Frames',
+            'Online Cloud Master Gallery',
+            '48-Hour Early Teaser Selection',
+            '100% Escrow Protection Guarantee',
+          ],
+          isPopular: false,
+        },
+        {
+          id: 'wedding-royal',
+          name: 'Royal Signature Wedding',
+          tagline: 'Comprehensive full-day dual shooter coverage with drone stills.',
+          price: 65000,
+          deliveryDays: 14,
+          features: [
+            '10–12 Hours Full Day Coverage',
+            'Lead Photographer + Second Candid Specialist',
+            '350+ Master Graded High-Res Stills',
+            'Drone Aerial Stills Included',
+            'Priority 48-Hour Express Teaser',
+            'Hardcover Signature Mini Photo Album',
+            'Full Commercial & Print Usage Rights',
+          ],
+          isPopular: true,
+        },
+        {
+          id: 'wedding-grand',
+          name: 'Grand Destination Extravaganza',
+          tagline: 'Turnkey 3-day multi-camera master crew with cinema DP & leather album.',
+          price: 120000,
+          deliveryDays: 21,
+          features: [
+            '3 Days Comprehensive Event Coverage',
+            '2 Master Photographers + 1 Cinema DP Rig',
+            '800+ Ultra High-Res Master Graded Stills',
+            '4K Cinematic Teaser + 30-Min Extended Film',
+            'Italian Handcrafted Leather Master Album',
+            'Same-Day Social Media Express Selects',
+            'Dedicated Creative Director & Concierge',
+          ],
+          isPopular: false,
+        },
       ],
-      isPopular: false,
     },
-    {
-      id: 'standard',
-      name: 'Standard Experience',
-      tagline: 'Our signature package for royal weddings, campaigns & full-day events.',
-      price: 38000,
-      deliveryDays: 8,
-      features: [
-        '8–10 Hours Comprehensive Coverage',
-        'Lead Photographer + Second Candid Shooter',
-        '200+ Master Edited High-Res Stills',
-        'Priority 48-Hour Early Teaser Selection',
-        'Drone Aerial Stills Included',
-        'Full Commercial & Print Usage Rights',
-        'Private Cloud Gallery with 2-Year Hosting',
+    portraits: {
+      label: 'Editorial & Portraits',
+      packages: [
+        {
+          id: 'portrait-studio',
+          name: 'Studio Character Headshots',
+          tagline: 'Expressive personal branding, actor headshots & executive portraits.',
+          price: 8000,
+          deliveryDays: 3,
+          features: [
+            '90-Minute Studio Lighting Session',
+            '1 Outfit Look / Clean Backdrops',
+            '10 High-End Retouched High-Res Images',
+            'Skin Retouching & Color Grading',
+            'Commercial Usage Rights',
+          ],
+          isPopular: false,
+        },
+        {
+          id: 'portrait-editorial',
+          name: 'Editorial Lookbook',
+          tagline: 'High-fashion aesthetic with creative mood-board lighting & styling guidance.',
+          price: 18000,
+          deliveryDays: 5,
+          features: [
+            '3–4 Hours Studio or Location Shoot',
+            'Up to 3 Wardrobe / Look Changes',
+            '30 Master Retouched Editorial Frames',
+            'Mood Board Creative Direction',
+            'Online Digital Proofing Gallery',
+          ],
+          isPopular: true,
+        },
+        {
+          id: 'portrait-celebrity',
+          name: 'Celebrity & Magazine Campaign',
+          tagline: 'Full-day production with medium format digital tech & hair/makeup coordination.',
+          price: 35000,
+          deliveryDays: 8,
+          features: [
+            'Full Day Studio/Location Production',
+            'Unlimited Outfit Changes & Looks',
+            '70 High-End Magazine Retouched Stills',
+            'Hasselblad Medium Format Capture',
+            'Full Global Commercial Buyout Rights',
+          ],
+          isPopular: false,
+        },
       ],
-      isPopular: true,
     },
-    {
-      id: 'premium',
-      name: 'Premium Experience',
-      tagline: 'Turnkey production with dual photo masters, 4K cinema DP & hardcopy album.',
-      price: 65000,
-      deliveryDays: 14,
-      features: [
-        'Full Multi-Day Comprehensive Production',
-        '2 Master Photographers + 1 Cinema DP Rig',
-        '400+ Ultra High-Res Master Graded Stills',
-        '4K Cinematic Teaser (3–5 mins) + Full Extended Film',
-        'Hardcover Handcrafted Master Coffee Table Album',
-        'Same-Day Social Media Express Selects',
-        'Dedicated Creative Director & Concierge',
+    cinema: {
+      label: 'Cinematography & Films',
+      packages: [
+        {
+          id: 'cinema-teaser',
+          name: 'Cinematic Teaser & Highlight',
+          tagline: 'Dynamic 4K motion highlight reel with licensed soundscapes.',
+          price: 35000,
+          deliveryDays: 7,
+          features: [
+            'Single Day Filming (Sony FX3 / FX6)',
+            '2–3 Minute 4K Cinematic Highlight Reel',
+            'Sound Design & Audio Mastering',
+            'Color Graded in DaVinci Resolve',
+            'Social Media 9:16 Vertical Cutdown',
+          ],
+          isPopular: false,
+        },
+        {
+          id: 'cinema-commercial',
+          name: 'Commercial Brand Film',
+          tagline: 'High-octane commercial ad with lighting grid and voiceover sync.',
+          price: 65000,
+          deliveryDays: 14,
+          features: [
+            'Full Day Multi-Cam Production Setup',
+            '60-Sec High-Conversion Hero Commercial',
+            'Licensed FPV / Drone Aerial Shots',
+            'Professional Voiceover & Soundscape Mix',
+            'ProRes 422 HQ Master Video Files',
+          ],
+          isPopular: true,
+        },
+        {
+          id: 'cinema-feature',
+          name: 'Grand 8K Documentary Film',
+          tagline: 'Multi-day dual DP cinema crew, aerial operations, and theatrical grade.',
+          price: 110000,
+          deliveryDays: 25,
+          features: [
+            'Multi-Day Master Production Rig',
+            'Dual Cinema Line Operators + FPV Pilot',
+            'Full 30–45 Min Documentary Film',
+            '4K Teaser Delivered in 72 Hours',
+            'Hard Drive of All Raw ProRes Footage',
+            'Theatrical Dolby Atmos Sound Mix',
+          ],
+          isPopular: false,
+        },
       ],
-      isPopular: false,
     },
-  ];
+    commercial: {
+      label: 'Product & Commercial',
+      packages: [
+        {
+          id: 'comm-catalog',
+          name: 'E-Commerce Catalog (10 Items)',
+          tagline: 'High-conversion tabletop stills on white/studio backdrops.',
+          price: 18000,
+          deliveryDays: 4,
+          features: [
+            '10 Products / 3 Angles Each (30 Total)',
+            'Specular High-End Lighting Setup',
+            'Dust & Scratch Cleanup Retouching',
+            'Amazon & Shopify Optimized Assets',
+          ],
+          isPopular: false,
+        },
+        {
+          id: 'comm-lifestyle',
+          name: 'Creative Lifestyle Campaign',
+          tagline: 'Staged prop styling and environmental brand aesthetics.',
+          price: 35000,
+          deliveryDays: 7,
+          features: [
+            'Full Day Studio Prop Styling Shoot',
+            'Model / Hands Integration Included',
+            '40 Creative Retouched Lifestyle Stills',
+            'Social & Print High-Resolution Deliverables',
+            'Complete Commercial Buyout',
+          ],
+          isPopular: true,
+        },
+        {
+          id: 'comm-architectural',
+          name: 'Luxury Architecture & Interiors',
+          tagline: 'HDR bracketed architectural stills for luxury villas and hospitality.',
+          price: 60000,
+          deliveryDays: 10,
+          features: [
+            '2 Days On-Location Architectural Capture',
+            'Twilight & Golden Hour Hero Stills',
+            'Tilt-Shift Perspective Control',
+            '60 Ultra High-Res Architectural Frames',
+            'Global Advertising License Rights',
+          ],
+          isPopular: false,
+        },
+      ],
+    },
+    editing: {
+      label: 'Post & Color Grading',
+      packages: [
+        {
+          id: 'edit-single',
+          name: 'Viral Short-Form Reel / Short',
+          tagline: 'Fast turnaround kinetic text, SFX, and pacing optimization.',
+          price: 3500,
+          deliveryDays: 2,
+          features: [
+            '1 High-Retention 9:16 Video',
+            'Dynamic Kinetic Captions & Zoom Hooks',
+            'Sound Effects & Trending Audio Sync',
+            '24–48h Rapid Turnaround Guarantee',
+          ],
+          isPopular: false,
+        },
+        {
+          id: 'edit-pack5',
+          name: 'Pack of 5 Viral Brand Reels',
+          tagline: 'Turn raw footage into high-engagement viral reels.',
+          price: 12000,
+          deliveryDays: 4,
+          features: [
+            '5 Fully Edited Short-Form Videos',
+            'B-Roll Splicing & Motion Titles',
+            'DaVinci Resolve Color Enhancement',
+            '2 Free Revision Cycles per Video',
+          ],
+          isPopular: true,
+        },
+        {
+          id: 'edit-master',
+          name: 'Master DaVinci Film Color Grade',
+          tagline: 'Film emulation, shot matching, and HDR master deliverables.',
+          price: 24000,
+          deliveryDays: 6,
+          features: [
+            'Full Film / Music Video (Up to 15 mins)',
+            'Shot-to-Shot Color & Lighting Match',
+            'Skin Tone Protection & Beauty Nodes',
+            'Custom LUT File & XML Roundtrip',
+          ],
+          isPopular: false,
+        },
+      ],
+    },
+  };
+
+  const SERVICE_PRICING_MAP = {
+    'Wedding Photography': [
+      { id: 'tier-1', name: 'Intimate Ceremony', price: 35000, tagline: '4–5h single master coverage', deliveryDays: 7 },
+      { id: 'tier-2', name: 'Royal Signature Wedding', price: 65000, tagline: 'Full day dual shooter + drone', deliveryDays: 14 },
+      { id: 'tier-3', name: 'Grand Destination Extravaganza', price: 120000, tagline: '3-day turnkey master crew', deliveryDays: 21 },
+    ],
+    'Cinematic Pre-Wedding': [
+      { id: 'tier-1', name: 'Half-Day Scenic Stills', price: 20000, tagline: '1 location & 30 color graded stills', deliveryDays: 5 },
+      { id: 'tier-2', name: 'Full-Day Cinematic Pre-Wedding', price: 40000, tagline: '2 locations, outfit changes + drone', deliveryDays: 7 },
+      { id: 'tier-3', name: 'High-Altitude Destination Adventure', price: 75000, tagline: 'Multi-day Ladakh/Goa expedition', deliveryDays: 12 },
+    ],
+    'Editorial Portrait': [
+      { id: 'tier-1', name: 'Studio Headshot Session', price: 8000, tagline: '90m studio session, 10 retouched frames', deliveryDays: 3 },
+      { id: 'tier-2', name: 'Fashion Lookbook', price: 18000, tagline: 'Half-day 3 looks & 30 editorial stills', deliveryDays: 5 },
+      { id: 'tier-3', name: 'Magazine Cover Campaign', price: 35000, tagline: 'Full day medium format master', deliveryDays: 8 },
+    ],
+    'Event Photography': [
+      { id: 'tier-1', name: 'Evening Gala / Party', price: 15000, tagline: '4h high-energy coverage & 150 stills', deliveryDays: 4 },
+      { id: 'tier-2', name: 'Full-Day Summit & Gala', price: 28000, tagline: '8h dual shooter event coverage', deliveryDays: 6 },
+      { id: 'tier-3', name: 'VIP Multi-Day Festival', price: 50000, tagline: 'Multi-day master event coverage', deliveryDays: 10 },
+    ],
+    'Product & Commercial': [
+      { id: 'tier-1', name: 'E-Commerce Tabletop (10 Items)', price: 18000, tagline: '30 clean studio catalog stills', deliveryDays: 4 },
+      { id: 'tier-2', name: 'Creative Brand Campaign', price: 32000, tagline: 'Staged prop styling & 40 hero stills', deliveryDays: 7 },
+      { id: 'tier-3', name: 'Full Commercial Buyout Suite', price: 50000, tagline: 'Master brand deliverables + buyout', deliveryDays: 10 },
+    ],
+    'Drone Cinematography': [
+      { id: 'tier-1', name: 'Single Location FPV Flight', price: 20000, tagline: '4h flight & 4K stabilized video', deliveryDays: 3 },
+      { id: 'tier-2', name: 'Commercial 8K Drone Flight', price: 38000, tagline: 'DJI Inspire 3 dual-operator day', deliveryDays: 6 },
+      { id: 'tier-3', name: 'Cinema Heavy-Lifter Production', price: 75000, tagline: 'RED Komodo aerial flight suite', deliveryDays: 10 },
+    ],
+    'Photo & Video Editing': [
+      { id: 'tier-1', name: 'Single Viral Reel / TikTok', price: 3500, tagline: 'Hook optimization & motion titles', deliveryDays: 2 },
+      { id: 'tier-2', name: 'Pack of 5 Viral Reels', price: 12000, tagline: '5 high-retention short videos', deliveryDays: 4 },
+      { id: 'tier-3', name: 'DaVinci Master Film Grade', price: 24000, tagline: 'Shot matching & HDR master export', deliveryDays: 6 },
+    ],
+  };
+
+  const currentPlannerPackageList =
+    SERVICE_PRICING_MAP[selectedPlannerService] || SERVICE_PRICING_MAP['Wedding Photography'];
 
   // ─────────────────────────────────────────────────────────────
   // 4. CLIENT STORIES TESTIMONIALS
@@ -338,7 +583,7 @@ const HomePage = () => {
   const currentPlannerProObj =
     professionals.find((p) => p.id === selectedPlannerPro) || professionals[0];
   const currentPlannerPkgObj =
-    packagesList.find((pkg) => pkg.id === selectedPlannerPackage) || packagesList[1];
+    currentPlannerPackageList.find((pkg) => pkg.id === selectedPlannerPackage) || currentPlannerPackageList[1];
 
   const handleConfirmPlannerBooking = () => {
     createBooking({
@@ -843,25 +1088,26 @@ const HomePage = () => {
                 </div>
               </div>
 
-              {/* 6. Package Tier Selection */}
+              {/* 6. Package Tier Selection with Distinct Dynamic Prices */}
               <div className="space-y-2">
                 <label className="text-xs font-mono font-bold text-sky-300 uppercase tracking-wider block">
-                  6. Select Package Tier
+                  6. Select Package Tier ({selectedPlannerService})
                 </label>
-                <div className="grid grid-cols-3 gap-3">
-                  {packagesList.map((pkg) => (
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  {currentPlannerPackageList.map((pkg) => (
                     <button
                       key={pkg.id}
                       type="button"
                       onClick={() => setSelectedPlannerPackage(pkg.id)}
                       className={`p-3 rounded-xl border text-left transition-all ${
-                        selectedPlannerPackage === pkg.id
+                        (selectedPlannerPackage === pkg.id || (!currentPlannerPackageList.some(p => p.id === selectedPlannerPackage) && pkg.id === currentPlannerPackageList[0].id))
                           ? 'bg-sky-950/90 border-sky-400 ring-1 ring-sky-400 shadow-[0_0_15px_rgba(56,189,248,0.3)]'
                           : 'bg-slate-900/60 border-white/10 hover:border-sky-500/30'
                       }`}
                     >
                       <span className="text-xs font-bold text-white block truncate">{pkg.name}</span>
-                      <span className="text-xs font-mono font-bold text-sky-300 mt-1 block">
+                      <span className="text-[10px] text-slate-400 block truncate mt-0.5">{pkg.tagline}</span>
+                      <span className="text-xs font-mono font-bold text-sky-300 mt-1.5 block">
                         {formatCurrency(pkg.price)}
                       </span>
                     </button>
@@ -948,13 +1194,31 @@ const HomePage = () => {
             Choose Your Experience
           </h2>
           <p className="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-xl mx-auto">
-            Transparent packages designed for unforgettable celebrations, editorial portraits, and commercial advertising.
+            Tailored pricing tiers and deliverable milestones across all creative disciplines. Select a discipline below to view its packages:
           </p>
+
+          {/* Discipline Switcher Tabs */}
+          <div className="flex flex-wrap items-center justify-center gap-2 pt-4">
+            {Object.entries(PACKAGE_CATALOG).map(([catKey, catData]) => (
+              <button
+                key={catKey}
+                type="button"
+                onClick={() => setActivePackageCategory(catKey)}
+                className={`px-4 py-2 rounded-full text-xs font-semibold tracking-wide transition-all ${
+                  activePackageCategory === catKey
+                    ? 'bg-gradient-to-r from-sky-500 to-indigo-600 text-white shadow-[0_0_20px_rgba(56,189,248,0.4)] border border-sky-300/40'
+                    : 'bg-slate-900/80 hover:bg-slate-800 text-slate-400 hover:text-white border border-white/10'
+                }`}
+              >
+                {catData.label}
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* 3 Glassmorphic Pricing Cards */}
+        {/* 3 Glassmorphic Pricing Cards for the Active Discipline */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
-          {packagesList.map((pkg) => (
+          {PACKAGE_CATALOG[activePackageCategory].packages.map((pkg) => (
             <div
               key={pkg.id}
               className={`rounded-3xl p-8 flex flex-col justify-between transition-all duration-300 relative ${
@@ -971,6 +1235,9 @@ const HomePage = () => {
 
               <div className="space-y-6">
                 <div className="space-y-2">
+                  <span className="text-[10px] font-mono text-sky-400 uppercase tracking-wider block">
+                    {PACKAGE_CATALOG[activePackageCategory].label}
+                  </span>
                   <h3 className="text-xl font-display font-bold text-white">{pkg.name}</h3>
                   <p className="text-xs text-slate-400 leading-relaxed">{pkg.tagline}</p>
                 </div>
@@ -1002,7 +1269,6 @@ const HomePage = () => {
                 <button
                   type="button"
                   onClick={() => {
-                    setSelectedPlannerPackage(pkg.id);
                     const el = document.getElementById('plan-shoot');
                     if (el) el.scrollIntoView({ behavior: 'smooth' });
                   }}
@@ -1012,7 +1278,7 @@ const HomePage = () => {
                       : 'bg-slate-900 hover:bg-slate-800 text-slate-200 hover:text-white border border-sky-500/30'
                   }`}
                 >
-                  <span>Select {pkg.name}</span>
+                  <span>Commission {pkg.name}</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
