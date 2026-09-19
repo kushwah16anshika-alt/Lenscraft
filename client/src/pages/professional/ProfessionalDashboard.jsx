@@ -1,172 +1,339 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Calendar,
   DollarSign,
   Star,
   Eye,
-  ArrowUpRight,
   Clock,
   CheckCircle,
   Plus,
+  Check,
+  X,
+  MessageSquare,
+  Image,
+  Layers,
+  Settings,
+  ShieldCheck,
+  ArrowUpRight,
+  TrendingUp,
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
-import StatCard from '../../components/common/StatCard';
-import Card from '../../components/common/Card';
-import Badge from '../../components/common/Badge';
-import Button from '../../components/common/Button';
-import Avatar from '../../components/common/Avatar';
-import { MOCK_BOOKINGS, MOCK_STATS } from '../../constants/mockData';
+import { useToast } from '../../hooks/useToast';
+import { usePlatform } from '../../context/PlatformContext';
 import { formatCurrency, formatDate } from '../../utils/formatters';
 
 const ProfessionalDashboard = () => {
   const { user } = useAuth();
-  const proBookings = MOCK_BOOKINGS.slice(0, 4);
+  const { success } = useToast();
+  const { bookings } = usePlatform();
+  const [activeTab, setActiveTab] = useState('requests');
+
+  const displayName = (user?.name || 'Arjun').toUpperCase();
+
+  const [bookingRequests, setBookingRequests] = useState([
+    {
+      id: 'REQ-101',
+      clientName: 'Rohan & Simran Kapoor',
+      event: 'Royal Destination Wedding',
+      date: '18 Nov 2026',
+      city: 'Udaipur, Rajasthan',
+      package: 'Signature',
+      amount: 45000,
+      status: 'Pending',
+    },
+    {
+      id: 'REQ-102',
+      clientName: 'AeroCouture Brand',
+      event: 'Commercial Fashion Lookbook',
+      date: '02 Dec 2026',
+      city: 'Mumbai, Maharashtra',
+      package: 'Editorial',
+      amount: 60000,
+      status: 'Pending',
+    },
+    {
+      id: 'REQ-103',
+      clientName: 'Meera Deshmukh',
+      event: 'Pre-Wedding Stills & Reel',
+      date: '10 Dec 2026',
+      city: 'Goa',
+      package: 'Essential',
+      amount: 25000,
+      status: 'Pending',
+    },
+  ]);
+
+  const handleAcceptRequest = (id) => {
+    setBookingRequests((prev) => prev.filter((r) => r.id !== id));
+    success('Shoot request accepted! Client invited to pre-production channel.');
+  };
+
+  const handleDeclineRequest = (id) => {
+    setBookingRequests((prev) => prev.filter((r) => r.id !== id));
+    success('Shoot request declined.');
+  };
 
   return (
-    <div className="space-y-8 text-left">
-      {/* Studio Header Banner */}
-      <div className="p-6 sm:p-8 rounded-xl bg-white border border-zinc-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 block mb-1">
-            Studio Creator Workspace
+    <div className="min-h-screen bg-[#080808] text-[#FBF9F5] pb-24 text-left space-y-8 animate-reveal">
+      {/* ─────────────────────────────────────────────────────────────
+          1. CREATOR WORKSPACE HEADER
+          ───────────────────────────────────────────────────────────── */}
+      <div className="p-6 sm:p-10 bg-[#111111] border border-[#262626] rounded flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div className="space-y-2">
+          <span className="text-xs uppercase font-mono tracking-widest text-[#C5A059]">
+            Creator Workspace · Studio Admin
           </span>
-          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-zinc-900 tracking-tight">
-            {user?.name || 'Studio Admin'}
+          <h1 className="text-3xl sm:text-5xl font-cinzel font-semibold text-[#FBF9F5]">
+            GOOD MORNING, {displayName}
           </h1>
-          <p className="text-sm text-zinc-500 mt-1">
-            Overview of upcoming shoots, milestone earnings, and client inquiries.
+          <p className="text-xs sm:text-sm text-[#A39E93]">
+            Manage production requests, locked dates, client deliverables, and escrow payouts.
           </p>
         </div>
-        <div className="flex items-center gap-2.5">
-          <Link to="/professional/portfolio">
-            <Button variant="outline" size="sm" leftIcon={<Plus className="w-3.5 h-3.5" />}>
-              Add Media
-            </Button>
+
+        {/* Quick Actions */}
+        <div className="flex items-center gap-3">
+          <Link
+            to="/professional/portfolio"
+            className="px-4 py-2.5 rounded btn-secondary-luxury text-xs uppercase tracking-wider font-semibold inline-flex items-center gap-1.5"
+          >
+            <Plus className="w-3.5 h-3.5 text-[#C5A059]" />
+            <span>Add Media</span>
           </Link>
-          <Link to="/professional/services">
-            <Button variant="primary" size="sm" leftIcon={<Plus className="w-3.5 h-3.5" />}>
-              New Package
-            </Button>
+
+          <Link
+            to="/professional/pricing"
+            className="px-4 py-2.5 rounded gold-btn text-xs uppercase tracking-wider font-semibold inline-flex items-center gap-1.5"
+          >
+            <Plus className="w-3.5 h-3.5" />
+            <span>New Package</span>
           </Link>
         </div>
       </div>
 
-      {/* KPI Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatCard
-          title="Monthly Earnings"
-          value="₹1,85,000"
-          icon={DollarSign}
-          trend="+18% vs last mo"
-          trendPositive={true}
-        />
-        <StatCard
-          title="Upcoming Shoots"
-          value="6"
-          icon={Calendar}
-          subtitle="2 scheduled this weekend"
-        />
-        <StatCard
-          title="Profile Views"
-          value="3,420"
-          icon={Eye}
-          trend="+24% this week"
-          trendPositive={true}
-        />
-        <StatCard
-          title="Client Rating"
-          value="4.96"
-          icon={Star}
-          subtitle="Based on 48 verified reviews"
-        />
+      {/* ─────────────────────────────────────────────────────────────
+          2. CORE METRICS
+          ───────────────────────────────────────────────────────────── */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <div className="p-5 sm:p-6 bg-[#111111] border border-[#262626] rounded space-y-2">
+          <span className="text-[10px] uppercase font-mono tracking-wider text-[#A39E93] block">
+            Upcoming Shoots
+          </span>
+          <div className="flex items-baseline justify-between">
+            <span className="text-2xl sm:text-3xl font-mono font-bold text-[#FBF9F5]">3</span>
+            <Calendar className="w-4 h-4 text-[#C5A059]" />
+          </div>
+          <p className="text-[11px] text-[#A39E93]">Next: 12 Oct (Udaipur)</p>
+        </div>
+
+        <div className="p-5 sm:p-6 bg-[#111111] border border-[#262626] rounded space-y-2">
+          <span className="text-[10px] uppercase font-mono tracking-wider text-[#A39E93] block">
+            Pending Requests
+          </span>
+          <div className="flex items-baseline justify-between">
+            <span className="text-2xl sm:text-3xl font-mono font-bold text-[#DFCA9B]">
+              {bookingRequests.length}
+            </span>
+            <Clock className="w-4 h-4 text-[#DFCA9B]" />
+          </div>
+          <p className="text-[11px] text-[#A39E93]">Requires response in 24h</p>
+        </div>
+
+        <div className="p-5 sm:p-6 bg-[#111111] border border-[#262626] rounded space-y-2">
+          <span className="text-[10px] uppercase font-mono tracking-wider text-[#A39E93] block">
+            This Month
+          </span>
+          <div className="flex items-baseline justify-between">
+            <span className="text-2xl sm:text-3xl font-mono font-bold text-[#FBF9F5]">
+              ₹84,000
+            </span>
+            <TrendingUp className="w-4 h-4 text-emerald-400" />
+          </div>
+          <p className="text-[11px] text-emerald-400">+22% vs last month</p>
+        </div>
+
+        <div className="p-5 sm:p-6 bg-[#111111] border border-[#262626] rounded space-y-2">
+          <span className="text-[10px] uppercase font-mono tracking-wider text-[#A39E93] block">
+            Rating
+          </span>
+          <div className="flex items-baseline justify-between">
+            <span className="text-2xl sm:text-3xl font-mono font-bold text-[#DFCA9B]">4.9</span>
+            <Star className="w-4 h-4 fill-[#C5A059] text-[#C5A059]" />
+          </div>
+          <p className="text-[11px] text-[#A39E93]">Based on 48 reviews</p>
+        </div>
       </div>
 
-      {/* Bookings & Action Schedule */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Left 2 cols: Recent Inquiries & Bookings */}
-        <div className="lg:col-span-2 space-y-4">
-          <div className="flex items-center justify-between pb-2 border-b border-zinc-200">
-            <h2 className="text-lg font-serif font-bold text-zinc-900">Recent Inquiries & Shoots</h2>
-            <Link to="/professional/appointments" className="text-xs font-semibold text-zinc-900 hover:underline">
-              Manage All Shoots
-            </Link>
-          </div>
+      {/* ─────────────────────────────────────────────────────────────
+          3. WORKSPACE SECTIONS & TABS
+          ───────────────────────────────────────────────────────────── */}
+      <div className="space-y-6">
+        <div className="flex border-b border-[#262626] gap-6 overflow-x-auto no-scrollbar">
+          {[
+            { id: 'requests', label: `Booking Requests (${bookingRequests.length})` },
+            { id: 'shoots', label: 'Upcoming Shoots (3)' },
+            { id: 'earnings', label: 'Earnings & Escrow' },
+            { id: 'portfolio', label: 'Portfolio' },
+            { id: 'packages', label: 'Packages' },
+            { id: 'availability', label: 'Calendar & Availability' },
+            { id: 'reviews', label: 'Reviews' },
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`pb-3 text-xs uppercase tracking-wider font-medium whitespace-nowrap transition-colors relative ${
+                activeTab === tab.id
+                  ? 'text-[#DFCA9B] font-semibold'
+                  : 'text-[#A39E93] hover:text-[#FBF9F5]'
+              }`}
+            >
+              <span>{tab.label}</span>
+              {activeTab === tab.id && (
+                <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#C5A059]" />
+              )}
+            </button>
+          ))}
+        </div>
 
-          <div className="space-y-3">
-            {proBookings.map((b) => (
-              <Card key={b.id} className="p-4 bg-white border border-zinc-200 shadow-2xs hover:border-zinc-300 transition-all">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                  <div className="flex items-center gap-3">
-                    <Avatar src={b.userAvatar} name={b.userName} size="md" />
-                    <div>
-                      <h4 className="text-sm font-semibold text-zinc-900">{b.userName}</h4>
-                      <p className="text-xs text-zinc-500">{b.serviceTitle} • {b.location?.city}</p>
-                    </div>
+        {/* TAB: BOOKING REQUESTS */}
+        {activeTab === 'requests' && (
+          <div className="space-y-4 animate-reveal">
+            {bookingRequests.length === 0 ? (
+              <div className="p-12 text-center bg-[#111111] border border-[#262626] rounded">
+                <CheckCircle className="w-8 h-8 text-[#C5A059] mx-auto mb-2" />
+                <h4 className="text-sm font-semibold text-[#FBF9F5]">All requests cleared!</h4>
+                <p className="text-xs text-[#A39E93]">New client inquiries will appear here automatically.</p>
+              </div>
+            ) : (
+              bookingRequests.map((req) => (
+                <div
+                  key={req.id}
+                  className="p-6 bg-[#111111] border border-[#262626] hover:border-[#C5A059]/40 rounded flex flex-col md:flex-row md:items-center justify-between gap-4 transition-all"
+                >
+                  <div className="space-y-1">
+                    <span className="text-[10px] uppercase font-mono text-[#C5A059]">Request {req.id}</span>
+                    <h4 className="text-base font-cinzel font-bold text-[#FBF9F5]">{req.clientName}</h4>
+                    <p className="text-xs text-[#DFCA9B]">{req.event} · {req.city}</p>
+                    <p className="text-xs text-[#A39E93]">Date: {req.date} · {req.package} Package</p>
                   </div>
 
-                  <div className="flex items-center gap-3">
-                    <div className="text-right sm:block hidden">
-                      <span className="text-xs font-semibold text-zinc-900 block">
-                        {formatCurrency(b.totalAmount)}
-                      </span>
-                      <span className="text-[11px] text-zinc-400">{formatDate(b.eventDate)}</span>
+                  <div className="flex items-center gap-4">
+                    <div className="text-right">
+                      <span className="text-lg font-mono font-bold text-[#FBF9F5]">₹{req.amount.toLocaleString('en-IN')}</span>
+                      <span className="text-[10px] text-[#A39E93] block">Escrow 25% Reserved</span>
                     </div>
 
-                    <Badge
-                      variant={
-                        b.status === 'confirmed'
-                          ? 'success'
-                          : b.status === 'completed'
-                          ? 'charcoal'
-                          : 'warning'
-                      }
-                      size="sm"
-                    >
-                      {b.status}
-                    </Badge>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => handleAcceptRequest(req.id)}
+                        className="p-2.5 rounded gold-btn text-xs font-semibold flex items-center gap-1"
+                        title="Accept Shoot"
+                      >
+                        <Check className="w-4 h-4" />
+                        <span>Accept</span>
+                      </button>
+
+                      <button
+                        onClick={() => handleDeclineRequest(req.id)}
+                        className="p-2.5 rounded bg-[#171717] border border-[#262626] hover:border-red-500/40 text-red-400 text-xs font-semibold"
+                        title="Decline Shoot"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </Card>
+              ))
+            )}
+          </div>
+        )}
+
+        {/* TAB: UPCOMING SHOOTS */}
+        {activeTab === 'shoots' && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-reveal">
+            {[
+              { id: 'S-1', title: 'Royal Wedding (Anshika & Dev)', date: '12 Oct 2026', time: '10:00 AM', city: 'Udaipur', pkg: 'Signature (₹28,000)' },
+              { id: 'S-2', title: 'Editorial Lookbook Shoot', date: '24 Oct 2026', time: '02:00 PM', city: 'Indore', pkg: 'Essential (₹15,000)' },
+              { id: 'S-3', title: 'Commercial Jewelry Campaign', date: '08 Nov 2026', time: '09:00 AM', city: 'Mumbai', pkg: 'Editorial (₹45,000)' },
+            ].map((shoot) => (
+              <div key={shoot.id} className="p-6 bg-[#111111] border border-[#262626] rounded space-y-4">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <span className="text-[10px] uppercase font-mono text-[#C5A059]">Production #{shoot.id}</span>
+                    <h4 className="text-base font-cinzel font-bold text-[#FBF9F5]">{shoot.title}</h4>
+                    <p className="text-xs text-[#A39E93]">{shoot.city} · {shoot.pkg}</p>
+                  </div>
+                  <span className="text-[10px] uppercase px-2 py-0.5 rounded bg-[#171717] text-[#DFCA9B] border border-[#262626]">
+                    Locked
+                  </span>
+                </div>
+
+                <div className="pt-2 border-t border-[#262626] flex items-center justify-between text-xs">
+                  <span className="text-[#A39E93]">Schedule: {shoot.date} ({shoot.time})</span>
+                  <button
+                    onClick={() => success('Gear checklist confirmed!')}
+                    className="text-[#DFCA9B] hover:underline font-semibold"
+                  >
+                    Gear Checklist →
+                  </button>
+                </div>
+              </div>
             ))}
           </div>
-        </div>
+        )}
 
-        {/* Right 1 col: Quick Action & Studio Checklist */}
-        <div className="space-y-6">
-          <Card className="p-6 bg-white border border-zinc-200 shadow-2xs space-y-4">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-900 pb-3 border-b border-zinc-200">
-              Studio Health Checklist
-            </h3>
-
-            <div className="space-y-3 text-xs text-zinc-600">
-              <div className="flex items-center gap-2.5 text-zinc-900">
-                <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>Identity & Portfolio Verified</span>
+        {/* TAB: EARNINGS */}
+        {activeTab === 'earnings' && (
+          <div className="p-6 bg-[#111111] border border-[#262626] rounded space-y-6 animate-reveal">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-cinzel font-bold text-[#FBF9F5]">Milestone Escrow Payouts</h3>
+                <p className="text-xs text-[#A39E93]">Direct bank transfer upon master delivery confirmation.</p>
               </div>
-              <div className="flex items-center gap-2.5 text-zinc-900">
-                <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>Active 2025 Calendar Configured</span>
-              </div>
-              <div className="flex items-center gap-2.5 text-zinc-900">
-                <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>Bank Payout Account Connected</span>
-              </div>
-              <div className="flex items-center gap-2.5 text-zinc-700">
-                <Clock className="w-4 h-4 text-amber-600 shrink-0" />
-                <span>1 Deliverable Gallery Upload Pending</span>
-              </div>
+              <span className="text-2xl font-mono font-bold text-[#DFCA9B]">₹84,000 Total Active</span>
             </div>
 
-            <div className="pt-2">
-              <Link to="/professional/portfolio">
-                <Button variant="outline" size="sm" className="w-full justify-center">
-                  Update Portfolio Media
-                </Button>
+            <div className="space-y-3">
+              {[
+                { label: 'Udaipur Palace Shoot (25% Advance)', amount: '₹7,000', status: 'In Escrow' },
+                { label: 'Lookbook Shoot (Advance Lock)', amount: '₹3,750', status: 'In Escrow' },
+                { label: 'Completed Goa Wedding Stills (100% Payout)', amount: '₹42,000', status: 'Transferred' },
+              ].map((payout, pIdx) => (
+                <div key={pIdx} className="p-4 bg-[#171717] border border-[#262626] rounded flex items-center justify-between text-xs">
+                  <span className="text-[#EAE6DF]">{payout.label}</span>
+                  <div className="flex items-center gap-3">
+                    <span className="font-mono font-bold text-[#FBF9F5]">{payout.amount}</span>
+                    <span className={`text-[10px] uppercase font-mono px-2 py-0.5 rounded ${
+                      payout.status === 'Transferred' ? 'bg-emerald-950 text-emerald-400 border border-emerald-500/30' : 'bg-[#111111] text-[#DFCA9B] border border-[#262626]'
+                    }`}>
+                      {payout.status}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* TAB: PORTFOLIO & PACKAGES */}
+        {(activeTab === 'portfolio' || activeTab === 'packages' || activeTab === 'availability' || activeTab === 'reviews') && (
+          <div className="p-12 text-center bg-[#111111] border border-[#262626] rounded space-y-4 animate-reveal">
+            <Layers className="w-10 h-10 text-[#C5A059] mx-auto" />
+            <h3 className="text-lg font-cinzel text-[#FBF9F5]">Studio Configuration & Settings</h3>
+            <p className="text-xs text-[#A39E93] max-w-sm mx-auto">
+              You can adjust portfolio images, package tiers, and calendar blackouts anytime.
+            </p>
+            <div className="flex justify-center gap-3">
+              <Link to="/professional/portfolio" className="px-4 py-2 rounded gold-btn text-xs uppercase tracking-wider font-semibold">
+                Manage Portfolio
+              </Link>
+              <Link to="/professional/pricing" className="px-4 py-2 rounded btn-secondary-luxury text-xs uppercase tracking-wider font-semibold">
+                Edit Packages
               </Link>
             </div>
-          </Card>
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

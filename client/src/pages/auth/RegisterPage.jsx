@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, User, Phone, ArrowRight, Camera, Video, Film, Users, Sparkles, CheckCircle2 } from 'lucide-react';
-import Input from '../../components/common/Input';
-import Button from '../../components/common/Button';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Mail, Lock, User, Phone, ArrowRight, Camera, Video, Film, Users, Check } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { useToast } from '../../hooks/useToast';
 import { ROLES, ROLE_LABELS } from '../../constants/roles';
 
 const RegisterPage = () => {
-  const [role, setRole] = useState(ROLES.USER);
+  const [searchParams] = useSearchParams();
+  const initialRole = searchParams.get('role') === 'creator' ? ROLES.PHOTOGRAPHER : ROLES.USER;
+
+  const [role, setRole] = useState(initialRole);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -23,8 +24,8 @@ const RegisterPage = () => {
   const roleOptions = [
     { key: ROLES.USER, label: 'Client / Director', icon: Users, desc: 'Commission & book verified talent' },
     { key: ROLES.PHOTOGRAPHER, label: 'Photographer', icon: Camera, desc: 'Showcase portfolios & shoots' },
-    { key: ROLES.VIDEOGRAPHER, label: 'Cinematographer', icon: Video, desc: '8K motion, drone & commercials' },
-    { key: ROLES.EDITOR, label: 'Post Colorist', icon: Film, desc: 'DaVinci color & visual effects' },
+    { key: ROLES.VIDEOGRAPHER, label: 'Cinematographer', icon: Video, desc: '4K cinema, drone & films' },
+    { key: ROLES.EDITOR, label: 'Post Colorist', icon: Film, desc: 'Color grade & visual effects' },
   ];
 
   const handleSubmit = async (e) => {
@@ -49,24 +50,23 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="space-y-6 text-left">
+    <div className="space-y-6 text-left animate-reveal">
       <div>
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-cyan-300 text-[11px] font-mono mb-3">
-          <Sparkles className="w-3 h-3 text-cyan-400" />
-          <span>JOIN THE SYNDICATE</span>
-        </div>
-        <h2 className="text-2xl sm:text-3xl font-heading font-extrabold text-white tracking-tight">
-          Create Your Account
+        <p className="text-xs uppercase font-mono tracking-widest text-[#C5A059] mb-1">
+          Join Lenscraft
+        </p>
+        <h2 className="text-3xl font-cinzel font-semibold text-[#FBF9F5]">
+          CREATE AN ACCOUNT
         </h2>
-        <p className="text-xs sm:text-sm text-slate-400 mt-1.5 leading-relaxed">
-          Select your role to unlock customized escrow booking, portfolios, or studio management.
+        <p className="text-xs text-[#A39E93] mt-1">
+          Step into a curated collective of creative storytellers and clients.
         </p>
       </div>
 
-      {/* Role Selection Grid with Glass Hover States */}
+      {/* Role Selection Grid */}
       <div className="space-y-2">
-        <label className="block text-[11px] font-mono font-semibold uppercase tracking-wider text-slate-400">
-          I am joining LensCraft as:
+        <label className="block text-xs uppercase tracking-wider text-[#A39E93] font-medium">
+          I am joining as:
         </label>
         <div className="grid grid-cols-2 gap-2.5">
           {roleOptions.map((opt) => {
@@ -77,25 +77,19 @@ const RegisterPage = () => {
                 key={opt.key}
                 type="button"
                 onClick={() => setRole(opt.key)}
-                className={`p-3.5 rounded-xl border text-left transition-all duration-300 flex flex-col justify-between relative overflow-hidden ${
+                className={`p-3 rounded border text-left transition-all flex flex-col justify-between ${
                   isSelected
-                    ? 'bg-gradient-to-br from-cyan-950/60 to-indigo-950/60 border-cyan-400/60 text-white shadow-lg shadow-cyan-500/10 ring-1 ring-cyan-400/40'
-                    : 'bg-white/[0.03] border-white/10 text-slate-300 hover:border-white/25 hover:bg-white/[0.06]'
+                    ? 'bg-[#171717] border-[#C5A059] text-[#FBF9F5]'
+                    : 'bg-[#111111] border-[#262626] text-[#A39E93] hover:border-[#6B665E]'
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <div className={`p-1.5 rounded-lg ${isSelected ? 'bg-cyan-500/20 text-cyan-300' : 'bg-white/5 text-slate-400'}`}>
-                    <Icon className="w-4 h-4" />
-                  </div>
-                  {isSelected && (
-                    <CheckCircle2 className="w-4 h-4 text-cyan-400" />
-                  )}
+                  <Icon className={`w-4 h-4 ${isSelected ? 'text-[#C5A059]' : 'text-[#A39E93]'}`} />
+                  {isSelected && <Check className="w-3.5 h-3.5 text-[#C5A059]" />}
                 </div>
                 <div>
-                  <h4 className="text-xs font-semibold leading-tight text-white">{opt.label}</h4>
-                  <p className="text-[11px] mt-0.5 text-slate-400 leading-snug">
-                    {opt.desc}
-                  </p>
+                  <h4 className="text-xs font-semibold text-[#FBF9F5]">{opt.label}</h4>
+                  <p className="text-[10px] text-[#A39E93] mt-0.5">{opt.desc}</p>
                 </div>
               </button>
             );
@@ -103,62 +97,88 @@ const RegisterPage = () => {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <Input
-          label="Full Name or Studio Alias"
-          required
-          placeholder="e.g. Elena Rostova or Studio Aether"
-          leftIcon={<User className="w-4 h-4 text-cyan-400/70" />}
-          value={formData.name}
-          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-        />
+      <form onSubmit={handleSubmit} className="space-y-3.5">
+        <div>
+          <label className="block text-xs uppercase tracking-wider text-[#A39E93] font-medium mb-1">
+            Full Name or Studio Alias
+          </label>
+          <div className="relative">
+            <User className="w-4 h-4 text-[#A39E93] absolute left-3 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              required
+              placeholder="e.g. Arjun Mehta"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              className="w-full pl-9 pr-3 py-2 rounded bg-[#111111] border border-[#262626] text-xs text-[#FBF9F5] placeholder-[#6B665E] focus:outline-none focus:border-[#C5A059]"
+            />
+          </div>
+        </div>
 
-        <Input
-          label="Official Email Address"
-          type="email"
-          required
-          placeholder="your.email@example.com"
-          leftIcon={<Mail className="w-4 h-4 text-cyan-400/70" />}
-          value={formData.email}
-          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-        />
+        <div>
+          <label className="block text-xs uppercase tracking-wider text-[#A39E93] font-medium mb-1">
+            Email Address
+          </label>
+          <div className="relative">
+            <Mail className="w-4 h-4 text-[#A39E93] absolute left-3 top-1/2 -translate-y-1/2" />
+            <input
+              type="email"
+              required
+              placeholder="your.email@example.com"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              className="w-full pl-9 pr-3 py-2 rounded bg-[#111111] border border-[#262626] text-xs text-[#FBF9F5] placeholder-[#6B665E] focus:outline-none focus:border-[#C5A059]"
+            />
+          </div>
+        </div>
 
-        <Input
-          label="Phone Number (SMS Milestone Alerts)"
-          type="tel"
-          placeholder="+91 98765 43210"
-          leftIcon={<Phone className="w-4 h-4 text-cyan-400/70" />}
-          value={formData.phone}
-          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-        />
+        <div>
+          <label className="block text-xs uppercase tracking-wider text-[#A39E93] font-medium mb-1">
+            Phone Number
+          </label>
+          <div className="relative">
+            <Phone className="w-4 h-4 text-[#A39E93] absolute left-3 top-1/2 -translate-y-1/2" />
+            <input
+              type="tel"
+              placeholder="+91 98765 43210"
+              value={formData.phone}
+              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+              className="w-full pl-9 pr-3 py-2 rounded bg-[#111111] border border-[#262626] text-xs text-[#FBF9F5] placeholder-[#6B665E] focus:outline-none focus:border-[#C5A059]"
+            />
+          </div>
+        </div>
 
-        <Input
-          label="Password (min. 6 characters)"
-          type="password"
-          required
-          minLength={6}
-          placeholder="••••••••"
-          leftIcon={<Lock className="w-4 h-4 text-cyan-400/70" />}
-          value={formData.password}
-          onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-        />
+        <div>
+          <label className="block text-xs uppercase tracking-wider text-[#A39E93] font-medium mb-1">
+            Password (min 6 chars)
+          </label>
+          <div className="relative">
+            <Lock className="w-4 h-4 text-[#A39E93] absolute left-3 top-1/2 -translate-y-1/2" />
+            <input
+              type="password"
+              required
+              minLength={6}
+              placeholder="••••••••"
+              value={formData.password}
+              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+              className="w-full pl-9 pr-3 py-2 rounded bg-[#111111] border border-[#262626] text-xs text-[#FBF9F5] placeholder-[#6B665E] focus:outline-none focus:border-[#C5A059]"
+            />
+          </div>
+        </div>
 
-        <Button
+        <button
           type="submit"
-          variant="primary"
-          size="md"
-          isLoading={isLoading}
-          className="w-full justify-center group mt-2"
-          rightIcon={<ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />}
+          disabled={isLoading}
+          className="w-full py-3 rounded gold-btn text-xs uppercase tracking-wider font-semibold shadow-lg mt-2"
         >
-          Create {ROLE_LABELS[role]} Account
-        </Button>
+          {isLoading ? 'Creating Account...' : `Register as ${ROLE_LABELS[role]}`}
+        </button>
       </form>
 
-      <p className="text-xs text-slate-400 text-center pt-2">
+      <p className="text-xs text-[#A39E93] text-center pt-1">
         Already have an account?{' '}
-        <Link to="/login" className="text-cyan-400 font-semibold hover:text-cyan-300 hover:underline">
-          Sign In to Workspace
+        <Link to="/login" className="text-[#DFCA9B] hover:underline font-semibold">
+          Sign in
         </Link>
       </p>
     </div>
