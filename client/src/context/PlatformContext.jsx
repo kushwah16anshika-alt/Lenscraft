@@ -33,7 +33,13 @@ export const PlatformProvider = ({ children }) => {
   const [professionals, setProfessionals] = useState(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEYS.PROFESSIONALS);
-      return saved ? JSON.parse(saved) : MOCK_PROFESSIONALS;
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length >= MOCK_PROFESSIONALS.length) {
+          return parsed;
+        }
+      }
+      return MOCK_PROFESSIONALS;
     } catch {
       return MOCK_PROFESSIONALS;
     }
