@@ -29,7 +29,7 @@ import LightboxModal from '../../components/common/LightboxModal';
 import BookingModal from '../../components/common/BookingModal';
 import WriteReviewModal from '../../components/common/WriteReviewModal';
 import { usePlatform } from '../../context/PlatformContext';
-import { useToast } from '../../context/ToastContext';
+import { useToast } from '../../hooks/useToast';
 
 const faqs = [
   {

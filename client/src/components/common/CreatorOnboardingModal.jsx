@@ -15,7 +15,7 @@ import {
   Check,
 } from 'lucide-react';
 import { ROLES } from '../../constants/roles';
-import { useToast } from '../../context/ToastContext';
+import { useToast } from '../../hooks/useToast';
 
 const stepsList = [
   '01 Personal Details',
