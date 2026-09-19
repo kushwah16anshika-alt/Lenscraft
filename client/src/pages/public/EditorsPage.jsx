@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Wand2, Search, ArrowUpDown, RotateCcw, Video, Camera } from 'lucide-react';
+import { Wand2, Search, ArrowUpDown, RotateCcw, Video, Camera, ShieldCheck } from 'lucide-react';
 import ProfessionalCard from '../../components/cards/ProfessionalCard';
 import { ROLES } from '../../constants/roles';
 import { usePlatform } from '../../context/PlatformContext';
@@ -50,37 +50,36 @@ const EditorsPage = () => {
     });
 
   return (
-    <div className="min-h-screen bg-[#080808] text-[#FBF9F5] pb-24 text-left">
+    <div className="min-h-screen bg-[#030712] text-slate-100 pb-24 text-left relative">
       {/* Header Banner */}
-      <section className="relative py-16 sm:py-20 px-4 sm:px-6 lg:px-8 border-b border-[#262626] overflow-hidden">
-        <div className="absolute inset-0 ambient-gold-glow" />
+      <section className="relative py-16 sm:py-20 px-4 sm:px-6 lg:px-8 border-b border-sky-500/15 overflow-hidden">
         <div className="max-w-7xl mx-auto space-y-4 relative z-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#171717] border border-[#262626] text-[#C5A059] text-xs font-mono uppercase tracking-widest">
-            <Wand2 className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs font-mono uppercase tracking-widest">
+            <Wand2 className="w-3.5 h-3.5 text-cyan-400" />
             <span>Post-Production & Color Grading Directory</span>
           </div>
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-cinzel font-normal tracking-tight text-[#FBF9F5]">
-            MASTER RETOUCHERS & <span className="text-gold-gradient font-semibold">VIDEO COLORISTS</span>
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-display font-extrabold tracking-tight text-white">
+            RETURNING & <span className="text-gradient-cyan text-glow-cyan">COLOR EDITORS</span>
           </h1>
-          <p className="text-xs sm:text-sm text-[#A39E93] max-w-2xl leading-relaxed">
-            Elevate your raw footage and images with high-end frequency separation, film LUT grading, CGI compositing, and pristine sound design.
+          <p className="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
+            Discover verified high-end retouchers, DaVinci Resolve colorists, sound designers, and post-production studios.
           </p>
         </div>
       </section>
 
       {/* Discovery & Filter Controls */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 space-y-6">
-        <div className="p-5 sm:p-6 rounded bg-[#111111] border border-[#262626] space-y-4 shadow-xl">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 space-y-6 relative z-10">
+        <div className="p-5 sm:p-6 rounded-3xl glass-panel border border-sky-500/25 space-y-4 shadow-xl">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
             {/* Search Input */}
             <div className="relative lg:col-span-2">
-              <Search className="w-4 h-4 text-[#A39E93] absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
-                placeholder="Search retouchers, LUT colorists, DaVinci..."
+                placeholder="Search retouchers, film colorists..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-10 pr-3.5 py-2 rounded bg-[#171717] border border-[#262626] text-xs text-[#FBF9F5] placeholder-[#6B665E] focus:outline-none focus:border-[#C5A059] transition-all"
+                className="w-full pl-10 pr-3.5 py-2.5 rounded-2xl glass-input text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-all"
               />
             </div>
 
@@ -88,62 +87,29 @@ const EditorsPage = () => {
             <select
               value={disciplineFilter}
               onChange={(e) => setDisciplineFilter(e.target.value)}
-              className="w-full px-3 py-2 rounded bg-[#171717] border border-[#262626] text-xs text-[#EAE6DF] focus:outline-none focus:border-[#C5A059] cursor-pointer"
+              className="w-full px-3 py-2.5 rounded-2xl glass-input text-xs text-white focus:outline-none focus:border-cyan-400 cursor-pointer"
             >
-              <option value="all">All Post Disciplines</option>
-              <option value="photo">Photo Editing & Retouching</option>
-              <option value="video">Video Editing & Color Grading</option>
+              <option value="all" className="bg-midnight-950">All Post Disciplines</option>
+              <option value="photo" className="bg-midnight-950">Photo Editing & Retouching</option>
+              <option value="video" className="bg-midnight-950">Video Editing & Color Grading</option>
             </select>
 
-            {/* Specialty Selector */}
-            <select
-              value={specialtyFilter}
-              onChange={(e) => setSpecialtyFilter(e.target.value)}
-              className="w-full px-3 py-2 rounded bg-[#171717] border border-[#262626] text-xs text-[#EAE6DF] focus:outline-none focus:border-[#C5A059] cursor-pointer"
-            >
-              <option value="all">All Specialties</option>
-              <option value="Skin Retouching">High-End Skin Retouching</option>
-              <option value="Color Grading">DaVinci Resolve Color Grade</option>
-              <option value="Film LUTs">Custom Film LUTs & Looks</option>
-              <option value="Compositing">CGI & Background Compositing</option>
-            </select>
-
-            {/* Budget Selector */}
+            {/* Price Tier */}
             <select
               value={priceFilter}
               onChange={(e) => setPriceFilter(e.target.value)}
-              className="w-full px-3 py-2 rounded bg-[#171717] border border-[#262626] text-xs text-[#EAE6DF] focus:outline-none focus:border-[#C5A059] cursor-pointer"
+              className="w-full px-3 py-2.5 rounded-2xl glass-input text-xs text-white focus:outline-none focus:border-cyan-400 cursor-pointer"
             >
-              <option value="all">Any Price</option>
-              <option value="under15k">Under ₹15,000</option>
-              <option value="under25k">Under ₹25,000</option>
-              <option value="luxury">Master Tier (₹25,000+)</option>
+              <option value="all" className="bg-midnight-950">Any Budget Tier</option>
+              <option value="under15k" className="bg-midnight-950">Under ₹15,000</option>
+              <option value="under25k" className="bg-midnight-950">₹15,000 - ₹25,000</option>
+              <option value="luxury" className="bg-midnight-950">Master Retouch (₹25,000+)</option>
             </select>
           </div>
 
-          {/* Secondary Filter & Sort bar */}
-          <div className="flex flex-wrap items-center justify-between pt-3 border-t border-[#262626] text-xs text-[#A39E93] gap-3">
-            <span>
-              Showing <strong className="text-[#DFCA9B] font-mono font-bold">{filtered.length}</strong> master editors & colorists
-            </span>
-
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-1.5">
-                <ArrowUpDown className="w-3.5 h-3.5 text-[#C5A059]" />
-                <span className="text-[11px] uppercase tracking-wider text-[#A39E93]">Sort:</span>
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  className="bg-transparent text-xs text-[#DFCA9B] focus:outline-none cursor-pointer font-medium"
-                >
-                  <option value="recommended" className="bg-[#111111]">Recommended</option>
-                  <option value="rating" className="bg-[#111111]">Highest Rated</option>
-                  <option value="reviews" className="bg-[#111111]">Most Reviewed</option>
-                  <option value="price-low" className="bg-[#111111]">Price: Low to High</option>
-                  <option value="price-high" className="bg-[#111111]">Price: High to Low</option>
-                </select>
-              </div>
-
+          {/* Sub Filters & Sorting */}
+          <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-white/10 text-xs">
+            <div>
               {(search || disciplineFilter !== 'all' || specialtyFilter !== 'all' || priceFilter !== 'all') && (
                 <button
                   onClick={() => {
@@ -151,27 +117,46 @@ const EditorsPage = () => {
                     setDisciplineFilter('all');
                     setSpecialtyFilter('all');
                     setPriceFilter('all');
+                    setSortBy('recommended');
                   }}
-                  className="text-xs font-medium text-[#C5A059] hover:text-[#FFF] flex items-center gap-1 transition-colors"
+                  className="px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white border border-white/10 transition-all flex items-center gap-1"
                 >
                   <RotateCcw className="w-3 h-3" />
                   <span>Reset Filters</span>
                 </button>
               )}
             </div>
+
+            <div className="flex items-center gap-2">
+              <span className="text-slate-400">Sort by:</span>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="px-3 py-1.5 rounded-full glass-input text-xs text-white focus:outline-none cursor-pointer"
+              >
+                <option value="recommended" className="bg-midnight-950">Recommended</option>
+                <option value="price-low" className="bg-midnight-950">Price: Low to High</option>
+                <option value="price-high" className="bg-midnight-950">Price: High to Low</option>
+                <option value="rating" className="bg-midnight-950">Highest Rating</option>
+                <option value="reviews" className="bg-midnight-950">Most Reviews</option>
+              </select>
+            </div>
           </div>
         </div>
 
-        {/* Results Grid */}
-        {filtered.length === 0 ? (
-          <div className="p-16 text-center bg-[#111111] border border-[#262626] rounded space-y-4">
-            <Wand2 className="w-10 h-10 text-[#6B665E] mx-auto" />
-            <h3 className="text-lg font-cinzel text-[#FBF9F5]">No editors found</h3>
-            <p className="text-xs text-[#A39E93] max-w-sm mx-auto">
-              We couldn't find any editors matching your search. Try resetting your filter criteria.
-            </p>
+        {/* Results Header */}
+        <div className="flex items-center justify-between text-xs text-slate-400 px-1">
+          <p>
+            Showing <span className="text-white font-mono font-bold">{filtered.length}</span> verified master editors
+          </p>
+          <div className="flex items-center gap-1 text-emerald-400">
+            <ShieldCheck className="w-4 h-4" />
+            <span>Escrow Protected Delivery</span>
           </div>
-        ) : (
+        </div>
+
+        {/* Grid Results */}
+        {filtered.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filtered.map((pro) => (
               <ProfessionalCard
@@ -181,6 +166,25 @@ const EditorsPage = () => {
                 onWishlistToggle={toggleFavorite}
               />
             ))}
+          </div>
+        ) : (
+          <div className="py-20 text-center glass-panel rounded-3xl border border-sky-500/20 p-8 space-y-4">
+            <Wand2 className="w-12 h-12 text-slate-600 mx-auto" />
+            <h3 className="text-xl font-display font-bold text-white">No Editors Found</h3>
+            <p className="text-xs text-slate-400 max-w-md mx-auto">
+              No editors matched your active search criteria. Try loosening your filters or resetting your search.
+            </p>
+            <button
+              onClick={() => {
+                setSearch('');
+                setDisciplineFilter('all');
+                setSpecialtyFilter('all');
+                setPriceFilter('all');
+              }}
+              className="px-6 py-2.5 rounded-full glow-btn-primary text-xs uppercase tracking-wider font-bold"
+            >
+              Reset Filters
+            </button>
           </div>
         )}
       </section>
