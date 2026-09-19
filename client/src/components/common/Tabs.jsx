@@ -2,7 +2,7 @@ import React from 'react';
 
 const Tabs = ({ tabs = [], activeTab, onChange, className = '' }) => {
   return (
-    <div className={`flex items-center gap-1 overflow-x-auto no-scrollbar border-b border-zinc-200 pb-px ${className}`}>
+    <div className={`flex items-center gap-2 overflow-x-auto no-scrollbar border-b border-slate-800/80 pb-px ${className}`}>
       {tabs.map((tab) => {
         const isActive = activeTab === tab.id;
         const Icon = tab.icon;
@@ -12,18 +12,18 @@ const Tabs = ({ tabs = [], activeTab, onChange, className = '' }) => {
             key={tab.id}
             type="button"
             onClick={() => onChange(tab.id)}
-            className={`flex items-center gap-2 px-4 py-2.5 text-xs font-semibold uppercase tracking-wider whitespace-nowrap transition-all border-b-2 -mb-px ${
+            className={`flex items-center gap-2 px-4 py-3 text-xs font-semibold uppercase tracking-wider whitespace-nowrap transition-all border-b-2 -mb-px rounded-t-lg ${
               isActive
-                ? 'text-zinc-900 border-zinc-900 font-bold'
-                : 'text-zinc-500 border-transparent hover:text-zinc-900 hover:border-zinc-300'
+                ? 'text-cyan-400 border-cyan-400 font-bold bg-cyan-500/10 shadow-[0_4px_12px_rgba(6,182,212,0.15)]'
+                : 'text-slate-400 border-transparent hover:text-white hover:border-slate-700 hover:bg-white/5'
             }`}
           >
-            {Icon && <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-zinc-900' : 'text-zinc-400'}`} />}
+            {Icon && <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-cyan-400' : 'text-slate-400'}`} />}
             <span>{tab.label}</span>
             {tab.count !== undefined && (
               <span
-                className={`text-[10px] px-1.5 py-0.2 rounded-full ${
-                  isActive ? 'bg-zinc-900 text-white' : 'bg-zinc-100 text-zinc-600'
+                className={`text-[10px] px-2 py-0.5 rounded-full ${
+                  isActive ? 'bg-cyan-500/30 text-cyan-200 border border-cyan-400/40' : 'bg-slate-800 text-slate-400 border border-slate-700'
                 }`}
               >
                 {tab.count}
