@@ -14,6 +14,7 @@ import {
   ArrowRight,
   Maximize2,
   MessageSquarePlus,
+  Sparkles,
 } from 'lucide-react';
 import { ROLE_LABELS } from '../../constants/roles';
 import { formatCurrency, formatPriceUnit, formatDate } from '../../utils/formatters';
@@ -62,14 +63,15 @@ const ProfessionalProfilePage = () => {
       {/* ─────────────────────────────────────────────────────────────
           COVER IMAGE BANNER
          ───────────────────────────────────────────────────────────── */}
-      <div className="relative h-72 sm:h-96 lg:h-[420px] w-full bg-zinc-950 overflow-hidden film-frame-marker">
+      <div className="relative h-72 sm:h-96 lg:h-[420px] w-full bg-slate-950 overflow-hidden film-frame-marker">
         <img
           src={pro.coverImage}
           alt={pro.name}
-          className="w-full h-full object-cover opacity-80"
+          className="w-full h-full object-cover opacity-70"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-black/40 to-transparent" />
-        <div className="absolute bottom-6 left-6 hidden sm:flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.2em] text-zinc-300 bg-black/70 backdrop-blur-md px-3 py-1 rounded-md border border-white/10">
+        <div className="absolute inset-0 bg-gradient-to-t from-[#02040a] via-[#02040a]/50 to-transparent" />
+        <div className="absolute bottom-6 left-6 hidden sm:flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.2em] text-cyan-300 bg-black/70 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-cyan-400/20">
+          <Sparkles className="w-3 h-3 text-cyan-400" />
           <span>Studio ID: {pro.id}</span>
           <span>·</span>
           <span>Verified Gear & Identity Audit</span>
@@ -84,29 +86,29 @@ const ProfessionalProfilePage = () => {
           {/* Left / Center 2-Columns */}
           <div className="lg:col-span-2 space-y-6">
             {/* Header info card */}
-            <div className="p-6 sm:p-8 rounded-xl bg-white border border-zinc-200 shadow-soft-md space-y-5">
+            <div className="p-6 sm:p-8 rounded-2xl glass-panel shadow-2xl border-cyan-500/20 space-y-5">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
                   <Avatar
                     src={pro.avatar}
                     name={pro.name}
                     size="2xl"
-                    className="ring-4 ring-white shadow-soft shrink-0"
+                    className="ring-4 ring-cyan-500/30 shadow-xl shrink-0"
                   />
                   <div>
                     <div className="flex items-center gap-2">
-                      <h1 className="text-2xl sm:text-3xl font-serif font-bold text-zinc-900">
+                      <h1 className="text-2xl sm:text-3xl font-serif font-bold text-white">
                         {pro.name}
                       </h1>
                       {pro.isVerified && (
-                        <ShieldCheck className="w-5 h-5 text-zinc-800 shrink-0" title="Verified Creator" />
+                        <ShieldCheck className="w-5 h-5 text-cyan-400 shrink-0" title="Verified Creator" />
                       )}
                     </div>
-                    <div className="flex items-center gap-2 mt-1">
-                      <span className="inline-block text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-md bg-zinc-100 text-zinc-800 border border-zinc-200">
+                    <div className="flex items-center gap-2 mt-1.5">
+                      <span className="inline-block text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-400/20">
                         {ROLE_LABELS[pro.role]}
                       </span>
-                      <span className="text-xs text-zinc-500">
+                      <span className="text-xs text-slate-400">
                         {pro.experienceYears || 8} Years Experience
                       </span>
                     </div>
@@ -120,7 +122,7 @@ const ProfessionalProfilePage = () => {
                       navigator.clipboard?.writeText(window.location.href);
                       success('Studio profile link copied to clipboard!');
                     }}
-                    className="p-2.5 rounded-md border border-zinc-200 text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 transition-colors"
+                    className="p-2.5 rounded-xl border border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800/60 transition-colors"
                     title="Share Profile"
                   >
                     <Share2 className="w-4 h-4" />
@@ -131,29 +133,29 @@ const ProfessionalProfilePage = () => {
                       toggleWishlist(pro.id);
                       success(savedInWishlist ? 'Removed from saved creators' : 'Saved to your curated wishlist!');
                     }}
-                    className={`p-2.5 rounded-md border transition-colors ${
+                    className={`p-2.5 rounded-xl border transition-colors ${
                       savedInWishlist
-                        ? 'bg-red-50 border-red-200 text-red-600'
-                        : 'border-zinc-200 text-zinc-600 hover:text-red-600 hover:bg-zinc-50'
+                        ? 'bg-red-500/20 border-red-500/40 text-red-400'
+                        : 'border-slate-800 text-slate-400 hover:text-red-400 hover:bg-slate-800/60'
                     }`}
                     title="Save to Wishlist"
                   >
-                    <Heart className={`w-4 h-4 ${savedInWishlist ? 'fill-red-600' : ''}`} />
+                    <Heart className={`w-4 h-4 ${savedInWishlist ? 'fill-red-400' : ''}`} />
                   </button>
                 </div>
               </div>
 
               {/* Tagline & City */}
-              <div className="space-y-2 pt-2 border-t border-zinc-100">
-                <p className="text-sm sm:text-base font-medium text-zinc-900">
+              <div className="space-y-2 pt-2 border-t border-slate-800/80">
+                <p className="text-sm sm:text-base font-medium text-slate-200">
                   {pro.tagline}
                 </p>
-                <div className="flex items-center gap-4 text-xs text-zinc-500">
+                <div className="flex items-center gap-4 text-xs text-slate-400">
                   <span className="flex items-center gap-1">
-                    <MapPin className="w-3.5 h-3.5 text-zinc-400" />
+                    <MapPin className="w-3.5 h-3.5 text-cyan-400" />
                     {pro.location?.city}, {pro.location?.state || 'India'}
                   </span>
-                  <span className="flex items-center gap-1 font-bold text-zinc-900">
+                  <span className="flex items-center gap-1 font-bold text-white">
                     <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
                     {pro.rating || 5.0} ({proReviews.length || pro.reviewCount || 0} reviews)
                   </span>
@@ -178,22 +180,22 @@ const ProfessionalProfilePage = () => {
                           setActiveLightboxIndex(idx);
                           setLightboxOpen(true);
                         }}
-                        className="group relative aspect-4/3 rounded-lg overflow-hidden bg-zinc-100 cursor-pointer border border-zinc-200 shadow-subtle"
+                        className="group relative aspect-4/3 rounded-2xl overflow-hidden bg-slate-900 cursor-pointer border border-slate-800 hover:border-cyan-500/40 transition-all shadow-xl"
                       >
                         <img
                           src={item.url}
                           alt={item.title}
-                          className="w-full h-full object-cover group-hover:scale-104 transition-transform duration-500"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/80 via-zinc-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col justify-end p-4 text-white">
-                          <span className="text-[10px] uppercase font-mono tracking-widest text-zinc-300">
+                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+                          <span className="text-[10px] uppercase font-mono tracking-widest text-cyan-400">
                             {item.category}
                           </span>
                           <h4 className="text-sm font-bold font-serif">{item.title}</h4>
                         </div>
                         <button
                           type="button"
-                          className="absolute top-3 right-3 p-2 rounded-full bg-black/60 text-white backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity"
+                          className="absolute top-3 right-3 p-2 rounded-full bg-black/60 text-white backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity border border-white/10"
                         >
                           <Maximize2 className="w-3.5 h-3.5" />
                         </button>
@@ -201,8 +203,8 @@ const ProfessionalProfilePage = () => {
                     ))}
                   </div>
                 ) : (
-                  <div className="p-12 text-center bg-white rounded-lg border border-zinc-200">
-                    <p className="text-xs text-zinc-500">No portfolio items uploaded yet.</p>
+                  <div className="p-12 text-center glass-panel rounded-2xl">
+                    <p className="text-xs text-slate-400">No portfolio items uploaded yet.</p>
                   </div>
                 )}
               </div>
@@ -217,32 +219,32 @@ const ProfessionalProfilePage = () => {
                   pro.services.map((srv) => (
                     <div
                       key={srv.id}
-                      className="p-6 rounded-xl bg-white border border-zinc-200 space-y-4 shadow-subtle hover:border-zinc-900 transition-colors"
+                      className="p-6 rounded-2xl glass-card space-y-4 hover:border-cyan-500/40 transition-all"
                     >
                       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
                         <div>
-                          <h3 className="text-base font-serif font-bold text-zinc-900">{srv.title}</h3>
-                          <span className="text-xs text-zinc-600 font-semibold flex items-center gap-1 mt-1">
-                            <Clock className="w-3.5 h-3.5 text-zinc-400" /> {srv.deliveryDays} Days Turnaround
+                          <h3 className="text-base font-serif font-bold text-white">{srv.title}</h3>
+                          <span className="text-xs text-slate-400 font-semibold flex items-center gap-1 mt-1">
+                            <Clock className="w-3.5 h-3.5 text-cyan-400" /> {srv.deliveryDays} Days Turnaround
                           </span>
                         </div>
                         <div className="text-left sm:text-right">
-                          <span className="text-xl font-bold text-zinc-900 block">
+                          <span className="text-xl font-bold text-white block">
                             {formatCurrency(srv.price)}
                           </span>
-                          <span className="text-[10px] text-zinc-500 uppercase tracking-wider font-mono">
+                          <span className="text-[10px] text-cyan-400 uppercase tracking-wider font-mono">
                             {formatPriceUnit(srv.pricingType)}
                           </span>
                         </div>
                       </div>
 
-                      <p className="text-xs text-zinc-600 leading-relaxed">{srv.description}</p>
+                      <p className="text-xs text-slate-300 leading-relaxed">{srv.description}</p>
 
                       {srv.inclusions && srv.inclusions.length > 0 && (
-                        <div className="pt-3 border-t border-zinc-100 space-y-1.5">
+                        <div className="pt-3 border-t border-slate-800/80 space-y-1.5">
                           {srv.inclusions.map((inc, iIdx) => (
-                            <div key={iIdx} className="flex items-center gap-2 text-xs text-zinc-800">
-                              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                            <div key={iIdx} className="flex items-center gap-2 text-xs text-slate-200">
+                              <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
                               <span>{inc}</span>
                             </div>
                           ))}
@@ -262,8 +264,8 @@ const ProfessionalProfilePage = () => {
                     </div>
                   ))
                 ) : (
-                  <div className="p-8 text-center bg-white rounded-lg border border-zinc-200">
-                    <p className="text-xs text-zinc-500">Contact creator directly for custom rate quotation.</p>
+                  <div className="p-8 text-center glass-panel rounded-2xl">
+                    <p className="text-xs text-slate-400">Contact creator directly for custom rate quotation.</p>
                   </div>
                 )}
               </div>
@@ -274,12 +276,12 @@ const ProfessionalProfilePage = () => {
                ───────────────────────────────────────────────────────────── */}
             {activeTab === 'reviews' && (
               <div className="space-y-6">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-zinc-200">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800/80">
                   <div>
-                    <h3 className="text-lg font-serif font-bold text-zinc-900">
+                    <h3 className="text-lg font-serif font-bold text-white">
                       Verified Client Testimonials ({proReviews.length})
                     </h3>
-                    <div className="flex items-center gap-1 font-bold text-sm text-zinc-900 mt-0.5">
+                    <div className="flex items-center gap-1 font-bold text-sm text-white mt-0.5">
                       <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
                       <span>{pro.rating || 5.0} / 5.0 Overall Rating</span>
                     </div>
@@ -298,7 +300,7 @@ const ProfessionalProfilePage = () => {
                 <div className="space-y-4">
                   {proReviews.length > 0 ? (
                     proReviews.map((rev) => (
-                      <div key={rev.id} className="p-6 rounded-lg bg-white border border-zinc-200 space-y-3 shadow-subtle">
+                      <div key={rev.id} className="p-6 rounded-2xl glass-card space-y-3">
                         <div className="flex items-start justify-between">
                           <div className="flex items-center gap-3">
                             <Avatar
@@ -307,29 +309,29 @@ const ProfessionalProfilePage = () => {
                               size="md"
                             />
                             <div>
-                              <h4 className="text-xs font-bold text-zinc-900">{rev.clientName || rev.userName}</h4>
-                              <span className="text-[11px] text-zinc-500">{rev.event}</span>
+                              <h4 className="text-xs font-bold text-white">{rev.clientName || rev.userName}</h4>
+                              <span className="text-[11px] text-slate-400">{rev.event}</span>
                             </div>
                           </div>
                           <div className="text-right">
-                            <div className="flex items-center gap-1 text-amber-500">
+                            <div className="flex items-center gap-1 text-amber-400">
                               {[...Array(rev.rating || 5)].map((_, i) => (
                                 <Star key={i} className="w-3 h-3 fill-amber-400 text-amber-400" />
                               ))}
                             </div>
-                            <span className="text-[10px] text-zinc-400 block mt-1">
+                            <span className="text-[10px] text-slate-500 block mt-1">
                               {formatDate(rev.date || rev.createdAt)}
                             </span>
                           </div>
                         </div>
-                        <p className="text-xs text-zinc-700 italic font-serif leading-relaxed">
+                        <p className="text-xs text-slate-300 italic font-serif leading-relaxed">
                           "{rev.comment}"
                         </p>
                       </div>
                     ))
                   ) : (
-                    <div className="p-10 text-center bg-white rounded-lg border border-zinc-200 space-y-3">
-                      <p className="text-xs text-zinc-500">Be the first to review {pro.name}!</p>
+                    <div className="p-10 text-center glass-panel rounded-2xl space-y-3">
+                      <p className="text-xs text-slate-400">Be the first to review {pro.name}!</p>
                       <Button variant="primary" size="sm" onClick={() => setWriteReviewOpen(true)}>
                         Write First Review
                       </Button>
@@ -344,24 +346,24 @@ const ProfessionalProfilePage = () => {
                ───────────────────────────────────────────────────────────── */}
             {activeTab === 'about' && (
               <div className="space-y-6">
-                <div className="p-6 sm:p-8 rounded-xl bg-white border border-zinc-200 space-y-6 shadow-subtle">
+                <div className="p-6 sm:p-8 rounded-2xl glass-panel space-y-6">
                   <div>
-                    <h3 className="text-base font-serif font-bold text-zinc-900 mb-2">Studio Biography</h3>
-                    <p className="text-xs text-zinc-600 leading-relaxed">
+                    <h3 className="text-base font-serif font-bold text-white mb-2">Studio Biography</h3>
+                    <p className="text-xs text-slate-300 leading-relaxed">
                       {pro.bio || pro.about || 'Dedicated visual artist with years of hands-on production experience capturing high-end celebrations and commercial brand stories.'}
                     </p>
                   </div>
 
                   {pro.equipment && pro.equipment.length > 0 && (
-                    <div className="pt-4 border-t border-zinc-100 space-y-3">
-                      <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-900 flex items-center gap-2">
-                        <Wrench className="w-4 h-4 text-zinc-700" />
+                    <div className="pt-4 border-t border-slate-800/80 space-y-3">
+                      <h4 className="text-xs font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-2">
+                        <Wrench className="w-4 h-4 text-cyan-400" />
                         <span>Verified Camera & Production Gear Kit</span>
                       </h4>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-zinc-700">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-200">
                         {pro.equipment.map((gear, gIdx) => (
-                          <div key={gIdx} className="p-2.5 rounded-md bg-zinc-50 border border-zinc-200 flex items-center gap-2">
-                            <span className="w-1.5 h-1.5 rounded-full bg-zinc-900" />
+                          <div key={gIdx} className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center gap-2">
+                            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
                             <span className="font-mono text-[11px]">{gear}</span>
                           </div>
                         ))}
@@ -370,15 +372,15 @@ const ProfessionalProfilePage = () => {
                   )}
 
                   {pro.specialties && pro.specialties.length > 0 && (
-                    <div className="pt-4 border-t border-zinc-100 space-y-3">
-                      <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-900">
+                    <div className="pt-4 border-t border-slate-800/80 space-y-3">
+                      <h4 className="text-xs font-bold uppercase tracking-wider text-white">
                         Specialized Genres & Creative Mediums
                       </h4>
                       <div className="flex flex-wrap gap-2">
                         {pro.specialties.map((spec, sIdx) => (
                           <span
                             key={sIdx}
-                            className="px-3 py-1 rounded-md bg-zinc-100 text-xs font-semibold text-zinc-900 border border-zinc-200"
+                            className="px-3 py-1 rounded-lg bg-cyan-500/10 text-xs font-semibold text-cyan-300 border border-cyan-400/20"
                           >
                             {spec}
                           </span>
@@ -392,18 +394,18 @@ const ProfessionalProfilePage = () => {
           </div>
 
           {/* ─────────────────────────────────────────────────────────────
-              RIGHT COLUMN: STICKY AIRBNB-STYLE BOOKING DRAWER
+              RIGHT COLUMN: STICKY BOOKING DRAWER
              ───────────────────────────────────────────────────────────── */}
           <div className="sticky top-24 space-y-5">
-            <div className="p-6 sm:p-7 rounded-xl bg-white border border-zinc-200 shadow-soft-lg space-y-5">
-              <div className="flex items-baseline justify-between pb-4 border-b border-zinc-100">
+            <div className="p-6 sm:p-7 rounded-2xl glass-panel border-cyan-500/30 shadow-2xl space-y-5">
+              <div className="flex items-baseline justify-between pb-4 border-b border-slate-800/80">
                 <div>
-                  <span className="text-2xl font-serif font-bold text-zinc-900">
+                  <span className="text-2xl font-serif font-bold text-white">
                     {formatCurrency(pro.startingPrice)}
                   </span>
-                  <span className="text-xs text-zinc-500 ml-1">{formatPriceUnit(pro.priceUnit)}</span>
+                  <span className="text-xs text-slate-400 ml-1">{formatPriceUnit(pro.priceUnit)}</span>
                 </div>
-                <div className="flex items-center gap-1 text-xs font-bold text-zinc-900">
+                <div className="flex items-center gap-1 text-xs font-bold text-white">
                   <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
                   <span>{pro.rating || 5.0}</span>
                 </div>
@@ -419,23 +421,23 @@ const ProfessionalProfilePage = () => {
                 >
                   Reserve Date & Book
                 </Button>
-                <p className="text-[11px] text-center text-zinc-400">
+                <p className="text-[11px] text-center text-slate-400">
                   You won't be charged yet. Escrow locks on confirmation.
                 </p>
               </div>
 
               {/* Trust Badges */}
-              <div className="pt-4 border-t border-zinc-100 space-y-2.5 text-xs text-zinc-600">
+              <div className="pt-4 border-t border-slate-800/80 space-y-2.5 text-xs text-slate-300">
                 <div className="flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <ShieldCheck className="w-4 h-4 text-cyan-400 shrink-0" />
                   <span>100% Escrow Protection Guarantee</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-zinc-700 shrink-0" />
+                  <Clock className="w-4 h-4 text-cyan-400 shrink-0" />
                   <span>48h Early Teaser Preview Included</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0" />
                   <span>Direct Creator Messaging & Call-Sheets</span>
                 </div>
               </div>
