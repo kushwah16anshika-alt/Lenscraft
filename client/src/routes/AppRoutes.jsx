@@ -16,6 +16,7 @@ import HomePage from '../pages/public/HomePage';
 import PhotographersPage from '../pages/public/PhotographersPage';
 import VideographersPage from '../pages/public/VideographersPage';
 import EditorsPage from '../pages/public/EditorsPage';
+import ExplorePage from '../pages/public/ExplorePage';
 import ProfessionalProfilePage from '../pages/public/ProfessionalProfilePage';
 import ServicesPage from '../pages/public/ServicesPage';
 import FeaturesPage from '../pages/public/FeaturesPage';
@@ -62,10 +63,12 @@ const AppRoutes = () => {
       {/* Public Pages */}
       <Route element={<PublicLayout />}>
         <Route path="/" element={<HomePage />} />
+        <Route path="/explore" element={<ExplorePage />} />
         <Route path="/photographers" element={<PhotographersPage />} />
         <Route path="/videographers" element={<VideographersPage />} />
         <Route path="/editors" element={<EditorsPage />} />
         <Route path="/professionals/:id" element={<ProfessionalProfilePage />} />
+        <Route path="/professional/:id" element={<ProfessionalProfilePage />} />
         <Route path="/services" element={<ServicesPage />} />
         <Route path="/features" element={<FeaturesPage />} />
         <Route path="/about" element={<AboutPage />} />

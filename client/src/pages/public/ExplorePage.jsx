@@ -1,23 +1,32 @@
-import React, { useState } from 'react';
-import { Wand2, Search, ArrowUpDown, RotateCcw, Video, Camera } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { Compass, Search, ArrowUpDown, RotateCcw, Filter, MapPin, Camera, Film, Wand2 } from 'lucide-react';
 import ProfessionalCard from '../../components/cards/ProfessionalCard';
-import { ROLES } from '../../constants/roles';
 import { usePlatform } from '../../context/PlatformContext';
 
-const EditorsPage = () => {
+const ExplorePage = () => {
+  const [searchParams] = useSearchParams();
   const { professionals, favorites, toggleFavorite } = usePlatform();
-  const [search, setSearch] = useState('');
-  const [disciplineFilter, setDisciplineFilter] = useState('all');
-  const [specialtyFilter, setSpecialtyFilter] = useState('all');
+
+  const [search, setSearch] = useState(searchParams.get('search') || '');
+  const [discipline, setDiscipline] = useState(searchParams.get('category') || 'all');
+  const [cityFilter, setCityFilter] = useState(searchParams.get('city') || 'all');
   const [priceFilter, setPriceFilter] = useState('all');
+  const [ratingFilter, setRatingFilter] = useState('all');
   const [sortBy, setSortBy] = useState('recommended');
 
-  const editors = professionals.filter(
-    (p) => p.role === ROLES.EDITOR || p.category?.toLowerCase().includes('edit') || p.category?.toLowerCase().includes('color') || p.category?.toLowerCase().includes('post')
-  );
+  useEffect(() => {
+    const qCity = searchParams.get('city');
+    const qCat = searchParams.get('category');
+    const qSearch = searchParams.get('search');
+    if (qCity) setCityFilter(qCity);
+    if (qCat) setDiscipline(qCat);
+    if (qSearch) setSearch(qSearch);
+  }, [searchParams]);
 
-  const filtered = editors
+  const filtered = professionals
     .filter((p) => {
+      const city = typeof p.location === 'object' ? p.location.city : p.location;
       const matchesSearch =
         p.name.toLowerCase().includes(search.toLowerCase()) ||
         p.tagline?.toLowerCase().includes(search.toLowerCase()) ||
@@ -25,21 +34,22 @@ const EditorsPage = () => {
         (p.specialties || []).some((s) => s.toLowerCase().includes(search.toLowerCase()));
 
       const matchesDiscipline =
-        disciplineFilter === 'all' ||
-        (disciplineFilter === 'photo' && (p.category?.toLowerCase().includes('photo') || p.category?.toLowerCase().includes('retouch'))) ||
-        (disciplineFilter === 'video' && (p.category?.toLowerCase().includes('video') || p.category?.toLowerCase().includes('color')));
+        discipline === 'all' ||
+        p.category?.toLowerCase().includes(discipline.toLowerCase()) ||
+        p.role?.toLowerCase() === discipline.toLowerCase();
 
-      const matchesSpecialty =
-        specialtyFilter === 'all' ||
-        (p.specialties || []).some((s) => s.toLowerCase().includes(specialtyFilter.toLowerCase()));
+      const matchesCity = cityFilter === 'all' || city?.toLowerCase() === cityFilter.toLowerCase();
 
       const matchesPrice =
         priceFilter === 'all' ||
-        (priceFilter === 'under15k' && p.startingPrice <= 15000) ||
-        (priceFilter === 'under25k' && p.startingPrice <= 25000) ||
-        (priceFilter === 'luxury' && p.startingPrice > 25000);
+        (priceFilter === 'under20k' && p.startingPrice <= 20000) ||
+        (priceFilter === 'under35k' && p.startingPrice <= 35000) ||
+        (priceFilter === 'luxury' && p.startingPrice > 35000);
 
-      return matchesSearch && matchesDiscipline && matchesSpecialty && matchesPrice;
+      const matchesRating =
+        ratingFilter === 'all' || (ratingFilter === '4.8plus' && (p.rating || 5.0) >= 4.8);
+
+      return matchesSearch && matchesDiscipline && matchesCity && matchesPrice && matchesRating;
     })
     .sort((a, b) => {
       if (sortBy === 'price-low') return (a.startingPrice || 0) - (b.startingPrice || 0);
@@ -56,14 +66,14 @@ const EditorsPage = () => {
         <div className="absolute inset-0 ambient-gold-glow" />
         <div className="max-w-7xl mx-auto space-y-4 relative z-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#171717] border border-[#262626] text-[#C5A059] text-xs font-mono uppercase tracking-widest">
-            <Wand2 className="w-3.5 h-3.5" />
-            <span>Post-Production & Color Grading Directory</span>
+            <Compass className="w-3.5 h-3.5" />
+            <span>Master Discovery Directory</span>
           </div>
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-cinzel font-normal tracking-tight text-[#FBF9F5]">
-            MASTER RETOUCHERS & <span className="text-gold-gradient font-semibold">VIDEO COLORISTS</span>
+            EXPLORE ALL <span className="text-gold-gradient font-semibold">CREATIVE TALENT</span>
           </h1>
           <p className="text-xs sm:text-sm text-[#A39E93] max-w-2xl leading-relaxed">
-            Elevate your raw footage and images with high-end frequency separation, film LUT grading, CGI compositing, and pristine sound design.
+            Search top photographers, cinematographers, photo editors, video colorists, and studios across India.
           </p>
         </div>
       </section>
@@ -77,7 +87,7 @@ const EditorsPage = () => {
               <Search className="w-4 h-4 text-[#A39E93] absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
-                placeholder="Search retouchers, LUT colorists, DaVinci..."
+                placeholder="Search by creator, category, event..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="w-full pl-10 pr-3.5 py-2 rounded bg-[#171717] border border-[#262626] text-xs text-[#FBF9F5] placeholder-[#6B665E] focus:outline-none focus:border-[#C5A059] transition-all"
@@ -86,26 +96,29 @@ const EditorsPage = () => {
 
             {/* Discipline Selector */}
             <select
-              value={disciplineFilter}
-              onChange={(e) => setDisciplineFilter(e.target.value)}
+              value={discipline}
+              onChange={(e) => setDiscipline(e.target.value)}
               className="w-full px-3 py-2 rounded bg-[#171717] border border-[#262626] text-xs text-[#EAE6DF] focus:outline-none focus:border-[#C5A059] cursor-pointer"
             >
-              <option value="all">All Post Disciplines</option>
-              <option value="photo">Photo Editing & Retouching</option>
-              <option value="video">Video Editing & Color Grading</option>
+              <option value="all">All Disciplines</option>
+              <option value="photographer">Photographers</option>
+              <option value="videographer">Videographers & Drone</option>
+              <option value="editor">Photo / Video Editors</option>
             </select>
 
-            {/* Specialty Selector */}
+            {/* City Selector */}
             <select
-              value={specialtyFilter}
-              onChange={(e) => setSpecialtyFilter(e.target.value)}
+              value={cityFilter}
+              onChange={(e) => setCityFilter(e.target.value)}
               className="w-full px-3 py-2 rounded bg-[#171717] border border-[#262626] text-xs text-[#EAE6DF] focus:outline-none focus:border-[#C5A059] cursor-pointer"
             >
-              <option value="all">All Specialties</option>
-              <option value="Skin Retouching">High-End Skin Retouching</option>
-              <option value="Color Grading">DaVinci Resolve Color Grade</option>
-              <option value="Film LUTs">Custom Film LUTs & Looks</option>
-              <option value="Compositing">CGI & Background Compositing</option>
+              <option value="all">All Locations</option>
+              <option value="Indore">Indore</option>
+              <option value="Mumbai">Mumbai</option>
+              <option value="Delhi">Delhi NCR</option>
+              <option value="Bengaluru">Bengaluru</option>
+              <option value="Jaipur">Jaipur / Rajasthan</option>
+              <option value="Goa">Goa</option>
             </select>
 
             {/* Budget Selector */}
@@ -115,16 +128,16 @@ const EditorsPage = () => {
               className="w-full px-3 py-2 rounded bg-[#171717] border border-[#262626] text-xs text-[#EAE6DF] focus:outline-none focus:border-[#C5A059] cursor-pointer"
             >
               <option value="all">Any Price</option>
-              <option value="under15k">Under ₹15,000</option>
-              <option value="under25k">Under ₹25,000</option>
-              <option value="luxury">Master Tier (₹25,000+)</option>
+              <option value="under20k">Under ₹20,000</option>
+              <option value="under35k">Under ₹35,000</option>
+              <option value="luxury">Luxury Tier (₹35,000+)</option>
             </select>
           </div>
 
           {/* Secondary Filter & Sort bar */}
           <div className="flex flex-wrap items-center justify-between pt-3 border-t border-[#262626] text-xs text-[#A39E93] gap-3">
             <span>
-              Showing <strong className="text-[#DFCA9B] font-mono font-bold">{filtered.length}</strong> master editors & colorists
+              Showing <strong className="text-[#DFCA9B] font-mono font-bold">{filtered.length}</strong> verified creators
             </span>
 
             <div className="flex items-center gap-4">
@@ -144,12 +157,12 @@ const EditorsPage = () => {
                 </select>
               </div>
 
-              {(search || disciplineFilter !== 'all' || specialtyFilter !== 'all' || priceFilter !== 'all') && (
+              {(search || discipline !== 'all' || cityFilter !== 'all' || priceFilter !== 'all') && (
                 <button
                   onClick={() => {
                     setSearch('');
-                    setDisciplineFilter('all');
-                    setSpecialtyFilter('all');
+                    setDiscipline('all');
+                    setCityFilter('all');
                     setPriceFilter('all');
                   }}
                   className="text-xs font-medium text-[#C5A059] hover:text-[#FFF] flex items-center gap-1 transition-colors"
@@ -165,10 +178,10 @@ const EditorsPage = () => {
         {/* Results Grid */}
         {filtered.length === 0 ? (
           <div className="p-16 text-center bg-[#111111] border border-[#262626] rounded space-y-4">
-            <Wand2 className="w-10 h-10 text-[#6B665E] mx-auto" />
-            <h3 className="text-lg font-cinzel text-[#FBF9F5]">No editors found</h3>
+            <Compass className="w-10 h-10 text-[#6B665E] mx-auto" />
+            <h3 className="text-lg font-cinzel text-[#FBF9F5]">No creators found</h3>
             <p className="text-xs text-[#A39E93] max-w-sm mx-auto">
-              We couldn't find any editors matching your search. Try resetting your filter criteria.
+              We couldn't find any creators matching your search. Try resetting your filter criteria.
             </p>
           </div>
         ) : (
@@ -188,4 +201,4 @@ const EditorsPage = () => {
   );
 };
 
-export default EditorsPage;
+export default ExplorePage;
