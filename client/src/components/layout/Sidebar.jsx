@@ -20,6 +20,7 @@ import {
   ChevronLeft,
   ChevronRight,
   TrendingUp,
+  Aperture,
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { ROLES } from '../../constants/roles';
@@ -77,37 +78,39 @@ const Sidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOpen })
       {/* Mobile Backdrop */}
       {isMobileOpen && (
         <div
-          className="fixed inset-0 z-40 bg-zinc-950/70 backdrop-blur-xs lg:hidden"
+          className="fixed inset-0 z-40 bg-black/80 backdrop-blur-md lg:hidden"
           onClick={() => setIsMobileOpen(false)}
         />
       )}
 
       {/* Sidebar Container */}
       <aside
-        className={`fixed top-0 bottom-0 left-0 z-40 flex flex-col bg-zinc-950 text-white border-r border-zinc-800 transition-all duration-200 ${
+        className={`fixed top-0 bottom-0 left-0 z-40 flex flex-col bg-[#050a18]/90 backdrop-blur-2xl text-white border-r border-white/10 transition-all duration-300 ${
           isCollapsed ? 'w-20' : 'w-64'
         } ${
           isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
       >
         {/* Brand Header */}
-        <div className="flex items-center justify-between h-16 px-4 border-b border-zinc-800">
+        <div className="flex items-center justify-between h-16 px-4 border-b border-white/10">
           <Link
             to="/"
             className={`flex items-center gap-3 overflow-hidden ${
               isCollapsed ? 'justify-center w-full' : ''
             }`}
           >
-            <div className="w-8 h-8 rounded-md bg-zinc-900 border border-zinc-700 flex items-center justify-center text-white shrink-0">
-              <Camera className="w-4 h-4 stroke-[1.75]" />
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-500 to-indigo-600 p-0.5 flex items-center justify-center text-white shrink-0 shadow-md shadow-cyan-500/20">
+              <div className="w-full h-full bg-[#030712] rounded-[6px] flex items-center justify-center">
+                <Aperture className="w-4 h-4 text-cyan-400" />
+              </div>
             </div>
             {!isCollapsed && (
               <div className="text-left">
-                <span className="text-base font-serif font-bold tracking-tight text-white block leading-none">
-                  LENS<span className="text-zinc-400">·</span>CRAFT
+                <span className="text-sm font-heading font-extrabold tracking-wider text-white block leading-none">
+                  LENS<span className="text-cyan-400">·</span>CRAFT
                 </span>
-                <span className="text-[9px] text-zinc-400 uppercase tracking-widest block font-semibold mt-1">
-                  {user?.role === ROLES.ADMIN ? 'Admin Portal' : 'Studio Workspace'}
+                <span className="text-[9px] text-cyan-400/80 uppercase tracking-widest block font-mono font-bold mt-1">
+                  {user?.role === ROLES.ADMIN ? 'Admin Terminal' : 'Studio Portal'}
                 </span>
               </div>
             )}
@@ -117,7 +120,7 @@ const Sidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOpen })
           {!isMobileOpen && (
             <button
               onClick={() => setIsCollapsed(!isCollapsed)}
-              className="hidden lg:flex p-1.5 rounded-md hover:bg-zinc-900 text-zinc-400 hover:text-white transition-colors"
+              className="hidden lg:flex p-1.5 rounded-lg hover:bg-white/10 text-slate-400 hover:text-white transition-colors"
             >
               {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
             </button>
@@ -125,17 +128,17 @@ const Sidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOpen })
         </div>
 
         {/* User Card */}
-        <div className="p-3 border-b border-zinc-800">
+        <div className="p-3 border-b border-white/10">
           <div
-            className={`flex items-center gap-3 p-2 rounded-md bg-zinc-900 border border-zinc-800 ${
+            className={`flex items-center gap-3 p-2.5 rounded-xl bg-white/[0.03] border border-white/10 ${
               isCollapsed ? 'justify-center' : 'text-left'
             }`}
           >
             <Avatar src={user?.avatar?.url} name={user?.name} size="xs" isOnline={true} />
             {!isCollapsed && (
               <div className="flex-1 min-w-0">
-                <p className="text-xs font-bold text-white truncate">{user?.name}</p>
-                <span className="inline-block text-[9px] px-1.5 py-0.2 rounded-xs uppercase font-bold text-zinc-300 bg-zinc-800 border border-zinc-700">
+                <p className="text-xs font-semibold text-white truncate">{user?.name}</p>
+                <span className="inline-block text-[9px] px-1.5 py-0.5 rounded-sm uppercase font-mono font-bold text-cyan-300 bg-cyan-950/50 border border-cyan-500/30">
                   {user?.role}
                 </span>
               </div>
@@ -153,12 +156,12 @@ const Sidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOpen })
                 to={item.path}
                 onClick={() => setIsMobileOpen && setIsMobileOpen(false)}
                 className={({ isActive }) =>
-                  `flex items-center gap-3 px-3 py-2 rounded-md text-xs font-medium tracking-wide transition-all ${
+                  `flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium tracking-wide transition-all duration-200 ${
                     isCollapsed ? 'justify-center px-2' : ''
                   } ${
                     isActive
-                      ? 'bg-white text-zinc-950 font-bold shadow-xs'
-                      : 'text-zinc-400 hover:text-white hover:bg-zinc-900'
+                      ? 'bg-gradient-to-r from-cyan-500/20 to-indigo-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm shadow-cyan-500/10 font-semibold'
+                      : 'text-slate-400 hover:text-slate-100 hover:bg-white/5 border border-transparent'
                   }`
                 }
                 title={isCollapsed ? item.label : undefined}
@@ -171,16 +174,16 @@ const Sidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOpen })
         </nav>
 
         {/* Bottom Footer Actions */}
-        <div className="p-3 border-t border-zinc-800">
+        <div className="p-3 border-t border-white/10">
           <button
             onClick={() => {
               logout();
               navigate('/');
             }}
-            className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-xs font-medium text-red-400 hover:bg-zinc-900 transition-colors ${
+            className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-colors ${
               isCollapsed ? 'justify-center' : ''
             }`}
-            title="Log out"
+            title="Sign out"
           >
             <LogOut className="w-4 h-4 shrink-0" />
             {!isCollapsed && <span>Sign Out</span>}
