@@ -525,9 +525,6 @@ const HomePage = () => {
     ],
   };
 
-  const currentPlannerPackageList =
-    SERVICE_PRICING_MAP[selectedPlannerService] || SERVICE_PRICING_MAP['Wedding Photography'];
-
   // ─────────────────────────────────────────────────────────────
   // 4. CLIENT STORIES TESTIMONIALS
   // ─────────────────────────────────────────────────────────────
@@ -582,14 +579,27 @@ const HomePage = () => {
   // Handle In-Page Planner Booking Confirmation
   const currentPlannerProObj =
     professionals.find((p) => p.id === selectedPlannerPro) || professionals[0];
+
+  const currentPlannerPackageList =
+    (currentPlannerProObj?.services && currentPlannerProObj.services.length > 0)
+      ? currentPlannerProObj.services.map((srv) => ({
+          id: srv.id,
+          name: srv.title,
+          price: srv.price,
+          tagline: srv.description,
+          deliveryDays: srv.deliveryDays || 7,
+          inclusions: srv.inclusions || [],
+        }))
+      : (SERVICE_PRICING_MAP[selectedPlannerService] || SERVICE_PRICING_MAP['Wedding Photography']);
+
   const currentPlannerPkgObj =
-    currentPlannerPackageList.find((pkg) => pkg.id === selectedPlannerPackage) || currentPlannerPackageList[1];
+    currentPlannerPackageList.find((pkg) => pkg.id === selectedPlannerPackage) || currentPlannerPackageList[0];
 
   const handleConfirmPlannerBooking = () => {
     createBooking({
       professional: currentPlannerProObj,
       service: {
-        title: `${selectedPlannerService} (${currentPlannerPkgObj.name})`,
+        title: `${currentPlannerPkgObj.name}`,
         price: currentPlannerPkgObj.price,
       },
       eventDate: selectedPlannerDate,
@@ -994,24 +1004,39 @@ const HomePage = () => {
                   1. Select Photographer / Studio
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {professionals.slice(0, 4).map((pro) => (
+                  {professionals.slice(0, 6).map((pro) => (
                     <div
                       key={pro.id}
-                      onClick={() => setSelectedPlannerPro(pro.id)}
-                      className={`p-3.5 rounded-xl border cursor-pointer transition-all flex items-center gap-3 ${
+                      onClick={() => {
+                        setSelectedPlannerPro(pro.id);
+                        if (pro.services && pro.services.length > 0) {
+                          setSelectedPlannerPackage(pro.services[0].id);
+                        }
+                      }}
+                      className={`p-3.5 rounded-xl border cursor-pointer transition-all flex items-center justify-between gap-3 ${
                         selectedPlannerPro === pro.id
                           ? 'bg-sky-950/80 border-sky-400 ring-1 ring-sky-400 shadow-[0_0_15px_rgba(56,189,248,0.3)]'
                           : 'bg-slate-900/60 border-white/10 hover:border-sky-500/40'
                       }`}
                     >
-                      <img
-                        src={pro.avatar}
-                        alt={pro.name}
-                        className="w-10 h-10 rounded-full object-cover ring-1 ring-sky-500/30 shrink-0"
-                      />
-                      <div className="min-w-0">
-                        <h4 className="text-xs font-bold text-white truncate">{pro.name}</h4>
-                        <span className="text-[10px] text-slate-400 block truncate">{pro.tagline}</span>
+                      <div className="flex items-center gap-3 min-w-0">
+                        <img
+                          src={pro.avatar}
+                          alt={pro.name}
+                          className="w-10 h-10 rounded-full object-cover ring-1 ring-sky-500/30 shrink-0"
+                        />
+                        <div className="min-w-0">
+                          <h4 className="text-xs font-bold text-white truncate">{pro.name}</h4>
+                          <span className="text-[10px] text-slate-400 block truncate">{pro.tagline}</span>
+                        </div>
+                      </div>
+                      <div className="text-right shrink-0">
+                        <span className="text-[11px] font-mono font-bold text-sky-400 block">
+                          {formatCurrency(pro.startingPrice)}
+                        </span>
+                        <span className="text-[9px] text-slate-500 block uppercase font-mono">
+                          /{pro.priceUnit?.replace('_', ' ') || 'day'}
+                        </span>
                       </div>
                     </div>
                   ))}
