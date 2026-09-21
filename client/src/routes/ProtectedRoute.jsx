@@ -23,17 +23,17 @@ const ProtectedRoute = ({ children, allowedRoles = [] }) => {
 
     return (
       <div className="min-h-[80vh] flex flex-col items-center justify-center p-6 text-center max-w-xl mx-auto text-left">
-        <div className="w-14 h-14 rounded-full bg-[#FAF7F3] border border-[#E8DBCA] flex items-center justify-center text-[#B88A5A] mb-4 shadow-2xs mx-auto">
+        <div className="w-16 h-16 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-300 mb-4 shadow-[0_0_25px_rgba(6,182,212,0.25)] mx-auto">
           {isCreativeArea ? (
-            <Camera className="w-6 h-6 stroke-[1.5]" />
+            <Camera className="w-7 h-7 stroke-[1.5]" />
           ) : isAdminArea ? (
-            <Shield className="w-6 h-6 stroke-[1.5]" />
+            <Shield className="w-7 h-7 stroke-[1.5]" />
           ) : (
-            <Lock className="w-6 h-6 stroke-[1.5]" />
+            <Lock className="w-7 h-7 stroke-[1.5]" />
           )}
         </div>
 
-        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#B88A5A] block text-center mb-1">
+        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-cyan-400 block text-center mb-1">
           {isCreativeArea
             ? 'Creator Studio Portal'
             : isAdminArea
@@ -41,17 +41,17 @@ const ProtectedRoute = ({ children, allowedRoles = [] }) => {
             : 'Client Portal'}
         </span>
 
-        <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#171717] text-center mb-2">
+        <h2 className="text-2xl sm:text-3xl font-bold text-slate-100 text-center mb-2">
           {isUnauthorizedRole
             ? 'Role Switch Required'
             : 'Sign In to Access Workspace'}
         </h2>
 
-        <p className="text-xs text-[#6B6258] text-center max-w-md mb-6 leading-relaxed">
+        <p className="text-xs text-slate-400 text-center max-w-md mb-6 leading-relaxed">
           {isUnauthorizedRole ? (
             <>
-              You are currently signed in as <strong>{user?.name}</strong> ({ROLE_LABELS[user?.role] || user?.role}). This workspace requires a{' '}
-              {allowedRoles.map((r) => ROLE_LABELS[r]).join(' or ')} account.
+              You are currently signed in as <strong className="text-slate-200">{user?.name}</strong> ({ROLE_LABELS[user?.role] || user?.role}). This workspace requires a{' '}
+              <span className="text-cyan-300 font-semibold">{allowedRoles.map((r) => ROLE_LABELS[r]).join(' or ')}</span> account.
             </>
           ) : (
             'This workspace requires an active creator studio or client session. Select an instant 1-click demo role below or sign in.'
@@ -59,8 +59,8 @@ const ProtectedRoute = ({ children, allowedRoles = [] }) => {
         </p>
 
         {/* 1-Click Instant Demo Entry */}
-        <div className="w-full p-5 rounded-md bg-white border border-[#E5E0D8] space-y-3 shadow-sm mb-4">
-          <div className="flex items-center gap-1.5 text-[10px] font-bold text-[#B88A5A] uppercase tracking-wider">
+        <div className="w-full p-5 rounded-2xl glass-card border border-sky-500/20 space-y-3 shadow-xl mb-4 text-left">
+          <div className="flex items-center gap-1.5 text-[10px] font-bold text-cyan-400 uppercase tracking-wider">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Instant 1-Click Demo Entry:</span>
           </div>
@@ -71,7 +71,7 @@ const ProtectedRoute = ({ children, allowedRoles = [] }) => {
                 <Button
                   variant="primary"
                   size="sm"
-                  className="w-full justify-center"
+                  className="w-full justify-center glow-btn-primary"
                   onClick={() => quickDemoLogin(ROLES.PHOTOGRAPHER)}
                   leftIcon={<Camera className="w-3.5 h-3.5" />}
                 >
@@ -80,7 +80,7 @@ const ProtectedRoute = ({ children, allowedRoles = [] }) => {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="w-full justify-center"
+                  className="w-full justify-center border-sky-500/20 text-slate-200 hover:text-white hover:border-cyan-500/40"
                   onClick={() => quickDemoLogin(ROLES.VIDEOGRAPHER)}
                   leftIcon={<Video className="w-3.5 h-3.5" />}
                 >
@@ -89,7 +89,7 @@ const ProtectedRoute = ({ children, allowedRoles = [] }) => {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="w-full justify-center"
+                  className="w-full justify-center border-sky-500/20 text-slate-200 hover:text-white hover:border-cyan-500/40"
                   onClick={() => quickDemoLogin(ROLES.EDITOR)}
                   leftIcon={<Film className="w-3.5 h-3.5" />}
                 >
@@ -100,7 +100,7 @@ const ProtectedRoute = ({ children, allowedRoles = [] }) => {
               <Button
                 variant="primary"
                 size="sm"
-                className="w-full justify-center col-span-3"
+                className="w-full justify-center col-span-3 glow-btn-primary"
                 onClick={() => quickDemoLogin(ROLES.ADMIN)}
                 leftIcon={<Shield className="w-3.5 h-3.5" />}
               >
@@ -110,7 +110,7 @@ const ProtectedRoute = ({ children, allowedRoles = [] }) => {
               <Button
                 variant="primary"
                 size="sm"
-                className="w-full justify-center col-span-3"
+                className="w-full justify-center col-span-3 glow-btn-primary"
                 onClick={() => quickDemoLogin(ROLES.USER)}
               >
                 Enter as Client
@@ -122,13 +122,13 @@ const ProtectedRoute = ({ children, allowedRoles = [] }) => {
         {/* Traditional Auth Links */}
         <div className="flex items-center gap-3 justify-center text-xs">
           <Link to="/login" state={{ from: location }}>
-            <Button variant="ghost" size="sm">
+            <Button variant="ghost" size="sm" className="text-slate-400 hover:text-white">
               Sign In with Credentials
             </Button>
           </Link>
-          <span className="text-[#8C8276]">•</span>
+          <span className="text-slate-600">•</span>
           <Link to="/">
-            <Button variant="ghost" size="sm">
+            <Button variant="ghost" size="sm" className="text-slate-400 hover:text-white">
               Return to Homepage
             </Button>
           </Link>

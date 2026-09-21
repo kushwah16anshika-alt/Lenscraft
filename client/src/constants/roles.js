@@ -21,9 +21,9 @@ export const CREATIVE_ROLES = [
 ];
 
 export const ROLE_BADGE_STYLES = {
-  [ROLES.USER]: 'bg-[#EFF4F8] text-[#3B5B75] border-[#D5E2EC]',
-  [ROLES.PHOTOGRAPHER]: 'bg-[#FAF7F3] text-[#B88A5A] border-[#E8DBCA]',
-  [ROLES.VIDEOGRAPHER]: 'bg-[#F6F2F8] text-[#6B4E71] border-[#E5DBE8]',
-  [ROLES.EDITOR]: 'bg-[#EDF5F0] text-[#3D7055] border-[#D4E8DC]',
-  [ROLES.ADMIN]: 'bg-[#171717] text-white border-[#171717]',
+  [ROLES.USER]: 'bg-sky-500/10 text-sky-300 border-sky-500/25',
+  [ROLES.PHOTOGRAPHER]: 'bg-amber-500/10 text-amber-300 border-amber-500/25',
+  [ROLES.VIDEOGRAPHER]: 'bg-purple-500/10 text-purple-300 border-purple-500/25',
+  [ROLES.EDITOR]: 'bg-emerald-500/10 text-emerald-300 border-emerald-500/25',
+  [ROLES.ADMIN]: 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30 shadow-[0_0_12px_rgba(6,182,212,0.2)]',
 };

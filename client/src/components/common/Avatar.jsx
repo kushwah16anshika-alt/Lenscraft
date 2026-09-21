@@ -41,18 +41,18 @@ const Avatar = ({
         <img
           src={imageUrl}
           alt={alt || name}
-          className="w-full h-full object-cover rounded-full border border-[#E5E0D8]"
+          className="w-full h-full object-cover rounded-full border border-sky-500/25 shadow-md shadow-black/40"
           onError={() => setImgError(true)}
         />
       ) : (
-        <div className="w-full h-full rounded-full bg-[#EEEAE4] text-[#171717] flex items-center justify-center border border-[#E5E0D8]">
+        <div className="w-full h-full rounded-full bg-gradient-to-br from-sky-500/20 to-cyan-500/10 text-cyan-300 flex items-center justify-center border border-sky-500/30 font-semibold shadow-inner">
           {getInitials(name)}
         </div>
       )}
       {isOnline !== undefined && (
         <span
-          className={`absolute bottom-0 right-0 block w-2.5 h-2.5 rounded-full ring-2 ring-white ${
-            isOnline ? 'bg-[#3D7055]' : 'bg-[#8C8276]'
+          className={`absolute bottom-0 right-0 block w-2.5 h-2.5 rounded-full ring-2 ring-[#030712] ${
+            isOnline ? 'bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]' : 'bg-slate-600'
           }`}
         />
       )}

@@ -10,14 +10,14 @@ const Badge = ({
   const baseStyles = 'inline-flex items-center font-medium uppercase tracking-wider rounded-md border shrink-0';
 
   const variants = {
-    default: 'bg-zinc-100 text-zinc-700 border-zinc-200',
-    bronze: 'bg-zinc-100 text-zinc-800 border-zinc-200',
-    charcoal: 'bg-zinc-900 text-white border-zinc-900',
-    success: 'bg-emerald-50 text-emerald-800 border-emerald-200',
-    warning: 'bg-amber-50 text-amber-800 border-amber-200',
-    danger: 'bg-red-50 text-red-800 border-red-200',
-    info: 'bg-zinc-100 text-zinc-800 border-zinc-200',
-    purple: 'bg-zinc-100 text-zinc-700 border-zinc-200',
+    default: 'bg-white/5 text-slate-300 border-white/10',
+    bronze: 'bg-amber-500/10 text-amber-300 border-amber-500/20',
+    charcoal: 'bg-sky-500/10 text-cyan-300 border-sky-500/25',
+    success: 'bg-emerald-500/10 text-emerald-300 border-emerald-500/20',
+    warning: 'bg-amber-500/10 text-amber-300 border-amber-500/20',
+    danger: 'bg-rose-500/10 text-rose-300 border-rose-500/20',
+    info: 'bg-sky-500/10 text-sky-300 border-sky-500/20',
+    purple: 'bg-purple-500/10 text-purple-300 border-purple-500/20',
   };
 
   const sizes = {

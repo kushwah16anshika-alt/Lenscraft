@@ -78,15 +78,15 @@ const SearchOverlayModal = ({ isOpen, onClose }) => {
     : [];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-16 md:pt-24 px-4 bg-[#080808]/90 backdrop-blur-xl animate-fadeIn">
+    <div className="fixed inset-0 z-50 flex items-start justify-center pt-16 md:pt-24 px-4 bg-[#02040a]/85 backdrop-blur-2xl animate-fade-in text-left">
       {/* Background click to dismiss */}
       <div className="absolute inset-0" onClick={onClose} />
 
-      <div className="relative w-full max-w-3xl bg-[#111111] border border-[#262626] rounded-lg shadow-2xl p-6 md:p-8 z-10 animate-reveal">
+      <div className="relative w-full max-w-3xl bg-[#080e22]/95 border border-cyan-500/30 rounded-3xl shadow-2xl shadow-cyan-950/60 p-6 md:p-8 z-10 animate-slide-up backdrop-blur-2xl text-left">
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-6 right-6 text-[#A39E93] hover:text-[#FBF9F5] p-1.5 rounded-full hover:bg-[#171717] transition-colors"
+          className="absolute top-6 right-6 text-slate-400 hover:text-white p-2 rounded-full hover:bg-white/10 transition-colors"
           aria-label="Close search"
         >
           <X className="w-5 h-5" />
@@ -94,42 +94,42 @@ const SearchOverlayModal = ({ isOpen, onClose }) => {
 
         {/* Title */}
         <div className="mb-6">
-          <p className="text-xs uppercase tracking-widest text-[#C5A059] font-medium mb-1 flex items-center gap-1.5">
+          <p className="text-xs uppercase tracking-widest text-cyan-400 font-semibold mb-1 flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5" /> Discovery Engine
           </p>
-          <h2 className="text-2xl md:text-3xl font-editorial text-[#FBF9F5]">
+          <h2 className="text-2xl md:text-3xl font-bold text-slate-100 tracking-tight">
             WHAT ARE YOU LOOKING FOR?
           </h2>
         </div>
 
         {/* Search Input Bar */}
         <form onSubmit={handleSearchSubmit} className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-3 bg-[#171717] border border-[#262626] p-2 rounded-md focus-within:border-[#C5A059] transition-all">
-            <div className="md:col-span-7 flex items-center px-3 gap-3 border-b md:border-b-0 md:border-r border-[#262626] pb-2 md:pb-0">
-              <Search className="w-5 h-5 text-[#C5A059] shrink-0" />
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-3 glass-card border border-sky-500/25 p-2 rounded-2xl focus-within:border-cyan-400 focus-within:shadow-[0_0_20px_rgba(6,182,212,0.25)] transition-all">
+            <div className="md:col-span-7 flex items-center px-3 gap-3 border-b md:border-b-0 md:border-r border-sky-500/20 pb-2 md:pb-0">
+              <Search className="w-5 h-5 text-cyan-400 shrink-0" />
               <input
                 ref={inputRef}
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search photographer, videographer, editor, wedding..."
-                className="w-full bg-transparent text-sm md:text-base text-[#FBF9F5] placeholder-[#6B665E] focus:outline-none"
+                className="w-full bg-transparent text-sm md:text-base text-slate-100 placeholder-slate-400 focus:outline-none"
               />
             </div>
             <div className="md:col-span-3 flex items-center px-3 gap-2">
-              <MapPin className="w-4 h-4 text-[#A39E93] shrink-0" />
+              <MapPin className="w-4 h-4 text-cyan-400/70 shrink-0" />
               <input
                 type="text"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 placeholder="Location (e.g. Mumbai)"
-                className="w-full bg-transparent text-sm text-[#FBF9F5] placeholder-[#6B665E] focus:outline-none"
+                className="w-full bg-transparent text-sm text-slate-100 placeholder-slate-400 focus:outline-none"
               />
             </div>
             <div className="md:col-span-2">
               <button
                 type="submit"
-                className="w-full h-full py-2.5 px-4 gold-btn text-xs uppercase tracking-wider font-semibold rounded flex items-center justify-center gap-1"
+                className="w-full h-full py-2.5 px-4 glow-btn-primary text-xs uppercase tracking-wider font-semibold rounded-xl flex items-center justify-center gap-1"
               >
                 Search
               </button>
@@ -139,8 +139,8 @@ const SearchOverlayModal = ({ isOpen, onClose }) => {
 
         {/* Live Matching Results */}
         {liveResults.length > 0 && (
-          <div className="mt-6 pt-6 border-t border-[#262626]">
-            <p className="text-xs uppercase tracking-wider text-[#A39E93] mb-3">Matching Creators</p>
+          <div className="mt-6 pt-6 border-t border-sky-500/20">
+            <p className="text-xs uppercase tracking-wider text-slate-400 mb-3 font-medium">Matching Creators</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {liveResults.map((creator) => (
                 <div
@@ -149,18 +149,18 @@ const SearchOverlayModal = ({ isOpen, onClose }) => {
                     onClose();
                     navigate(`/professional/${creator.id}`);
                   }}
-                  className="flex items-center gap-3 p-2.5 bg-[#171717] hover:bg-[#1E1E1E] border border-[#262626] hover:border-[#C5A059]/40 rounded cursor-pointer transition-all"
+                  className="flex items-center gap-3 p-2.5 glass-card hover:bg-sky-500/10 border border-sky-500/20 hover:border-cyan-400/50 rounded-2xl cursor-pointer transition-all"
                 >
                   <img
                     src={creator.avatar || creator.coverImage}
                     alt={creator.name}
-                    className="w-11 h-11 rounded object-cover border border-[#262626]"
+                    className="w-11 h-11 rounded-xl object-cover border border-sky-500/30"
                   />
-                  <div className="min-w-0 flex-1">
-                    <h4 className="text-sm font-semibold text-[#FBF9F5] truncate">{creator.name}</h4>
-                    <p className="text-xs text-[#C5A059] truncate">{creator.category} · {creator.location}</p>
+                  <div className="min-w-0 flex-1 text-left">
+                    <h4 className="text-sm font-semibold text-slate-100 truncate">{creator.name}</h4>
+                    <p className="text-xs text-cyan-400 truncate">{creator.category} · {creator.location}</p>
                   </div>
-                  <span className="text-xs text-[#A39E93] font-mono">₹{(creator.startingPrice || 15000).toLocaleString('en-IN')}</span>
+                  <span className="text-xs text-slate-300 font-mono">₹{(creator.startingPrice || 15000).toLocaleString('en-IN')}</span>
                 </div>
               ))}
             </div>
@@ -168,14 +168,14 @@ const SearchOverlayModal = ({ isOpen, onClose }) => {
         )}
 
         {/* Popular Tags */}
-        <div className="mt-6 pt-6 border-t border-[#262626]">
-          <p className="text-xs uppercase tracking-wider text-[#A39E93] mb-3">Popular Searches</p>
+        <div className="mt-6 pt-6 border-t border-sky-500/20">
+          <p className="text-xs uppercase tracking-wider text-slate-400 mb-3 font-medium">Popular Searches</p>
           <div className="flex flex-wrap gap-2">
             {popularTags.map((tag) => (
               <button
                 key={tag}
                 onClick={() => handleTagClick(tag)}
-                className="px-3 py-1.5 text-xs text-[#EAE6DF] bg-[#171717] hover:bg-[#222222] border border-[#262626] hover:border-[#C5A059] rounded transition-colors"
+                className="px-3 py-1.5 text-xs text-slate-300 bg-white/5 hover:bg-sky-500/15 border border-white/10 hover:border-cyan-400/40 hover:text-cyan-300 rounded-xl transition-all"
               >
                 {tag}
               </button>
@@ -184,8 +184,8 @@ const SearchOverlayModal = ({ isOpen, onClose }) => {
         </div>
 
         {/* Categories Quick Links */}
-        <div className="mt-6 pt-6 border-t border-[#262626]">
-          <p className="text-xs uppercase tracking-wider text-[#A39E93] mb-3">Browse Disciplines</p>
+        <div className="mt-6 pt-6 border-t border-sky-500/20">
+          <p className="text-xs uppercase tracking-wider text-slate-400 mb-3 font-medium">Browse Disciplines</p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {categorySuggestions.map((cat) => {
               const IconComponent = cat.icon;
@@ -193,11 +193,11 @@ const SearchOverlayModal = ({ isOpen, onClose }) => {
                 <button
                   key={cat.name}
                   onClick={() => handleCategoryClick(cat.path)}
-                  className="p-3 bg-[#171717] hover:bg-[#1C1C1C] border border-[#262626] hover:border-[#C5A059] rounded text-left group transition-all"
+                  className="p-3.5 glass-card hover:bg-sky-500/10 border border-sky-500/20 hover:border-cyan-400/50 rounded-2xl text-left group transition-all"
                 >
-                  <IconComponent className="w-4 h-4 text-[#C5A059] mb-1.5 group-hover:scale-110 transition-transform" />
-                  <p className="text-xs font-semibold text-[#FBF9F5] group-hover:text-[#C5A059] transition-colors">{cat.name}</p>
-                  <p className="text-[10px] text-[#A39E93] truncate mt-0.5">{cat.desc}</p>
+                  <IconComponent className="w-4 h-4 text-cyan-400 mb-1.5 group-hover:scale-110 transition-transform" />
+                  <p className="text-xs font-semibold text-slate-100 group-hover:text-cyan-300 transition-colors">{cat.name}</p>
+                  <p className="text-[10px] text-slate-400 truncate mt-0.5">{cat.desc}</p>
                 </button>
               );
             })}
