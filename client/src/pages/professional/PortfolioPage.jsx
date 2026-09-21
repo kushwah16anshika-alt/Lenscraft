@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image as ImageIcon, Plus, Trash2, Eye } from 'lucide-react';
+import { Image as ImageIcon, Plus, Trash2, Eye, Sparkles } from 'lucide-react';
 import Card from '../../components/common/Card';
 import Button from '../../components/common/Button';
 import Modal from '../../components/common/Modal';
@@ -41,14 +41,15 @@ const PortfolioPage = () => {
   };
 
   return (
-    <div className="space-y-6 text-left">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-zinc-200">
+    <div className="space-y-6 text-left animate-reveal">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-sky-500/15">
         <div>
-          <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 block mb-1">
-            Media Management
-          </span>
-          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-zinc-900 tracking-tight">
-            Studio Portfolio Gallery ({items.length} items)
+          <div className="flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-wider text-cyan-400 font-semibold mb-1">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Media Management</span>
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-display font-bold text-white tracking-tight">
+            Studio Portfolio <span className="text-gradient-cyan">Gallery</span> ({items.length} items)
           </h1>
         </div>
         <Button variant="primary" size="sm" onClick={() => setModalOpen(true)} leftIcon={<Plus className="w-3.5 h-3.5" />}>
@@ -59,21 +60,21 @@ const PortfolioPage = () => {
       {items.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {items.map((item) => (
-            <div key={item.id} className="group relative rounded-xl overflow-hidden bg-white border border-zinc-200 shadow-2xs">
-              <div className="aspect-square bg-zinc-100 overflow-hidden">
+            <div key={item.id} className="group relative rounded-2xl overflow-hidden glass-card border border-sky-500/20 shadow-lg">
+              <div className="aspect-square bg-midnight-950 overflow-hidden">
                 <img src={item.url} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               </div>
-              <div className="p-4 flex items-center justify-between bg-white border-t border-zinc-100">
+              <div className="p-4 flex items-center justify-between bg-midnight-900/90 border-t border-sky-500/15">
                 <div>
-                  <span className="text-[11px] uppercase font-semibold text-zinc-400 tracking-wider block">
+                  <span className="text-[10px] uppercase font-mono tracking-wider text-cyan-400 font-semibold block">
                     {item.category}
                   </span>
-                  <h4 className="text-xs font-semibold text-zinc-900">{item.title}</h4>
+                  <h4 className="text-xs font-display font-bold text-white">{item.title}</h4>
                 </div>
                 <button
                   type="button"
                   onClick={() => handleDelete(item.id)}
-                  className="p-1.5 rounded-lg hover:bg-red-50 text-zinc-400 hover:text-red-600 transition-colors"
+                  className="p-1.5 rounded-lg hover:bg-red-500/10 text-slate-400 hover:text-red-400 transition-colors"
                   title="Delete media"
                 >
                   <Trash2 className="w-4 h-4" />
@@ -83,8 +84,8 @@ const PortfolioPage = () => {
           ))}
         </div>
       ) : (
-        <div className="p-12 text-center bg-white rounded-xl border border-zinc-200">
-          <p className="text-xs text-zinc-500 mb-3">No portfolio media uploaded yet.</p>
+        <div className="p-12 text-center glass-card rounded-2xl border border-sky-500/20">
+          <p className="text-xs text-slate-400 mb-3">No portfolio media uploaded yet.</p>
           <Button variant="primary" size="sm" onClick={() => setModalOpen(true)}>
             Upload First Item
           </Button>
@@ -120,7 +121,7 @@ const PortfolioPage = () => {
               { label: 'Events & Parties', value: 'Events' },
             ]}
           />
-          <div className="pt-2 flex justify-end gap-2 border-t border-zinc-200">
+          <div className="pt-3 flex justify-end gap-2 border-t border-sky-500/15">
             <Button variant="ghost" size="sm" type="button" onClick={() => setModalOpen(false)}>
               Cancel
             </Button>

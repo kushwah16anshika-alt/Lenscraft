@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Card from '../../components/common/Card';
 import Input from '../../components/common/Input';
 import Button from '../../components/common/Button';
-import { DollarSign, Save } from 'lucide-react';
+import { DollarSign, Save, Sparkles } from 'lucide-react';
 import { usePlatform } from '../../hooks/usePlatform';
 import { useToast } from '../../hooks/useToast';
 
@@ -18,17 +18,18 @@ const PricingPage = () => {
   };
 
   return (
-    <div className="max-w-3xl space-y-6 text-left">
-      <div className="pb-4 border-b border-zinc-200">
-        <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 block mb-1">
-          Rate Cards
-        </span>
-        <h1 className="text-2xl sm:text-3xl font-serif font-bold text-zinc-900 tracking-tight">
-          Standard Studio Pricing
+    <div className="max-w-3xl space-y-6 text-left animate-reveal">
+      <div className="pb-4 border-b border-sky-500/15">
+        <div className="flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-wider text-cyan-400 font-semibold mb-1">
+          <Sparkles className="w-3.5 h-3.5" />
+          <span>Rate Cards</span>
+        </div>
+        <h1 className="text-2xl sm:text-3xl font-display font-bold text-white tracking-tight">
+          Standard Studio <span className="text-gradient-cyan">Pricing</span>
         </h1>
       </div>
 
-      <Card className="p-6 sm:p-8 bg-white border border-zinc-200 shadow-2xs">
+      <Card className="p-6 sm:p-8 glass-card border border-sky-500/20 shadow-xl">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Input
@@ -63,7 +64,7 @@ const PricingPage = () => {
             />
           </div>
 
-          <div className="pt-4 border-t border-zinc-200">
+          <div className="pt-4 border-t border-sky-500/15">
             <Button type="submit" variant="primary" size="md" leftIcon={<Save className="w-4 h-4" />}>
               Save Rate Card
             </Button>

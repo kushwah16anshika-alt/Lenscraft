@@ -1,5 +1,5 @@
 import React from 'react';
-import { DollarSign, ArrowUpRight, TrendingUp, Download } from 'lucide-react';
+import { DollarSign, ArrowUpRight, TrendingUp, Download, Sparkles } from 'lucide-react';
 import Card from '../../components/common/Card';
 import StatCard from '../../components/common/StatCard';
 import Button from '../../components/common/Button';
@@ -15,14 +15,15 @@ const EarningsPage = () => {
   ];
 
   return (
-    <div className="space-y-6 text-left">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-zinc-200">
+    <div className="space-y-6 text-left animate-reveal">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-sky-500/15">
         <div>
-          <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 block mb-1">
-            Financials
-          </span>
-          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-zinc-900 tracking-tight">
-            Earnings & Payouts
+          <div className="flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-wider text-cyan-400 font-semibold mb-1">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Financials</span>
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-display font-bold text-white tracking-tight">
+            Earnings & <span className="text-gradient-cyan">Payouts</span>
           </h1>
         </div>
         <Button variant="outline" size="sm" leftIcon={<Download className="w-3.5 h-3.5" />}>
@@ -52,15 +53,15 @@ const EarningsPage = () => {
         />
       </div>
 
-      <Card className="p-6 bg-white border border-zinc-200 space-y-4 shadow-2xs">
-        <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-900 pb-3 border-b border-zinc-200">
+      <Card className="p-6 glass-card border border-sky-500/20 space-y-4 shadow-xl">
+        <h3 className="text-xs uppercase font-mono tracking-wider text-cyan-400 font-bold pb-3 border-b border-sky-500/15">
           Recent Payout History
         </h3>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead>
-              <tr className="border-b border-zinc-200 text-[11px] uppercase font-semibold text-zinc-400">
+              <tr className="border-b border-sky-500/15 text-[11px] uppercase font-mono tracking-wider font-semibold text-slate-400">
                 <th className="pb-3">Transaction ID</th>
                 <th className="pb-3">Date</th>
                 <th className="pb-3">Client / Project</th>
@@ -69,19 +70,19 @@ const EarningsPage = () => {
                 <th className="pb-3 text-right">Amount</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-zinc-200">
+            <tbody className="divide-y divide-sky-500/10">
               {transactions.map((tx) => (
-                <tr key={tx.id} className="hover:bg-zinc-50/75">
-                  <td className="py-3.5 font-mono font-medium text-zinc-900">{tx.id}</td>
-                  <td className="py-3.5 text-zinc-500">{formatDate(tx.date)}</td>
-                  <td className="py-3.5 font-medium text-zinc-900">{tx.client}</td>
-                  <td className="py-3.5 text-zinc-500">{tx.type}</td>
+                <tr key={tx.id} className="hover:bg-midnight-800/40 transition-colors">
+                  <td className="py-3.5 font-mono font-medium text-cyan-300">{tx.id}</td>
+                  <td className="py-3.5 text-slate-400">{formatDate(tx.date)}</td>
+                  <td className="py-3.5 font-medium text-white">{tx.client}</td>
+                  <td className="py-3.5 text-slate-400">{tx.type}</td>
                   <td className="py-3.5">
                     <Badge variant="success" size="sm">
                       {tx.status}
                     </Badge>
                   </td>
-                  <td className="py-3.5 text-right font-semibold text-zinc-900">
+                  <td className="py-3.5 text-right font-semibold font-mono text-emerald-400">
                     {formatCurrency(tx.amount)}
                   </td>
                 </tr>
