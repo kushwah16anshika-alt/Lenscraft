@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Card from '../../components/common/Card';
 import Button from '../../components/common/Button';
-import { Calendar, CheckCircle2, Save } from 'lucide-react';
+import { Calendar, CheckCircle2, Save, Sparkles } from 'lucide-react';
 import { usePlatform } from '../../hooks/usePlatform';
 import { useToast } from '../../hooks/useToast';
 
@@ -17,18 +17,19 @@ const AvailabilityPage = () => {
   };
 
   return (
-    <div className="max-w-3xl space-y-6 text-left">
-      <div className="pb-4 border-b border-zinc-200">
-        <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 block mb-1">
-          Calendar Controls
-        </span>
-        <h1 className="text-2xl sm:text-3xl font-serif font-bold text-zinc-900 tracking-tight">
-          Working Days & Shoot Availability
+    <div className="max-w-3xl space-y-6 text-left animate-reveal">
+      <div className="pb-4 border-b border-sky-500/15">
+        <div className="flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-wider text-cyan-400 font-semibold mb-1">
+          <Sparkles className="w-3.5 h-3.5" />
+          <span>Calendar Controls</span>
+        </div>
+        <h1 className="text-2xl sm:text-3xl font-display font-bold text-white tracking-tight">
+          Working Days & Shoot <span className="text-gradient-cyan">Availability</span>
         </h1>
       </div>
 
-      <Card className="p-6 sm:p-8 bg-white border border-zinc-200 space-y-6 shadow-2xs">
-        <p className="text-sm text-zinc-500">
+      <Card className="p-6 sm:p-8 glass-card border border-sky-500/20 space-y-6 shadow-xl">
+        <p className="text-sm text-slate-400">
           Configure which days of the week clients can schedule shoot dates with your studio.
         </p>
 
@@ -36,23 +37,23 @@ const AvailabilityPage = () => {
           {days.map((day) => (
             <label
               key={day}
-              className="flex items-center justify-between p-3.5 rounded-xl bg-zinc-50 border border-zinc-200 cursor-pointer hover:border-zinc-300 transition-all"
+              className="flex items-center justify-between p-3.5 rounded-xl bg-midnight-950/70 border border-sky-500/15 cursor-pointer hover:border-cyan-400/40 transition-all"
             >
               <div className="flex items-center gap-3">
-                <Calendar className="w-4 h-4 text-zinc-700" />
-                <span className="text-xs font-semibold text-zinc-900">{day}</span>
+                <Calendar className="w-4 h-4 text-cyan-400" />
+                <span className="text-xs font-semibold text-white">{day}</span>
               </div>
               <input
                 type="checkbox"
                 checked={!!schedule[day]}
                 onChange={(e) => setSchedule({ ...schedule, [day]: e.target.checked })}
-                className="rounded border-zinc-300 text-zinc-900 focus:ring-zinc-900 w-4 h-4"
+                className="rounded border-sky-500/30 text-cyan-400 focus:ring-cyan-400 accent-cyan-400 w-4 h-4"
               />
             </label>
           ))}
         </div>
 
-        <div className="pt-4 border-t border-zinc-200">
+        <div className="pt-4 border-t border-sky-500/15">
           <Button variant="primary" size="md" onClick={handleSave} leftIcon={<Save className="w-4 h-4" />}>
             Save Availability
           </Button>
