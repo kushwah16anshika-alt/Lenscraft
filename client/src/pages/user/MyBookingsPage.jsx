@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Calendar, MapPin, Clock, ArrowUpRight, Ban, MessageSquarePlus, CheckCircle2 } from 'lucide-react';
+import { Calendar, MapPin, Clock, ArrowUpRight, Ban, MessageSquarePlus, CheckCircle2, Sparkles } from 'lucide-react';
 import Card from '../../components/common/Card';
 import Badge from '../../components/common/Badge';
 import Button from '../../components/common/Button';
@@ -36,14 +36,15 @@ const MyBookingsPage = () => {
   };
 
   return (
-    <div className="space-y-6 text-left">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-zinc-200">
+    <div className="space-y-6 text-left animate-reveal">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-sky-500/15">
         <div>
-          <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 block mb-1">
-            Bookings Manager
-          </span>
-          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-zinc-900 tracking-tight">
-            My Creative Bookings
+          <div className="flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-wider text-cyan-400 font-semibold mb-1">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Bookings Manager</span>
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-display font-bold text-white tracking-tight">
+            My Creative <span className="text-gradient-cyan">Bookings</span>
           </h1>
         </div>
         <Link to="/photographers">
@@ -58,7 +59,7 @@ const MyBookingsPage = () => {
       <div className="space-y-4">
         {filtered.length > 0 ? (
           filtered.map((b) => (
-            <Card key={b.id} className="p-6 bg-white border border-zinc-200 space-y-4 shadow-2xs">
+            <Card key={b.id} className="p-6 glass-card border border-sky-500/20 space-y-4 shadow-xl">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
                   <Avatar
@@ -67,11 +68,11 @@ const MyBookingsPage = () => {
                     size="lg"
                   />
                   <div>
-                    <h3 className="text-base font-semibold text-zinc-900">
+                    <h3 className="text-base font-display font-bold text-white">
                       {b.professional?.name || b.professionalName}
                     </h3>
-                    <p className="text-xs text-zinc-500">
-                      {b.service?.title || b.serviceTitle} · <span className="font-medium text-zinc-900">{b.eventType}</span>
+                    <p className="text-xs text-slate-400">
+                      {b.service?.title || b.serviceTitle} · <span className="font-medium text-cyan-300">{b.eventType}</span>
                     </p>
                   </div>
                 </div>
@@ -96,7 +97,7 @@ const MyBookingsPage = () => {
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="text-red-600 hover:bg-red-50"
+                      className="text-red-400 hover:bg-red-500/10"
                       onClick={() => handleCancel(b.id, b.bookingNumber || b.bookingReference)}
                       leftIcon={<Ban className="w-3.5 h-3.5" />}
                     >
@@ -123,35 +124,35 @@ const MyBookingsPage = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 p-4 rounded-xl bg-zinc-50 border border-zinc-200 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 p-4 rounded-xl bg-midnight-950/70 border border-sky-500/15 text-xs">
                 <div>
-                  <span className="text-[11px] uppercase font-semibold text-zinc-400 block">Booking Ref</span>
-                  <span className="font-mono font-medium text-zinc-900">{b.bookingNumber || b.bookingReference}</span>
+                  <span className="text-[10px] uppercase font-mono tracking-wider text-slate-400 block">Booking Ref</span>
+                  <span className="font-mono font-medium text-cyan-300">{b.bookingNumber || b.bookingReference}</span>
                 </div>
                 <div>
-                  <span className="text-[11px] uppercase font-semibold text-zinc-400 block">Event Date</span>
-                  <span className="font-medium text-zinc-900">{formatDate(b.eventDate)}</span>
+                  <span className="text-[10px] uppercase font-mono tracking-wider text-slate-400 block">Event Date</span>
+                  <span className="font-medium text-white">{formatDate(b.eventDate)}</span>
                 </div>
                 <div>
-                  <span className="text-[11px] uppercase font-semibold text-zinc-400 block">Location / City</span>
-                  <span className="font-medium text-zinc-900">{b.location?.city || 'Mumbai, MH'}</span>
+                  <span className="text-[10px] uppercase font-mono tracking-wider text-slate-400 block">Location / City</span>
+                  <span className="font-medium text-white">{b.location?.city || 'Mumbai, MH'}</span>
                 </div>
                 <div>
-                  <span className="text-[11px] uppercase font-semibold text-zinc-400 block">Total Amount</span>
-                  <span className="font-semibold text-zinc-900">{formatCurrency(b.totalAmount)}</span>
+                  <span className="text-[10px] uppercase font-mono tracking-wider text-slate-400 block">Total Amount</span>
+                  <span className="font-semibold text-emerald-400 font-mono">{formatCurrency(b.totalAmount)}</span>
                 </div>
               </div>
 
               {b.notes && (
-                <p className="text-xs text-zinc-600 italic border-l-2 border-zinc-900 pl-3">
+                <p className="text-xs text-slate-300 italic border-l-2 border-cyan-400 pl-3">
                   "{b.notes}"
                 </p>
               )}
             </Card>
           ))
         ) : (
-          <div className="p-12 text-center bg-white rounded-xl border border-zinc-200">
-            <p className="text-xs text-zinc-500 mb-3">No bookings found in this view.</p>
+          <div className="p-12 text-center glass-card rounded-2xl border border-sky-500/20">
+            <p className="text-xs text-slate-400 mb-3">No bookings found in this view.</p>
             <Link to="/photographers">
               <Button variant="primary" size="sm">
                 Explore Creative Studios

@@ -52,7 +52,7 @@ const WriteReviewModal = ({ isOpen, onClose, professional, booking }) => {
     <Modal isOpen={isOpen} onClose={onClose} title={`Write Review for ${proName}`}>
       <form onSubmit={handleSubmit} className="space-y-5 text-left">
         <div>
-          <label className="block text-xs font-semibold text-zinc-900 mb-1.5">
+          <label className="block text-xs uppercase font-mono font-semibold text-slate-300 mb-1.5">
             Overall Experience Rating
           </label>
           <div className="flex items-center gap-1.5">
@@ -60,7 +60,7 @@ const WriteReviewModal = ({ isOpen, onClose, professional, booking }) => {
               <button
                 key={star}
                 type="button"
-                className="p-1 text-amber-500 hover:scale-110 transition-transform"
+                className="p-1 text-amber-400 hover:scale-110 transition-transform"
                 onMouseEnter={() => setHoverRating(star)}
                 onMouseLeave={() => setHoverRating(0)}
                 onClick={() => setRating(star)}
@@ -68,13 +68,13 @@ const WriteReviewModal = ({ isOpen, onClose, professional, booking }) => {
                 <Star
                   className={`w-6 h-6 ${
                     (hoverRating || rating) >= star
-                      ? 'fill-amber-500 text-amber-500'
-                      : 'text-zinc-300'
+                      ? 'fill-amber-400 text-amber-400'
+                      : 'text-slate-600'
                   }`}
                 />
               </button>
             ))}
-            <span className="text-xs font-bold text-zinc-900 ml-2">
+            <span className="text-xs font-bold text-cyan-300 ml-2 font-mono">
               {rating === 5 ? '5.0 — Exceptional' : `${rating}.0 / 5.0`}
             </span>
           </div>
@@ -97,7 +97,7 @@ const WriteReviewModal = ({ isOpen, onClose, professional, booking }) => {
           required
         />
 
-        <div className="pt-3 border-t border-zinc-200 flex items-center justify-end gap-2">
+        <div className="pt-3 border-t border-sky-500/15 flex items-center justify-end gap-2">
           <Button variant="ghost" size="sm" type="button" onClick={onClose}>
             Cancel
           </Button>

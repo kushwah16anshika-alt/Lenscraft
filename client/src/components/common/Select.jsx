@@ -7,30 +7,30 @@ const Select = forwardRef(
     return (
       <div className="w-full space-y-1.5 text-left">
         {label && (
-          <label htmlFor={selectId} className="block text-xs font-semibold uppercase tracking-wider text-zinc-600">
+          <label htmlFor={selectId} className="block text-[11px] font-semibold uppercase font-mono tracking-wider text-slate-300">
             {label}
           </label>
         )}
         <select
           id={selectId}
           ref={ref}
-          className={`w-full rounded-md bg-white border ${
-            error ? 'border-red-500' : 'border-zinc-300 focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900'
-          } px-3.5 py-2 text-sm text-zinc-900 transition-all focus:outline-none ${className}`}
+          className={`w-full rounded-xl bg-slate-900/90 border ${
+            error ? 'border-red-500' : 'border-sky-500/20 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400/40'
+          } px-3.5 py-2.5 text-xs sm:text-sm text-white transition-all focus:outline-none backdrop-blur-md ${className}`}
           {...props}
         >
           {children ? (
             children
           ) : (
             options.map((opt) => (
-              <option key={opt.value} value={opt.value} className="bg-white text-zinc-900">
+              <option key={opt.value} value={opt.value} className="bg-midnight-900 text-white">
                 {opt.label}
               </option>
             ))
           )}
         </select>
-        {error && <p className="text-xs text-red-600 mt-1 font-medium">{error}</p>}
-        {helperText && !error && <p className="text-xs text-zinc-500 mt-1">{helperText}</p>}
+        {error && <p className="text-xs text-red-400 mt-1 font-medium">{error}</p>}
+        {helperText && !error && <p className="text-xs text-slate-400 mt-1">{helperText}</p>}
       </div>
     );
   }

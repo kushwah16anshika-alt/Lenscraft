@@ -15,6 +15,7 @@ import {
   CheckCircle2,
   Eye,
   Camera,
+  Sparkles,
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { usePlatform } from '../../context/PlatformContext';
@@ -71,38 +72,39 @@ const UserDashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#080808] text-[#FBF9F5] pb-24 text-left space-y-8 animate-reveal">
+    <div className="min-h-screen text-slate-100 pb-24 text-left space-y-8 animate-reveal">
       {/* ─────────────────────────────────────────────────────────────
           1. EDITORIAL GREETING & STATS HEADER
           ───────────────────────────────────────────────────────────── */}
-      <div className="p-6 sm:p-10 bg-[#111111] border border-[#262626] rounded flex flex-col md:flex-row md:items-end justify-between gap-6">
-        <div className="space-y-2">
-          <span className="text-xs uppercase font-mono tracking-widest text-[#C5A059]">
-            Client Portal · Workspace
-          </span>
-          <h1 className="text-3xl sm:text-5xl font-cinzel font-semibold text-[#FBF9F5]">
-            GOOD MORNING, {displayName}
+      <div className="p-6 sm:p-10 glass-card border border-sky-500/20 rounded-3xl flex flex-col md:flex-row md:items-end justify-between gap-6 shadow-xl relative overflow-hidden">
+        <div className="space-y-2 relative z-10">
+          <div className="flex items-center gap-1.5 text-xs uppercase font-mono tracking-widest text-cyan-400 font-semibold">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Client Portal · Workspace</span>
+          </div>
+          <h1 className="text-3xl sm:text-5xl font-display font-bold text-white tracking-tight">
+            GOOD MORNING, <span className="text-gradient-cyan">{displayName}</span>
           </h1>
-          <p className="text-xs sm:text-sm text-[#A39E93]">
+          <p className="text-xs sm:text-sm text-slate-400">
             Track upcoming shoot dates, master archival deliverables, and saved talent.
           </p>
         </div>
 
-        {/* 3 Prominent Metric Pills */}
-        <div className="flex flex-wrap items-center gap-4">
-          <div className="px-5 py-3 rounded bg-[#171717] border border-[#262626]">
-            <span className="text-[10px] uppercase tracking-wider text-[#A39E93] block">Upcoming</span>
-            <span className="text-2xl font-mono font-bold text-[#FBF9F5]">2</span>
+        {/* 3 Metric Pills */}
+        <div className="flex flex-wrap items-center gap-3 relative z-10">
+          <div className="px-5 py-3 rounded-2xl glass-panel border border-sky-500/20">
+            <span className="text-[10px] uppercase font-mono tracking-wider text-slate-400 block">Upcoming</span>
+            <span className="text-2xl font-mono font-bold text-white">2</span>
           </div>
 
-          <div className="px-5 py-3 rounded bg-[#171717] border border-[#262626]">
-            <span className="text-[10px] uppercase tracking-wider text-[#A39E93] block">Saved Creators</span>
-            <span className="text-2xl font-mono font-bold text-[#DFCA9B]">12</span>
+          <div className="px-5 py-3 rounded-2xl glass-panel border border-sky-500/20">
+            <span className="text-[10px] uppercase font-mono tracking-wider text-slate-400 block">Saved Creators</span>
+            <span className="text-2xl font-mono font-bold text-cyan-300">12</span>
           </div>
 
-          <div className="px-5 py-3 rounded bg-[#171717] border border-[#262626]">
-            <span className="text-[10px] uppercase tracking-wider text-[#A39E93] block">Completed</span>
-            <span className="text-2xl font-mono font-bold text-[#FBF9F5]">8</span>
+          <div className="px-5 py-3 rounded-2xl glass-panel border border-sky-500/20">
+            <span className="text-[10px] uppercase font-mono tracking-wider text-slate-400 block">Completed</span>
+            <span className="text-2xl font-mono font-bold text-white">8</span>
           </div>
         </div>
       </div>
@@ -110,28 +112,28 @@ const UserDashboard = () => {
       {/* ─────────────────────────────────────────────────────────────
           2. FEATURED UPCOMING BOOKING BANNER
           ───────────────────────────────────────────────────────────── */}
-      <div className="p-6 bg-[#171717] border-2 border-[#C5A059]/60 rounded relative overflow-hidden space-y-4">
+      <div className="p-6 glass-panel border border-cyan-400/40 rounded-3xl relative overflow-hidden space-y-4 shadow-[0_0_25px_rgba(0,210,255,0.15)]">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded bg-[#111111] border border-[#C5A059]/40 text-[#C5A059]">
+            <div className="p-3 rounded-2xl bg-cyan-500/10 border border-cyan-400/30 text-cyan-400">
               <Calendar className="w-5 h-5" />
             </div>
             <div>
-              <span className="text-[10px] uppercase font-mono tracking-widest text-[#C5A059]">
+              <span className="text-[10px] uppercase font-mono tracking-widest text-cyan-400 font-semibold">
                 Next Confirmed Shoot
               </span>
-              <h3 className="text-lg font-cinzel font-bold text-[#FBF9F5]">
+              <h3 className="text-lg font-display font-bold text-white">
                 Wedding Photography · 12 Oct 2026
               </h3>
-              <p className="text-xs text-[#A39E93]">
-                Creator: <strong className="text-[#DFCA9B]">Arjun Mehta</strong> · Signature Package (₹28,000)
+              <p className="text-xs text-slate-400">
+                Creator: <strong className="text-cyan-300">Arjun Mehta</strong> · Signature Package (₹28,000)
               </p>
             </div>
           </div>
 
           <Link
             to="/professionals/pro-1"
-            className="px-5 py-2.5 rounded gold-btn text-xs uppercase tracking-wider font-semibold self-start sm:self-auto inline-flex items-center gap-1.5"
+            className="px-5 py-2.5 rounded-full glow-btn-primary text-xs uppercase font-mono tracking-wider font-bold self-start sm:self-auto inline-flex items-center gap-1.5 shadow-[0_0_15px_rgba(0,210,255,0.4)]"
           >
             <span>View Booking Details</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -144,7 +146,7 @@ const UserDashboard = () => {
           ───────────────────────────────────────────────────────────── */}
       <div className="space-y-6">
         {/* Navigation Tabs */}
-        <div className="flex border-b border-[#262626] gap-6 overflow-x-auto no-scrollbar">
+        <div className="flex border-b border-sky-500/15 gap-6 overflow-x-auto no-scrollbar">
           {[
             { id: 'upcoming', label: 'Upcoming Bookings' },
             { id: 'past', label: 'Past Bookings' },
@@ -156,15 +158,15 @@ const UserDashboard = () => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`pb-3 text-xs uppercase tracking-wider font-medium whitespace-nowrap transition-colors relative ${
+              className={`pb-3 text-xs uppercase font-mono tracking-wider font-semibold whitespace-nowrap transition-colors relative ${
                 activeTab === tab.id
-                  ? 'text-[#DFCA9B] font-semibold'
-                  : 'text-[#A39E93] hover:text-[#FBF9F5]'
+                  ? 'text-cyan-300 font-bold'
+                  : 'text-slate-400 hover:text-white'
               }`}
             >
               <span>{tab.label}</span>
               {activeTab === tab.id && (
-                <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#C5A059]" />
+                <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-cyan-400 shadow-[0_0_8px_#00d2ff]" />
               )}
             </button>
           ))}
@@ -174,34 +176,34 @@ const UserDashboard = () => {
         {activeTab === 'upcoming' && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-reveal">
             {userBookings.map((b) => (
-              <div key={b.id} className="p-6 bg-[#111111] border border-[#262626] rounded space-y-4">
+              <div key={b.id} className="p-6 glass-card border border-sky-500/20 rounded-2xl space-y-4 shadow-lg">
                 <div className="flex items-start justify-between">
                   <div>
-                    <span className="text-[10px] uppercase font-mono text-[#C5A059]">Ref: {b.id}</span>
-                    <h4 className="text-base font-cinzel font-bold text-[#FBF9F5]">{b.service}</h4>
-                    <p className="text-xs text-[#A39E93]">Creator: {b.creatorName}</p>
+                    <span className="text-[10px] uppercase font-mono text-cyan-400">Ref: {b.id}</span>
+                    <h4 className="text-base font-display font-bold text-white">{b.service}</h4>
+                    <p className="text-xs text-slate-400">Creator: {b.creatorName}</p>
                   </div>
-                  <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-[#171717] text-[#C5A059] border border-[#262626]">
+                  <span className="text-[10px] uppercase font-mono px-2.5 py-1 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/30">
                     {b.status}
                   </span>
                 </div>
 
-                <div className="grid grid-cols-2 gap-2 text-xs py-3 border-y border-[#262626] text-[#A39E93]">
+                <div className="grid grid-cols-2 gap-2 text-xs py-3 border-y border-sky-500/15 text-slate-300">
                   <div>
-                    <span className="text-[10px] uppercase text-[#6B665E] block">Date & Time</span>
-                    <span className="font-semibold text-[#FBF9F5]">{b.date}</span>
+                    <span className="text-[10px] uppercase font-mono text-slate-500 block">Date & Time</span>
+                    <span className="font-semibold text-white">{b.date}</span>
                   </div>
                   <div>
-                    <span className="text-[10px] uppercase text-[#6B665E] block">Total Amount</span>
-                    <span className="font-mono font-semibold text-[#DFCA9B]">₹{b.totalAmount?.toLocaleString('en-IN')}</span>
+                    <span className="text-[10px] uppercase font-mono text-slate-500 block">Total Amount</span>
+                    <span className="font-mono font-bold text-cyan-300">₹{b.totalAmount?.toLocaleString('en-IN')}</span>
                   </div>
                 </div>
 
                 <div className="flex items-center justify-between text-xs pt-1">
-                  <span className="text-[#A39E93] flex items-center gap-1">
-                    <ShieldCheck className="w-3.5 h-3.5 text-[#C5A059]" /> Escrow Secured
+                  <span className="text-slate-400 flex items-center gap-1">
+                    <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" /> Escrow Secured
                   </span>
-                  <Link to={`/professionals/${b.creatorId || 'pro-1'}`} className="text-[#DFCA9B] hover:underline font-semibold">
+                  <Link to={`/professionals/${b.creatorId || 'pro-1'}`} className="text-cyan-300 hover:text-cyan-200 hover:underline font-semibold">
                     Open Production Chat →
                   </Link>
                 </div>
@@ -214,14 +216,14 @@ const UserDashboard = () => {
         {activeTab === 'past' && (
           <div className="space-y-4 animate-reveal">
             {pastBookings.map((pb) => (
-              <div key={pb.id} className="p-5 bg-[#111111] border border-[#262626] rounded flex items-center justify-between">
+              <div key={pb.id} className="p-5 glass-card border border-sky-500/20 rounded-2xl flex items-center justify-between">
                 <div>
-                  <h4 className="text-sm font-semibold text-[#FBF9F5]">{pb.service}</h4>
-                  <p className="text-xs text-[#A39E93]">{pb.date} · {pb.creatorName}</p>
+                  <h4 className="text-sm font-display font-bold text-white">{pb.service}</h4>
+                  <p className="text-xs text-slate-400">{pb.date} · {pb.creatorName}</p>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="text-xs font-mono font-bold text-[#FBF9F5]">₹{pb.totalAmount.toLocaleString('en-IN')}</span>
-                  <span className="text-[10px] uppercase px-2 py-0.5 rounded bg-[#171717] text-[#A39E93] border border-[#262626]">
+                  <span className="text-xs font-mono font-bold text-white">₹{pb.totalAmount.toLocaleString('en-IN')}</span>
+                  <span className="text-[10px] uppercase font-mono px-2.5 py-1 rounded-full bg-slate-800 text-slate-400 border border-slate-700">
                     Archived
                   </span>
                 </div>
@@ -246,10 +248,10 @@ const UserDashboard = () => {
 
         {/* TAB: MESSAGES */}
         {activeTab === 'messages' && (
-          <div className="p-12 text-center bg-[#111111] border border-[#262626] rounded space-y-3 animate-reveal">
-            <MessageSquare className="w-10 h-10 text-[#C5A059] mx-auto" />
-            <h3 className="text-lg font-cinzel text-[#FBF9F5]">Active Creative Inquiries</h3>
-            <p className="text-xs text-[#A39E93] max-w-sm mx-auto">
+          <div className="p-12 text-center glass-card border border-sky-500/20 rounded-2xl space-y-3 animate-reveal">
+            <MessageSquare className="w-10 h-10 text-cyan-400 mx-auto" />
+            <h3 className="text-lg font-display font-bold text-white">Active Creative Inquiries</h3>
+            <p className="text-xs text-slate-400 max-w-sm mx-auto">
               You have 2 active pre-production chats with Arjun Mehta and Kabir Varma.
             </p>
           </div>
@@ -257,10 +259,10 @@ const UserDashboard = () => {
 
         {/* TAB: REVIEWS */}
         {activeTab === 'reviews' && (
-          <div className="p-12 text-center bg-[#111111] border border-[#262626] rounded space-y-3 animate-reveal">
-            <Star className="w-10 h-10 text-[#C5A059] mx-auto" />
-            <h3 className="text-lg font-cinzel text-[#FBF9F5]">Your Feedback & Endorsements</h3>
-            <p className="text-xs text-[#A39E93] max-w-sm mx-auto">
+          <div className="p-12 text-center glass-card border border-sky-500/20 rounded-2xl space-y-3 animate-reveal">
+            <Star className="w-10 h-10 text-cyan-400 mx-auto" />
+            <h3 className="text-lg font-display font-bold text-white">Your Feedback & Endorsements</h3>
+            <p className="text-xs text-slate-400 max-w-sm mx-auto">
               You have reviewed 1 studio. Your feedback helps our creative collective maintain a world-class standard.
             </p>
           </div>
@@ -268,24 +270,24 @@ const UserDashboard = () => {
 
         {/* TAB: PROFILE */}
         {activeTab === 'profile' && (
-          <div className="p-6 bg-[#111111] border border-[#262626] rounded max-w-xl space-y-4 animate-reveal">
-            <h3 className="text-base font-cinzel font-bold text-[#FBF9F5]">Client Details</h3>
+          <div className="p-6 glass-card border border-sky-500/20 rounded-2xl max-w-xl space-y-4 animate-reveal">
+            <h3 className="text-base font-display font-bold text-white">Client Details</h3>
             <div className="space-y-3 text-xs">
               <div>
-                <label className="text-[#A39E93] block mb-1">Full Name</label>
+                <label className="text-slate-300 block mb-1 font-mono uppercase text-[11px]">Full Name</label>
                 <input
                   type="text"
                   defaultValue={user?.name || 'Anshika Kushwah'}
-                  className="w-full p-2.5 rounded bg-[#171717] border border-[#262626] text-[#FBF9F5]"
+                  className="w-full p-2.5 rounded-xl glass-input border border-sky-500/20 text-white"
                 />
               </div>
               <div>
-                <label className="text-[#A39E93] block mb-1">Email</label>
+                <label className="text-slate-300 block mb-1 font-mono uppercase text-[11px]">Email</label>
                 <input
                   type="email"
                   defaultValue={user?.email || 'anshika@example.com'}
                   disabled
-                  className="w-full p-2.5 rounded bg-[#171717] border border-[#262626] text-[#6B665E]"
+                  className="w-full p-2.5 rounded-xl glass-input border border-sky-500/20 text-slate-500"
                 />
               </div>
             </div>

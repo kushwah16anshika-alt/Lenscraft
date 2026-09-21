@@ -1,27 +1,28 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Heart } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Heart, Sparkles } from 'lucide-react';
 import ProfessionalCard from '../../components/cards/ProfessionalCard';
 import EmptyState from '../../components/common/EmptyState';
-import Button from '../../components/common/Button';
 import { usePlatform } from '../../hooks/usePlatform';
 
 const UserWishlistPage = () => {
   const { wishlist, professionals, toggleWishlist } = usePlatform();
+  const navigate = useNavigate();
 
   const wishlistedPros = professionals.filter((pro) => wishlist.includes(pro.id));
 
   return (
-    <div className="space-y-6 text-left">
-      <div className="pb-4 border-b border-zinc-200">
-        <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 block mb-1">
-          Saved Talents
-        </span>
-        <h1 className="text-2xl sm:text-3xl font-serif font-bold text-zinc-900 tracking-tight">
-          My Curated Creators ({wishlistedPros.length})
+    <div className="space-y-6 text-left animate-reveal">
+      <div className="pb-4 border-b border-sky-500/15">
+        <div className="flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-wider text-cyan-400 font-semibold mb-1">
+          <Sparkles className="w-3.5 h-3.5" />
+          <span>Saved Talents</span>
+        </div>
+        <h1 className="text-2xl sm:text-3xl font-display font-bold text-white tracking-tight">
+          My Curated <span className="text-gradient-cyan">Creators</span> ({wishlistedPros.length})
         </h1>
-        <p className="text-sm text-zinc-500 mt-1">
-          Keep track of photographers, videographers, and editors you want to hire for upcoming projects.
+        <p className="text-xs sm:text-sm text-slate-400 mt-1">
+          Keep track of photographers, videographers, and editors you want to hire for upcoming shoots and campaigns.
         </p>
       </div>
 
@@ -42,7 +43,7 @@ const UserWishlistPage = () => {
           title="Your Wishlist is Empty"
           description="Browse our curated roster of fine art photographers, videographers, and editors, and tap the heart to save them."
           actionLabel="Explore Creators"
-          onAction={() => {}}
+          onAction={() => navigate('/photographers')}
         />
       )}
     </div>
