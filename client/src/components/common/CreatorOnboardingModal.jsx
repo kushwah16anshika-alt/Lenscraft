@@ -13,12 +13,13 @@ import {
   Star,
   ShieldCheck,
   Check,
+  Aperture,
 } from 'lucide-react';
 import { ROLES } from '../../constants/roles';
 import { useToast } from '../../hooks/useToast';
 
 const stepsList = [
-  '01 Personal Details',
+  '01 Details',
   '02 Services',
   '03 Portfolio',
   '04 Pricing',
@@ -71,51 +72,51 @@ const CreatorOnboardingModal = ({ isOpen, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#080808]/90 backdrop-blur-xl p-4 overflow-y-auto animate-fadeIn">
-      <div className="relative w-full max-w-3xl bg-[#111111] border border-[#262626] rounded shadow-2xl overflow-hidden my-6 text-left animate-reveal">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-xl p-4 overflow-y-auto animate-fadeIn">
+      <div className="relative w-full max-w-3xl glass-panel border border-sky-500/25 rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.9),0_0_30px_rgba(0,210,255,0.15)] overflow-hidden my-6 text-left animate-reveal">
         {/* Header */}
-        <div className="p-5 sm:p-6 border-b border-[#262626] bg-[#171717] flex items-center justify-between">
+        <div className="p-5 sm:p-6 border-b border-sky-500/15 bg-midnight-900/90 flex items-center justify-between">
           <div>
-            <div className="flex items-center gap-1.5 text-[10px] uppercase font-mono tracking-widest text-[#C5A059] mb-1">
+            <div className="flex items-center gap-1.5 text-[10px] uppercase font-mono tracking-widest text-cyan-400 mb-1 font-semibold">
               <Sparkles className="w-3.5 h-3.5" />
               <span>Creator Onboarding & Accreditation</span>
             </div>
-            <h2 className="text-xl sm:text-2xl font-cinzel font-bold text-[#FBF9F5]">
+            <h2 className="text-xl sm:text-2xl font-display font-bold text-white">
               Join the Lenscraft Roster
             </h2>
           </div>
           <button
             onClick={onClose}
-            className="p-2 rounded hover:bg-[#222222] text-[#A39E93] hover:text-[#FBF9F5] transition-colors"
+            className="p-2 rounded-full hover:bg-white/5 text-slate-400 hover:text-white transition-colors border border-sky-500/15"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Stepper Progress Bar */}
-        <div className="bg-[#111111] border-b border-[#262626] px-5 py-3 overflow-x-auto no-scrollbar">
+        <div className="bg-midnight-950/80 border-b border-sky-500/15 px-5 py-3 overflow-x-auto no-scrollbar">
           <div className="flex items-center gap-2 min-w-[620px]">
             {stepsList.map((label, idx) => {
               const num = idx + 1;
               return (
                 <div key={num} className="flex-1 flex items-center gap-1.5">
                   <div
-                    className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-mono font-bold transition-all ${
+                    className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-mono font-bold transition-all ${
                       step >= num
-                        ? 'bg-[#C5A059] text-[#080808]'
-                        : 'bg-[#171717] border border-[#262626] text-[#A39E93]'
+                        ? 'bg-cyan-400 text-midnight-950 shadow-[0_0_10px_rgba(0,210,255,0.5)]'
+                        : 'bg-midnight-800 border border-sky-500/20 text-slate-400'
                     }`}
                   >
                     {step > num ? '✓' : num}
                   </div>
                   <span
-                    className={`text-[10px] uppercase tracking-wider font-medium whitespace-nowrap ${
-                      step === num ? 'text-[#DFCA9B] font-semibold' : 'text-[#6B665E]'
+                    className={`text-[10px] uppercase font-mono tracking-wider font-semibold whitespace-nowrap ${
+                      step === num ? 'text-cyan-300' : 'text-slate-500'
                     }`}
                   >
                     {label}
                   </span>
-                  {num < 7 && <div className="flex-1 h-px bg-[#262626]" />}
+                  {num < 7 && <div className="flex-1 h-px bg-sky-500/15" />}
                 </div>
               );
             })}
@@ -127,42 +128,42 @@ const CreatorOnboardingModal = ({ isOpen, onClose }) => {
           {/* STEP 1: PERSONAL DETAILS */}
           {step === 1 && (
             <div className="space-y-4 animate-reveal">
-              <h3 className="text-base font-cinzel text-[#FBF9F5]">01. Personal & Studio Identity</h3>
+              <h3 className="text-base font-display font-semibold text-white">01. Personal & Studio Identity</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                 <div>
-                  <label className="text-[#A39E93] block mb-1 font-medium">Full Name / Brand Name</label>
+                  <label className="text-slate-300 block mb-1 font-mono font-medium uppercase text-[11px]">Full Name / Brand Name</label>
                   <input
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full p-2.5 rounded bg-[#171717] border border-[#262626] text-[#FBF9F5] focus:outline-none focus:border-[#C5A059]"
+                    className="w-full p-2.5 rounded-xl glass-input border border-sky-500/20 text-white focus:outline-none focus:border-cyan-400"
                   />
                 </div>
                 <div>
-                  <label className="text-[#A39E93] block mb-1 font-medium">Official Email</label>
+                  <label className="text-slate-300 block mb-1 font-mono font-medium uppercase text-[11px]">Official Email</label>
                   <input
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full p-2.5 rounded bg-[#171717] border border-[#262626] text-[#FBF9F5] focus:outline-none focus:border-[#C5A059]"
+                    className="w-full p-2.5 rounded-xl glass-input border border-sky-500/20 text-white focus:outline-none focus:border-cyan-400"
                   />
                 </div>
                 <div>
-                  <label className="text-[#A39E93] block mb-1 font-medium">Phone / WhatsApp</label>
+                  <label className="text-slate-300 block mb-1 font-mono font-medium uppercase text-[11px]">Phone / WhatsApp</label>
                   <input
                     type="tel"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full p-2.5 rounded bg-[#171717] border border-[#262626] text-[#FBF9F5] focus:outline-none focus:border-[#C5A059]"
+                    className="w-full p-2.5 rounded-xl glass-input border border-sky-500/20 text-white focus:outline-none focus:border-cyan-400"
                   />
                 </div>
                 <div>
-                  <label className="text-[#A39E93] block mb-1 font-medium">Primary Base City</label>
+                  <label className="text-slate-300 block mb-1 font-mono font-medium uppercase text-[11px]">Primary Base City</label>
                   <input
                     type="text"
                     value={formData.city}
                     onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                    className="w-full p-2.5 rounded bg-[#171717] border border-[#262626] text-[#FBF9F5] focus:outline-none focus:border-[#C5A059]"
+                    className="w-full p-2.5 rounded-xl glass-input border border-sky-500/20 text-white focus:outline-none focus:border-cyan-400"
                   />
                 </div>
               </div>
@@ -172,7 +173,7 @@ const CreatorOnboardingModal = ({ isOpen, onClose }) => {
           {/* STEP 2: SERVICES */}
           {step === 2 && (
             <div className="space-y-4 animate-reveal">
-              <h3 className="text-base font-cinzel text-[#FBF9F5]">02. Primary Discipline & Specialties</h3>
+              <h3 className="text-base font-display font-semibold text-white">02. Primary Discipline & Specialties</h3>
               <div className="grid grid-cols-3 gap-3">
                 {[
                   { role: ROLES.PHOTOGRAPHER, icon: Camera, label: 'Photographer' },
@@ -186,10 +187,10 @@ const CreatorOnboardingModal = ({ isOpen, onClose }) => {
                       key={item.role}
                       type="button"
                       onClick={() => setFormData({ ...formData, role: item.role })}
-                      className={`p-4 rounded border flex flex-col items-center gap-2 text-center transition-all ${
+                      className={`p-4 rounded-2xl border flex flex-col items-center gap-2 text-center transition-all ${
                         isSelected
-                          ? 'border-[#C5A059] bg-[#171717] text-[#DFCA9B]'
-                          : 'border-[#262626] bg-[#111111] text-[#A39E93] hover:border-[#6B665E]'
+                          ? 'border-cyan-400 bg-cyan-500/10 text-cyan-300 shadow-[0_0_15px_rgba(0,210,255,0.2)]'
+                          : 'border-sky-500/15 glass-panel text-slate-400 hover:border-sky-500/35 hover:text-white'
                       }`}
                     >
                       <Icon className="w-5 h-5" />
@@ -199,31 +200,31 @@ const CreatorOnboardingModal = ({ isOpen, onClose }) => {
                 })}
               </div>
               <div className="text-xs space-y-1">
-                <label className="text-[#A39E93] block font-medium">Specialties (comma separated)</label>
+                <label className="text-slate-300 block font-mono font-medium uppercase text-[11px]">Specialties (comma separated)</label>
                 <input
                   type="text"
                   value={formData.specialties}
                   onChange={(e) => setFormData({ ...formData, specialties: e.target.value })}
-                  className="w-full p-2.5 rounded bg-[#171717] border border-[#262626] text-[#FBF9F5] focus:outline-none focus:border-[#C5A059]"
+                  className="w-full p-2.5 rounded-xl glass-input border border-sky-500/20 text-white focus:outline-none focus:border-cyan-400"
                 />
               </div>
             </div>
           )}
 
-          {/* STEP 3: PORTFOLIO (Drag/Drop UI) */}
+          {/* STEP 3: PORTFOLIO */}
           {step === 3 && (
             <div className="space-y-4 animate-reveal">
-              <h3 className="text-base font-cinzel text-[#FBF9F5]">03. Upload Portfolio Works</h3>
-              <div className="p-8 border-2 border-dashed border-[#262626] hover:border-[#C5A059] rounded bg-[#171717] text-center space-y-2 cursor-pointer transition-colors">
-                <UploadCloud className="w-8 h-8 text-[#C5A059] mx-auto" />
-                <p className="text-xs font-semibold text-[#FBF9F5]">Drag and drop high-res JPEG/PNG images here</p>
-                <p className="text-[11px] text-[#A39E93]">Or browse files up to 25MB each (Minimum 3 images)</p>
+              <h3 className="text-base font-display font-semibold text-white">03. Upload Portfolio Works</h3>
+              <div className="p-8 border-2 border-dashed border-sky-500/25 hover:border-cyan-400 rounded-2xl glass-panel text-center space-y-2 cursor-pointer transition-colors">
+                <UploadCloud className="w-8 h-8 text-cyan-400 mx-auto" />
+                <p className="text-xs font-semibold text-white">Drag and drop high-res JPEG/PNG images here</p>
+                <p className="text-[11px] text-slate-400">Or browse files up to 25MB each (Minimum 3 images)</p>
               </div>
 
               {/* Uploaded Thumbnails Preview */}
               <div className="grid grid-cols-3 gap-3 pt-2">
                 {formData.uploadedImages.map((img, i) => (
-                  <div key={i} className="aspect-[4/3] rounded overflow-hidden border border-[#262626] relative">
+                  <div key={i} className="aspect-[4/3] rounded-xl overflow-hidden border border-sky-500/20 relative shadow-md">
                     <img src={img} alt="Portfolio sample" className="w-full h-full object-cover" />
                   </div>
                 ))}
@@ -234,24 +235,24 @@ const CreatorOnboardingModal = ({ isOpen, onClose }) => {
           {/* STEP 4: PRICING */}
           {step === 4 && (
             <div className="space-y-4 animate-reveal">
-              <h3 className="text-base font-cinzel text-[#FBF9F5]">04. Pricing & Rates</h3>
+              <h3 className="text-base font-display font-semibold text-white">04. Pricing & Rates</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                 <div>
-                  <label className="text-[#A39E93] block mb-1 font-medium">Starting Baseline Shoot Rate (₹)</label>
+                  <label className="text-slate-300 block mb-1 font-mono font-medium uppercase text-[11px]">Starting Baseline Shoot Rate (₹)</label>
                   <input
                     type="number"
                     value={formData.startingPrice}
                     onChange={(e) => setFormData({ ...formData, startingPrice: e.target.value })}
-                    className="w-full p-2.5 rounded bg-[#171717] border border-[#262626] text-[#FBF9F5] focus:outline-none focus:border-[#C5A059]"
+                    className="w-full p-2.5 rounded-xl glass-input border border-sky-500/20 text-white focus:outline-none focus:border-cyan-400"
                   />
                 </div>
                 <div>
-                  <label className="text-[#A39E93] block mb-1 font-medium">Years of Professional Experience</label>
+                  <label className="text-slate-300 block mb-1 font-mono font-medium uppercase text-[11px]">Years of Professional Experience</label>
                   <input
                     type="number"
                     value={formData.experienceYears}
                     onChange={(e) => setFormData({ ...formData, experienceYears: e.target.value })}
-                    className="w-full p-2.5 rounded bg-[#171717] border border-[#262626] text-[#FBF9F5] focus:outline-none focus:border-[#C5A059]"
+                    className="w-full p-2.5 rounded-xl glass-input border border-sky-500/20 text-white focus:outline-none focus:border-cyan-400"
                   />
                 </div>
               </div>
@@ -261,18 +262,18 @@ const CreatorOnboardingModal = ({ isOpen, onClose }) => {
           {/* STEP 5: AVAILABILITY */}
           {step === 5 && (
             <div className="space-y-4 animate-reveal">
-              <h3 className="text-base font-cinzel text-[#FBF9F5]">05. Availability & Travel Policy</h3>
-              <div className="p-4 bg-[#171717] border border-[#262626] rounded space-y-3 text-xs">
-                <label className="flex items-center gap-2 cursor-pointer text-[#EAE6DF]">
-                  <input type="checkbox" defaultChecked className="accent-[#C5A059]" />
+              <h3 className="text-base font-display font-semibold text-white">05. Availability & Travel Policy</h3>
+              <div className="p-4 glass-panel border border-sky-500/20 rounded-2xl space-y-3 text-xs">
+                <label className="flex items-center gap-2.5 cursor-pointer text-slate-200">
+                  <input type="checkbox" defaultChecked className="accent-cyan-400 rounded" />
                   <span>Available for Destination Shoots across India</span>
                 </label>
-                <label className="flex items-center gap-2 cursor-pointer text-[#EAE6DF]">
-                  <input type="checkbox" defaultChecked className="accent-[#C5A059]" />
+                <label className="flex items-center gap-2.5 cursor-pointer text-slate-200">
+                  <input type="checkbox" defaultChecked className="accent-cyan-400 rounded" />
                   <span>Instant Date Escrow Booking Enabled</span>
                 </label>
-                <label className="flex items-center gap-2 cursor-pointer text-[#EAE6DF]">
-                  <input type="checkbox" defaultChecked className="accent-[#C5A059]" />
+                <label className="flex items-center gap-2.5 cursor-pointer text-slate-200">
+                  <input type="checkbox" defaultChecked className="accent-cyan-400 rounded" />
                   <span>Accepts Multi-Day Royal Wedding Projects</span>
                 </label>
               </div>
@@ -282,16 +283,16 @@ const CreatorOnboardingModal = ({ isOpen, onClose }) => {
           {/* STEP 6: PREVIEW */}
           {step === 6 && (
             <div className="space-y-4 animate-reveal">
-              <h3 className="text-base font-cinzel text-[#FBF9F5]">06. Profile Preview</h3>
-              <div className="p-6 bg-[#171717] border border-[#262626] rounded space-y-4">
+              <h3 className="text-base font-display font-semibold text-white">06. Profile Preview</h3>
+              <div className="p-6 glass-panel border border-sky-500/25 rounded-2xl space-y-4">
                 <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-full bg-[#111111] border border-[#C5A059] flex items-center justify-center font-bold text-lg text-[#DFCA9B]">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-sky-500/20 to-indigo-500/20 border border-cyan-400 flex items-center justify-center font-bold text-lg text-cyan-300 shadow-[0_0_15px_rgba(0,210,255,0.3)]">
                     {formData.name.charAt(0)}
                   </div>
                   <div>
-                    <h4 className="text-lg font-cinzel font-bold text-[#FBF9F5]">{formData.name}</h4>
-                    <p className="text-xs text-[#C5A059]">{formData.tagline}</p>
-                    <p className="text-xs text-[#A39E93]">{formData.city} · ₹{Number(formData.startingPrice).toLocaleString('en-IN')} onwards</p>
+                    <h4 className="text-lg font-display font-bold text-white">{formData.name}</h4>
+                    <p className="text-xs text-cyan-400">{formData.tagline}</p>
+                    <p className="text-xs text-slate-400">{formData.city} · ₹{Number(formData.startingPrice).toLocaleString('en-IN')} onwards</p>
                   </div>
                 </div>
               </div>
@@ -301,11 +302,11 @@ const CreatorOnboardingModal = ({ isOpen, onClose }) => {
           {/* STEP 7: PUBLISH */}
           {step === 7 && (
             <div className="space-y-4 text-center py-6 animate-reveal">
-              <div className="w-12 h-12 rounded-full bg-[#171717] border border-[#C5A059] text-[#C5A059] flex items-center justify-center mx-auto">
-                <Check className="w-6 h-6" />
+              <div className="w-14 h-14 rounded-2xl bg-cyan-500/20 border border-cyan-400 text-cyan-300 flex items-center justify-center mx-auto shadow-[0_0_25px_rgba(0,210,255,0.4)]">
+                <Check className="w-7 h-7 stroke-[3]" />
               </div>
-              <h3 className="text-xl font-cinzel font-bold text-[#FBF9F5]">Ready to Publish Your Profile!</h3>
-              <p className="text-xs text-[#A39E93] max-w-sm mx-auto">
+              <h3 className="text-xl font-display font-bold text-white">Ready to Publish Your Profile!</h3>
+              <p className="text-xs text-slate-400 max-w-sm mx-auto">
                 Once published, your studio profile will be visible to thousands of couples and brands on Lenscraft.
               </p>
             </div>
@@ -313,12 +314,12 @@ const CreatorOnboardingModal = ({ isOpen, onClose }) => {
         </div>
 
         {/* Stepper Footer Controls */}
-        <div className="p-5 border-t border-[#262626] bg-[#171717] flex items-center justify-between">
+        <div className="p-5 border-t border-sky-500/15 bg-midnight-900/90 flex items-center justify-between">
           {step > 1 ? (
             <button
               type="button"
               onClick={handlePrev}
-              className="px-4 py-2 rounded btn-secondary-luxury text-xs font-semibold flex items-center gap-1.5"
+              className="px-4 py-2 rounded-xl btn-secondary-luxury text-xs font-semibold flex items-center gap-1.5"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>Back</span>
@@ -329,7 +330,7 @@ const CreatorOnboardingModal = ({ isOpen, onClose }) => {
             <button
               type="button"
               onClick={handleNext}
-              className="px-6 py-2 rounded gold-btn text-xs uppercase tracking-wider font-semibold flex items-center gap-1.5"
+              className="px-6 py-2.5 rounded-xl glow-btn-primary text-xs uppercase font-mono tracking-wider font-bold flex items-center gap-1.5 shadow-[0_0_20px_rgba(0,210,255,0.4)]"
             >
               <span>Continue</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -339,7 +340,7 @@ const CreatorOnboardingModal = ({ isOpen, onClose }) => {
               type="button"
               onClick={handlePublish}
               disabled={isSubmitting}
-              className="px-8 py-2.5 rounded gold-btn text-xs uppercase tracking-wider font-semibold"
+              className="px-8 py-2.5 rounded-xl glow-btn-primary text-xs uppercase font-mono tracking-wider font-bold shadow-[0_0_25px_rgba(0,210,255,0.5)]"
             >
               {isSubmitting ? 'Publishing...' : 'Publish Creator Profile'}
             </button>

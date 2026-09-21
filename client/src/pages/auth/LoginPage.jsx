@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Mail, Lock, Sparkles, ArrowRight, UserCheck, Camera, Video, Film, Shield } from 'lucide-react';
+import { Mail, Lock, Sparkles, ArrowRight, UserCheck, Camera, Video, Film, Users, Shield } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { useToast } from '../../hooks/useToast';
 import { ROLES, ROLE_LABELS } from '../../constants/roles';
@@ -59,55 +59,61 @@ const LoginPage = () => {
 
   return (
     <div className="space-y-6 text-left animate-reveal">
+      {/* Header */}
       <div>
-        <p className="text-xs uppercase font-mono tracking-widest text-[#C5A059] mb-1">
-          Creative Account
-        </p>
-        <h2 className="text-3xl font-cinzel font-semibold text-[#FBF9F5]">
-          WELCOME BACK
+        <div className="flex items-center gap-2 text-xs uppercase font-mono tracking-widest text-cyan-400 font-semibold mb-1">
+          <Sparkles className="w-3.5 h-3.5" />
+          <span>AUTHENTICATION</span>
+        </div>
+        <h2 className="text-2xl sm:text-3xl font-display font-bold text-white tracking-tight">
+          Welcome <span className="text-gradient-cyan">Back</span>
         </h2>
-        <p className="text-xs text-[#A39E93] mt-1">
-          Continue creating memories that matter.
+        <p className="text-xs text-slate-400 mt-1">
+          Sign in to manage your appointments, bookings, and creative collections.
         </p>
       </div>
 
-      {/* Standard Minimal Form */}
+      {/* Standard Form */}
       <form onSubmit={handleStandardLogin} className="space-y-4">
         <div>
-          <label className="block text-xs uppercase tracking-wider text-[#A39E93] font-medium mb-1.5">
+          <label className="block text-xs uppercase font-mono tracking-wider text-slate-300 font-medium mb-1.5">
             Email Address
           </label>
           <div className="relative">
-            <Mail className="w-4 h-4 text-[#A39E93] absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="your.email@example.com"
-              className="w-full pl-10 pr-3.5 py-2.5 rounded bg-[#111111] border border-[#262626] text-xs text-[#FBF9F5] placeholder-[#6B665E] focus:outline-none focus:border-[#C5A059] transition-all"
+              className="w-full pl-10 pr-3.5 py-2.5 rounded-xl glass-input border border-sky-500/20 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400/40 transition-all"
             />
           </div>
         </div>
 
         <div>
           <div className="flex items-center justify-between mb-1.5">
-            <label className="text-xs uppercase tracking-wider text-[#A39E93] font-medium">
+            <label className="text-xs uppercase font-mono tracking-wider text-slate-300 font-medium">
               Password
             </label>
-            <a href="#forgot" onClick={(e) => { e.preventDefault(); alert('Password reset link sent to registered email.'); }} className="text-[11px] text-[#C5A059] hover:underline">
+            <a
+              href="#forgot"
+              onClick={(e) => { e.preventDefault(); alert('Password reset link sent to your registered email.'); }}
+              className="text-[11px] font-mono text-cyan-400 hover:text-cyan-300 hover:underline"
+            >
               Forgot password?
             </a>
           </div>
           <div className="relative">
-            <Lock className="w-4 h-4 text-[#A39E93] absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="password"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full pl-10 pr-3.5 py-2.5 rounded bg-[#111111] border border-[#262626] text-xs text-[#FBF9F5] placeholder-[#6B665E] focus:outline-none focus:border-[#C5A059] transition-all"
+              className="w-full pl-10 pr-3.5 py-2.5 rounded-xl glass-input border border-sky-500/20 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400/40 transition-all"
             />
           </div>
         </div>
@@ -115,48 +121,59 @@ const LoginPage = () => {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full py-3 rounded gold-btn text-xs uppercase tracking-wider font-semibold shadow-lg transition-all"
+          className="w-full py-3 rounded-xl glow-btn-primary text-xs uppercase font-mono tracking-wider font-bold shadow-[0_0_20px_rgba(0,210,255,0.4)] hover:shadow-[0_0_30px_rgba(0,210,255,0.7)] flex items-center justify-center gap-2 transition-all duration-300"
         >
-          {isLoading ? 'Signing In...' : 'Sign In'}
+          {isLoading ? (
+            <span>Signing In...</span>
+          ) : (
+            <>
+              <span>Sign In to Lenscraft</span>
+              <ArrowRight className="w-4 h-4" />
+            </>
+          )}
         </button>
       </form>
 
-      {/* Divider */}
-      <div className="relative flex items-center justify-center py-2">
-        <div className="w-full border-t border-[#262626]" />
-        <span className="bg-[#080808] px-3 text-[10px] uppercase font-mono text-[#6B665E] tracking-widest relative">
-          ──────── OR ────────
+      {/* Modern Neon Divider */}
+      <div className="relative flex items-center justify-center py-1">
+        <div className="w-full border-t border-sky-500/15" />
+        <span className="bg-[#030712] px-3 text-[10px] uppercase font-mono text-slate-500 tracking-widest relative">
+          QUICK DEMO ACCESS
         </span>
       </div>
 
       {/* 1-Click Demo Roles */}
       <div className="space-y-2">
-        <p className="text-[10px] uppercase font-mono tracking-widest text-[#A39E93] text-center">
-          Instant 1-Click Demo Profiles
+        <p className="text-[10px] uppercase font-mono tracking-widest text-slate-400 text-center">
+          Instant 1-Click Role Profiles
         </p>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
           {[
-            { role: ROLES.USER, label: 'Client' },
-            { role: ROLES.PHOTOGRAPHER, label: 'Photographer' },
-            { role: ROLES.VIDEOGRAPHER, label: 'Videographer' },
-            { role: ROLES.EDITOR, label: 'Editor' },
-          ].map((item) => (
-            <button
-              key={item.role}
-              type="button"
-              onClick={() => handleDemoLogin(item.role)}
-              className="p-2 rounded bg-[#111111] hover:bg-[#171717] border border-[#262626] hover:border-[#C5A059] text-xs text-[#EAE6DF] hover:text-[#DFCA9B] font-medium transition-colors"
-            >
-              {item.label}
-            </button>
-          ))}
+            { role: ROLES.USER, label: 'Client', icon: Users },
+            { role: ROLES.PHOTOGRAPHER, label: 'Photographer', icon: Camera },
+            { role: ROLES.VIDEOGRAPHER, label: 'Videographer', icon: Video },
+            { role: ROLES.EDITOR, label: 'Editor', icon: Film },
+          ].map((item) => {
+            const Icon = item.icon;
+            return (
+              <button
+                key={item.role}
+                type="button"
+                onClick={() => handleDemoLogin(item.role)}
+                className="p-2.5 rounded-xl glass-panel-interactive border border-sky-500/20 hover:border-cyan-400 text-xs text-slate-200 hover:text-cyan-300 font-medium transition-all flex items-center justify-center gap-1.5"
+              >
+                <Icon className="w-3.5 h-3.5 text-cyan-400" />
+                <span className="truncate">{item.label}</span>
+              </button>
+            );
+          })}
         </div>
       </div>
 
       {/* Link to Register */}
-      <p className="text-xs text-[#A39E93] text-center pt-2">
+      <p className="text-xs text-slate-400 text-center pt-2">
         Don't have an account?{' '}
-        <Link to="/register" className="text-[#DFCA9B] hover:underline font-semibold">
+        <Link to="/register" className="text-cyan-400 hover:text-cyan-300 hover:underline font-semibold ml-1">
           Create an account
         </Link>
       </p>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { Mail, Lock, User, Phone, ArrowRight, Camera, Video, Film, Users, Check } from 'lucide-react';
+import { Mail, Lock, User, Phone, ArrowRight, Camera, Video, Film, Users, Check, Sparkles } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { useToast } from '../../hooks/useToast';
 import { ROLES, ROLE_LABELS } from '../../constants/roles';
@@ -38,7 +38,7 @@ const RegisterPage = () => {
     setIsLoading(false);
 
     if (result.success) {
-      success('Account created successfully!');
+      success('Account created successfully! Welcome to Lenscraft.');
       if (role === ROLES.USER) {
         navigate('/user/dashboard', { replace: true });
       } else {
@@ -51,22 +51,24 @@ const RegisterPage = () => {
 
   return (
     <div className="space-y-6 text-left animate-reveal">
+      {/* Header */}
       <div>
-        <p className="text-xs uppercase font-mono tracking-widest text-[#C5A059] mb-1">
-          Join Lenscraft
-        </p>
-        <h2 className="text-3xl font-cinzel font-semibold text-[#FBF9F5]">
-          CREATE AN ACCOUNT
+        <div className="flex items-center gap-2 text-xs uppercase font-mono tracking-widest text-cyan-400 font-semibold mb-1">
+          <Sparkles className="w-3.5 h-3.5" />
+          <span>JOIN THE ROSTER</span>
+        </div>
+        <h2 className="text-2xl sm:text-3xl font-display font-bold text-white tracking-tight">
+          Create Your <span className="text-gradient-cyan">Account</span>
         </h2>
-        <p className="text-xs text-[#A39E93] mt-1">
-          Step into a curated collective of creative storytellers and clients.
+        <p className="text-xs text-slate-400 mt-1">
+          Step into a curated collective of elite creative storytellers and clients.
         </p>
       </div>
 
       {/* Role Selection Grid */}
       <div className="space-y-2">
-        <label className="block text-xs uppercase tracking-wider text-[#A39E93] font-medium">
-          I am joining as:
+        <label className="block text-xs uppercase font-mono tracking-wider text-slate-300 font-semibold">
+          Select Your Account Type:
         </label>
         <div className="grid grid-cols-2 gap-2.5">
           {roleOptions.map((opt) => {
@@ -77,19 +79,31 @@ const RegisterPage = () => {
                 key={opt.key}
                 type="button"
                 onClick={() => setRole(opt.key)}
-                className={`p-3 rounded border text-left transition-all flex flex-col justify-between ${
+                className={`p-3 rounded-2xl text-left transition-all duration-300 flex flex-col justify-between relative overflow-hidden group ${
                   isSelected
-                    ? 'bg-[#171717] border-[#C5A059] text-[#FBF9F5]'
-                    : 'bg-[#111111] border-[#262626] text-[#A39E93] hover:border-[#6B665E]'
+                    ? 'bg-midnight-800/90 border-2 border-cyan-400 shadow-[0_0_20px_rgba(0,210,255,0.25)] ring-1 ring-cyan-400/50'
+                    : 'glass-panel hover:bg-midnight-700/60 border border-sky-500/15 hover:border-sky-500/35'
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <Icon className={`w-4 h-4 ${isSelected ? 'text-[#C5A059]' : 'text-[#A39E93]'}`} />
-                  {isSelected && <Check className="w-3.5 h-3.5 text-[#C5A059]" />}
+                  <div className={`p-1.5 rounded-lg transition-colors ${
+                    isSelected ? 'bg-cyan-500/20 text-cyan-300' : 'bg-white/5 text-slate-400 group-hover:text-cyan-300'
+                  }`}>
+                    <Icon className="w-4 h-4" />
+                  </div>
+                  {isSelected && (
+                    <div className="w-5 h-5 rounded-full bg-cyan-400 text-midnight-950 flex items-center justify-center shadow-md">
+                      <Check className="w-3 h-3 stroke-[3]" />
+                    </div>
+                  )}
                 </div>
                 <div>
-                  <h4 className="text-xs font-semibold text-[#FBF9F5]">{opt.label}</h4>
-                  <p className="text-[10px] text-[#A39E93] mt-0.5">{opt.desc}</p>
+                  <h4 className={`text-xs font-bold transition-colors ${isSelected ? 'text-white' : 'text-slate-200'}`}>
+                    {opt.label}
+                  </h4>
+                  <p className="text-[10px] text-slate-400 mt-0.5 line-clamp-1">
+                    {opt.desc}
+                  </p>
                 </div>
               </button>
             );
@@ -97,63 +111,64 @@ const RegisterPage = () => {
         </div>
       </div>
 
+      {/* Registration Form */}
       <form onSubmit={handleSubmit} className="space-y-3.5">
         <div>
-          <label className="block text-xs uppercase tracking-wider text-[#A39E93] font-medium mb-1">
+          <label className="block text-xs uppercase font-mono tracking-wider text-slate-300 font-medium mb-1">
             Full Name or Studio Alias
           </label>
           <div className="relative">
-            <User className="w-4 h-4 text-[#A39E93] absolute left-3 top-1/2 -translate-y-1/2" />
+            <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               required
               placeholder="e.g. Arjun Mehta"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="w-full pl-9 pr-3 py-2 rounded bg-[#111111] border border-[#262626] text-xs text-[#FBF9F5] placeholder-[#6B665E] focus:outline-none focus:border-[#C5A059]"
+              className="w-full pl-10 pr-3.5 py-2.5 rounded-xl glass-input border border-sky-500/20 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400/40 transition-all"
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-xs uppercase tracking-wider text-[#A39E93] font-medium mb-1">
+          <label className="block text-xs uppercase font-mono tracking-wider text-slate-300 font-medium mb-1">
             Email Address
           </label>
           <div className="relative">
-            <Mail className="w-4 h-4 text-[#A39E93] absolute left-3 top-1/2 -translate-y-1/2" />
+            <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="email"
               required
               placeholder="your.email@example.com"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full pl-9 pr-3 py-2 rounded bg-[#111111] border border-[#262626] text-xs text-[#FBF9F5] placeholder-[#6B665E] focus:outline-none focus:border-[#C5A059]"
+              className="w-full pl-10 pr-3.5 py-2.5 rounded-xl glass-input border border-sky-500/20 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400/40 transition-all"
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-xs uppercase tracking-wider text-[#A39E93] font-medium mb-1">
+          <label className="block text-xs uppercase font-mono tracking-wider text-slate-300 font-medium mb-1">
             Phone Number
           </label>
           <div className="relative">
-            <Phone className="w-4 h-4 text-[#A39E93] absolute left-3 top-1/2 -translate-y-1/2" />
+            <Phone className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="tel"
               placeholder="+91 98765 43210"
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              className="w-full pl-9 pr-3 py-2 rounded bg-[#111111] border border-[#262626] text-xs text-[#FBF9F5] placeholder-[#6B665E] focus:outline-none focus:border-[#C5A059]"
+              className="w-full pl-10 pr-3.5 py-2.5 rounded-xl glass-input border border-sky-500/20 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400/40 transition-all"
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-xs uppercase tracking-wider text-[#A39E93] font-medium mb-1">
-            Password (min 6 chars)
+          <label className="block text-xs uppercase font-mono tracking-wider text-slate-300 font-medium mb-1">
+            Password <span className="text-[10px] text-slate-500 lowercase">(min 6 chars)</span>
           </label>
           <div className="relative">
-            <Lock className="w-4 h-4 text-[#A39E93] absolute left-3 top-1/2 -translate-y-1/2" />
+            <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="password"
               required
@@ -161,7 +176,7 @@ const RegisterPage = () => {
               placeholder="••••••••"
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              className="w-full pl-9 pr-3 py-2 rounded bg-[#111111] border border-[#262626] text-xs text-[#FBF9F5] placeholder-[#6B665E] focus:outline-none focus:border-[#C5A059]"
+              className="w-full pl-10 pr-3.5 py-2.5 rounded-xl glass-input border border-sky-500/20 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400/40 transition-all"
             />
           </div>
         </div>
@@ -169,16 +184,24 @@ const RegisterPage = () => {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full py-3 rounded gold-btn text-xs uppercase tracking-wider font-semibold shadow-lg mt-2"
+          className="w-full py-3 rounded-xl glow-btn-primary text-xs uppercase font-mono tracking-wider font-bold shadow-[0_0_20px_rgba(0,210,255,0.4)] hover:shadow-[0_0_30px_rgba(0,210,255,0.7)] flex items-center justify-center gap-2 mt-3 transition-all duration-300"
         >
-          {isLoading ? 'Creating Account...' : `Register as ${ROLE_LABELS[role]}`}
+          {isLoading ? (
+            <span>Creating Account...</span>
+          ) : (
+            <>
+              <span>Register as {ROLE_LABELS[role]}</span>
+              <ArrowRight className="w-4 h-4" />
+            </>
+          )}
         </button>
       </form>
 
-      <p className="text-xs text-[#A39E93] text-center pt-1">
+      {/* Footer Link */}
+      <p className="text-xs text-slate-400 text-center pt-2">
         Already have an account?{' '}
-        <Link to="/login" className="text-[#DFCA9B] hover:underline font-semibold">
-          Sign in
+        <Link to="/login" className="text-cyan-400 hover:text-cyan-300 hover:underline font-semibold ml-1">
+          Sign In
         </Link>
       </p>
     </div>
