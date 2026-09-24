@@ -1,0 +1,2 @@
+# Netlify & static hosts Single Page Application (SPA) rewrite rule
+/*    /index.html   200
