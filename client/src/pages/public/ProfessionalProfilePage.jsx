@@ -32,6 +32,8 @@ import LightboxModal from '../../components/common/LightboxModal';
 import BookingModal from '../../components/common/BookingModal';
 import DirectChatModal from '../../components/common/DirectChatModal';
 import WriteReviewModal from '../../components/common/WriteReviewModal';
+import BeforeAfterSlider from '../../components/common/BeforeAfterSlider';
+import VideoReelPlayer from '../../components/common/VideoReelPlayer';
 import { usePlatform } from '../../context/PlatformContext';
 import { useToast } from '../../hooks/useToast';
 
@@ -242,49 +244,76 @@ const ProfessionalProfilePage = () => {
 
             {/* TAB: PORTFOLIO */}
             {activeTab === 'portfolio' && (
-              <section className="space-y-6 animate-reveal">
-                <div className="flex items-center justify-between">
-                  <h2 className="text-xl font-display font-bold text-white">
-                    CURATED PORTFOLIO WORK
-                  </h2>
-                  <span className="text-xs font-mono text-cyan-400">
-                    {pro.portfolio?.length || 4} Master Works
-                  </span>
-                </div>
+              <section className="space-y-8 animate-reveal">
+                {/* 1. If Editor / Retoucher: Show Interactive Before/After Comparison */}
+                {(pro.role === 'editor' || pro.category?.toLowerCase().includes('edit') || pro.category?.toLowerCase().includes('color')) && (
+                  <div className="space-y-4">
+                    <BeforeAfterSlider
+                      beforeImage="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1200&q=40"
+                      afterImage={pro.coverImage || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1200&q=85"}
+                      beforeLabel="Raw Camera Capture"
+                      afterLabel="Master Color Graded & Retouched"
+                      title="Split-Screen Before & After Color Retouch Demonstration"
+                    />
+                  </div>
+                )}
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {(pro.portfolio || [
-                    { title: 'Royal Celebration', url: pro.coverImage, category: 'Weddings' },
-                  ]).map((item, idx) => (
-                    <div
-                      key={idx}
-                      onClick={() => {
-                        setActiveLightboxIndex(idx);
-                        setLightboxOpen(true);
-                      }}
-                      className="group relative rounded-2xl overflow-hidden glass-card border border-sky-500/20 hover:border-cyan-400/60 cursor-pointer aspect-[4/3]"
-                    >
-                      <img
-                        src={item.url}
-                        alt={item.title}
-                        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-108"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-midnight-950 via-midnight-950/30 to-transparent opacity-70 group-hover:opacity-90 transition-opacity" />
+                {/* 2. If Videographer / Cinematographer: Show 4K Video Reel Player */}
+                {(pro.role === 'videographer' || pro.category?.toLowerCase().includes('video') || pro.category?.toLowerCase().includes('cinema')) && (
+                  <div className="space-y-4">
+                    <VideoReelPlayer
+                      poster={pro.coverImage}
+                      title={`${pro.name} — 4K Signature Cinema Showreel`}
+                      subtitle="Captured on ARRI Alexa Mini / Sony FX6 · Graded in DaVinci Resolve Studio"
+                    />
+                  </div>
+                )}
 
-                      <div className="absolute top-3 right-3 p-2 rounded-full bg-midnight-950/80 text-cyan-300 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <Maximize2 className="w-4 h-4" />
+                {/* 3. Stills / Photography Portfolio Grid */}
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-xl font-display font-bold text-white">
+                      CURATED PORTFOLIO WORK
+                    </h2>
+                    <span className="text-xs font-mono text-cyan-400">
+                      {pro.portfolio?.length || 4} Master Works
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {(pro.portfolio || [
+                      { title: 'Royal Celebration', url: pro.coverImage, category: 'Weddings' },
+                    ]).map((item, idx) => (
+                      <div
+                        key={idx}
+                        onClick={() => {
+                          setActiveLightboxIndex(idx);
+                          setLightboxOpen(true);
+                        }}
+                        className="group relative rounded-2xl overflow-hidden glass-card border border-sky-500/20 hover:border-cyan-400/60 cursor-pointer aspect-[4/3]"
+                      >
+                        <img
+                          src={item.url}
+                          alt={item.title}
+                          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-108"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-midnight-950 via-midnight-950/30 to-transparent opacity-70 group-hover:opacity-90 transition-opacity" />
+
+                        <div className="absolute top-3 right-3 p-2 rounded-full bg-midnight-950/80 text-cyan-300 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <Maximize2 className="w-4 h-4" />
+                        </div>
+
+                        <div className="absolute bottom-3 left-3 right-3">
+                          <span className="text-[10px] font-mono uppercase text-cyan-300 px-2 py-0.5 rounded bg-midnight-950/80 border border-sky-500/30">
+                            {item.category || 'Fine Art'}
+                          </span>
+                          <h4 className="text-sm font-display font-bold text-white mt-1 group-hover:text-cyan-200 transition-colors truncate">
+                            {item.title}
+                          </h4>
+                        </div>
                       </div>
-
-                      <div className="absolute bottom-3 left-3 right-3">
-                        <span className="text-[10px] font-mono uppercase text-cyan-300 px-2 py-0.5 rounded bg-midnight-950/80 border border-sky-500/30">
-                          {item.category || 'Fine Art'}
-                        </span>
-                        <h4 className="text-sm font-display font-bold text-white mt-1 group-hover:text-cyan-200 transition-colors truncate">
-                          {item.title}
-                        </h4>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </section>
             )}

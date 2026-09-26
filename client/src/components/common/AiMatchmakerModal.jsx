@@ -57,26 +57,87 @@ const AESTHETICS = [
   },
 ];
 
-const CITIES = ['All Locations', 'Mumbai', 'Bengaluru', 'New Delhi', 'Jaipur', 'Pune', 'Goa', 'Hyderabad'];
+const CITIES = ['All Locations', 'Mumbai', 'Bengaluru', 'New Delhi', 'Jaipur', 'Pune', 'Goa', 'Hyderabad', 'Bhopal', 'Indore'];
 
 const AiMatchmakerModal = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
+  const [naturalQuery, setNaturalQuery] = useState('');
   const [selectedOccasion, setSelectedOccasion] = useState('wedding');
   const [selectedAesthetic, setSelectedAesthetic] = useState('cinematic');
   const [selectedCity, setSelectedCity] = useState('All Locations');
   const [budgetTier, setBudgetTier] = useState('standard'); // budget, standard, luxury
+  const [maxBudget, setMaxBudget] = useState(null);
   const [includeDrone, setIncludeDrone] = useState(true);
   const [fastTeaser, setFastTeaser] = useState(true);
 
   if (!isOpen) return null;
+
+  // Natural Language Query Parser
+  const handleNaturalSearch = (e) => {
+    e.preventDefault();
+    if (!naturalQuery.trim()) return;
+
+    const lower = naturalQuery.toLowerCase();
+
+    // 1. Detect City
+    const matchedCity = CITIES.find((c) => c !== 'All Locations' && lower.includes(c.toLowerCase()));
+    if (matchedCity) setSelectedCity(matchedCity);
+
+    // 2. Detect Occasion
+    if (lower.includes('wedding') || lower.includes('shaadi') || lower.includes('marriage')) {
+      setSelectedOccasion('wedding');
+    } else if (lower.includes('pre-wedding') || lower.includes('engagement') || lower.includes('couple')) {
+      setSelectedOccasion('pre-wedding');
+    } else if (lower.includes('fashion') || lower.includes('model') || lower.includes('editorial')) {
+      setSelectedOccasion('fashion');
+    } else if (lower.includes('commercial') || lower.includes('brand') || lower.includes('product')) {
+      setSelectedOccasion('commercial');
+    } else if (lower.includes('reel') || lower.includes('edit') || lower.includes('color')) {
+      setSelectedOccasion('reels');
+    }
+
+    // 3. Detect Aesthetic
+    if (lower.includes('cinematic') || lower.includes('film') || lower.includes('warm')) {
+      setSelectedAesthetic('cinematic');
+    } else if (lower.includes('fine art') || lower.includes('pastel') || lower.includes('light')) {
+      setSelectedAesthetic('fine-art');
+    } else if (lower.includes('studio') || lower.includes('flash') || lower.includes('bold')) {
+      setSelectedAesthetic('bold-fashion');
+    }
+
+    // 4. Detect Budget Numbers (e.g. 30000, 30k, 50,000)
+    const budgetMatch = lower.match(/(?:under|below|budget|within|upto|₹|rs\.?)\s*(\d+[\d,]*\s*k?)/i) || lower.match(/(\d+000)/);
+    if (budgetMatch) {
+      let numStr = budgetMatch[1].replace(/,/g, '').toLowerCase();
+      let parsedNum = 0;
+      if (numStr.endsWith('k')) {
+        parsedNum = parseFloat(numStr) * 1000;
+      } else {
+        parsedNum = parseFloat(numStr);
+      }
+      if (parsedNum > 0) {
+        setMaxBudget(parsedNum);
+        if (parsedNum <= 25000) setBudgetTier('budget');
+        else if (parsedNum <= 60000) setBudgetTier('standard');
+        else setBudgetTier('luxury');
+      }
+    }
+
+    // Jump straight to results step 4
+    setStep(4);
+  };
 
   // Find target matches based on selections
   const occasionObj = OCCASIONS.find((o) => o.id === selectedOccasion) || OCCASIONS[0];
   
   const getMatchedCreators = () => {
     let list = MOCK_PROFESSIONALS.filter((p) => {
-      if (selectedCity !== 'All Locations' && p.location?.city !== selectedCity) {
+      const city = typeof p.location === 'object' ? p.location.city : p.location;
+      if (selectedCity !== 'All Locations' && city && !city.toLowerCase().includes(selectedCity.toLowerCase())) {
+        return false;
+      }
+      if (maxBudget && p.startingPrice && p.startingPrice > maxBudget * 1.15) {
         return false;
       }
       return true;
@@ -100,6 +161,8 @@ const AiMatchmakerModal = ({ isOpen, onClose }) => {
 
   const handleResetAndClose = () => {
     setStep(1);
+    setNaturalQuery('');
+    setMaxBudget(null);
     onClose();
   };
 
@@ -140,9 +203,61 @@ const AiMatchmakerModal = ({ isOpen, onClose }) => {
 
         {/* Modal Body (Scrollable) */}
         <div className="p-6 overflow-y-auto space-y-6 flex-1 text-slate-200">
-          {/* STEP 1: Occasion & Discipline */}
+          {/* STEP 1: Occasion & Discipline OR Smart Prompt */}
           {step === 1 && (
-            <div className="space-y-4 animate-slide-up">
+            <div className="space-y-5 animate-slide-up">
+              {/* Natural AI Query Prompt Input */}
+              <form onSubmit={handleNaturalSearch} className="p-4 rounded-2xl bg-midnight-950/80 border border-cyan-500/30 space-y-2.5">
+                <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-cyan-400 font-semibold">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>Smart Natural Language Match</span>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <input
+                    type="text"
+                    placeholder="e.g. Wedding photographer in Bhopal under ₹30,000 with cinematic style..."
+                    value={naturalQuery}
+                    onChange={(e) => setNaturalQuery(e.target.value)}
+                    className="flex-1 px-3.5 py-2.5 rounded-xl bg-midnight-900 border border-sky-500/20 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400"
+                  />
+                  <button
+                    type="submit"
+                    className="px-4 py-2.5 rounded-xl glow-btn-primary text-xs uppercase font-mono font-bold tracking-wider shrink-0"
+                  >
+                    Match Creators
+                  </button>
+                </div>
+                <div className="flex flex-wrap items-center gap-1.5 pt-1 text-[11px] text-slate-400">
+                  <span>Try:</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setNaturalQuery('Wedding photographer in Bhopal under ₹30,000 with cinematic style');
+                    }}
+                    className="text-cyan-400 hover:underline cursor-pointer"
+                  >
+                    "Wedding photographer in Bhopal under ₹30,000"
+                  </button>
+                  <span>·</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setNaturalQuery('4K Pre-Wedding drone cinematographer in Goa');
+                    }}
+                    className="text-cyan-400 hover:underline cursor-pointer"
+                  >
+                    "Pre-Wedding in Goa"
+                  </button>
+                </div>
+              </form>
+
+              <div className="relative flex items-center justify-center py-1">
+                <div className="w-full border-t border-sky-500/15" />
+                <span className="bg-[#080e22] px-3 text-[10px] uppercase font-mono text-slate-500 tracking-widest relative">
+                  OR CHOOSE STEP BY STEP
+                </span>
+              </div>
+
               <div className="space-y-1">
                 <h4 className="text-lg font-serif font-bold text-white">
                   What kind of project or shoot are you planning?
