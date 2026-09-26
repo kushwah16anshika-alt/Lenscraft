@@ -44,22 +44,29 @@ const SearchOverlayModal = ({ isOpen, onClose }) => {
 
   const handleSearchSubmit = (e) => {
     e?.preventDefault();
-    setSearchFilters(prev => ({
-      ...prev,
-      search: query,
-      city: location
-    }));
+    if (setSearchFilters) {
+      setSearchFilters((prev) => ({
+        ...prev,
+        search: query,
+        city: location,
+      }));
+    }
+    const params = new URLSearchParams();
+    if (query) params.set('search', query);
+    if (location) params.set('city', location);
     onClose();
-    navigate('/explore');
+    navigate(`/explore${params.toString() ? `?${params.toString()}` : ''}`);
   };
 
   const handleTagClick = (tag) => {
-    setSearchFilters(prev => ({
-      ...prev,
-      search: tag
-    }));
+    if (setSearchFilters) {
+      setSearchFilters((prev) => ({
+        ...prev,
+        search: tag,
+      }));
+    }
     onClose();
-    navigate('/explore');
+    navigate(`/explore?search=${encodeURIComponent(tag)}`);
   };
 
   const handleCategoryClick = (path) => {
@@ -69,12 +76,16 @@ const SearchOverlayModal = ({ isOpen, onClose }) => {
 
   // Quick live matches
   const liveResults = query.trim()
-    ? professionals.filter(p =>
-        p.name.toLowerCase().includes(query.toLowerCase()) ||
-        p.category.toLowerCase().includes(query.toLowerCase()) ||
-        p.specialties?.some(s => s.toLowerCase().includes(query.toLowerCase())) ||
-        p.location.toLowerCase().includes(query.toLowerCase())
-      ).slice(0, 4)
+    ? professionals.filter((p) => {
+        const q = query.toLowerCase();
+        const locStr = typeof p.location === 'object' && p.location !== null ? (p.location.city || '') : (p.location || '');
+        return (
+          p.name.toLowerCase().includes(q) ||
+          p.category?.toLowerCase().includes(q) ||
+          p.specialties?.some((s) => s.toLowerCase().includes(q)) ||
+          locStr.toLowerCase().includes(q)
+        );
+      }).slice(0, 4)
     : [];
 
   return (
@@ -147,7 +158,7 @@ const SearchOverlayModal = ({ isOpen, onClose }) => {
                   key={creator.id}
                   onClick={() => {
                     onClose();
-                    navigate(`/professional/${creator.id}`);
+                    navigate(`/professionals/${creator.id}`);
                   }}
                   className="flex items-center gap-3 p-2.5 glass-card hover:bg-sky-500/10 border border-sky-500/20 hover:border-cyan-400/50 rounded-2xl cursor-pointer transition-all"
                 >
@@ -158,7 +169,9 @@ const SearchOverlayModal = ({ isOpen, onClose }) => {
                   />
                   <div className="min-w-0 flex-1 text-left">
                     <h4 className="text-sm font-semibold text-slate-100 truncate">{creator.name}</h4>
-                    <p className="text-xs text-cyan-400 truncate">{creator.category} · {creator.location}</p>
+                    <p className="text-xs text-cyan-400 truncate">
+                      {creator.category} · {typeof creator.location === 'object' && creator.location !== null ? (creator.location.city || 'India') : (creator.location || 'India')}
+                    </p>
                   </div>
                   <span className="text-xs text-slate-300 font-mono">₹{(creator.startingPrice || 15000).toLocaleString('en-IN')}</span>
                 </div>

@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { ROLES } from '../../constants/roles';
 import { useToast } from '../../hooks/useToast';
+import { usePlatform } from '../../hooks/usePlatform';
 
 const stepsList = [
   '01 Details',
@@ -30,6 +31,7 @@ const stepsList = [
 
 const CreatorOnboardingModal = ({ isOpen, onClose }) => {
   const { success } = useToast();
+  const { addProfessional } = usePlatform();
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     name: 'Arjun Mehta',
@@ -65,6 +67,9 @@ const CreatorOnboardingModal = ({ isOpen, onClose }) => {
     e?.preventDefault();
     setIsSubmitting(true);
     setTimeout(() => {
+      if (addProfessional) {
+        addProfessional(formData);
+      }
       setIsSubmitting(false);
       success('Creator profile published to Lenscraft directory!');
       onClose();

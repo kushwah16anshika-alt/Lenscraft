@@ -20,12 +20,16 @@ export const formatDate = (dateString) => {
 export const formatPriceUnit = (unit) => {
   const map = {
     per_hour: '/ hour',
+    hourly: '/ hour',
     per_day: '/ day',
+    daily: '/ day',
     per_project: '/ project',
     per_video: '/ video',
+    per_minute: '/ min',
+    shoot: '/ shoot',
     fixed: 'fixed',
   };
-  return map[unit] || '';
+  return map[unit] || (unit ? `/ ${unit}` : '');
 };
 
 export const getStatusBadgeStyle = (status) => {

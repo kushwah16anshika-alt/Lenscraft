@@ -77,18 +77,31 @@ const BookingModal = ({ isOpen, onClose, professional, initialPackage = 'Signatu
       setIsSubmitting(false);
       const bookingData = {
         id: `BK-${Date.now().toString().slice(-6)}`,
+        professional: professional,
         professionalId: professional.id,
+        professionalName: professional.name,
         creatorName: professional.name,
+        creatorAvatar: professional.avatar,
+        professionalAvatar: professional.avatar,
         service: serviceType,
+        serviceTitle: serviceType,
         date: eventDate,
+        eventDate: eventDate,
         time: eventTime,
-        location: eventLocation,
+        eventTime: eventTime,
+        location: {
+          city: eventLocation,
+          address: eventLocation,
+        },
+        eventLocation: eventLocation,
         package: packageTier,
         totalAmount: currentTotal,
         advancePaid: advanceDeposit,
+        advanceAmount: advanceDeposit,
         balanceRemaining: balanceDue,
-        status: 'Confirmed',
+        status: 'confirmed',
         requirements: clientRequirements,
+        notes: clientRequirements,
       };
 
       createBooking(bookingData);

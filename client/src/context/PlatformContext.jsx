@@ -132,6 +132,14 @@ export const PlatformProvider = ({ children }) => {
     }
   });
 
+  const [searchFilters, setSearchFilters] = useState({
+    search: '',
+    category: 'all',
+    city: 'all',
+    price: 'all',
+    rating: 'all',
+  });
+
   // 2. LocalStorage Sync on Change
   useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.PROFESSIONALS, JSON.stringify(professionals));
@@ -169,9 +177,13 @@ export const PlatformProvider = ({ children }) => {
 
   // Create Booking
   const createBooking = (bookingData) => {
-    const newBookingId = `bk-${Date.now()}`;
+    const newBookingId = bookingData.id || `bk-${Date.now()}`;
     const randNum = Math.floor(1000 + Math.random() * 9000);
     const bookingNumber = `LC-${new Date().getFullYear()}-${randNum}`;
+
+    const totalVal = Number(bookingData.totalAmount) || 25000;
+    const advanceVal = Number(bookingData.advancePaid) || Number(bookingData.advanceAmount) || Number(bookingData.advanceEscrowDeposit) || Math.round(totalVal * 0.25);
+    const balDue = Number(bookingData.balanceRemaining) !== undefined ? Number(bookingData.balanceRemaining) : (totalVal - advanceVal);
 
     const newBooking = {
       id: newBookingId,
@@ -187,23 +199,32 @@ export const PlatformProvider = ({ children }) => {
       userEmail: bookingData.userEmail || bookingData.user?.email || 'pooja@example.com',
       userAvatar: bookingData.userAvatar || bookingData.user?.avatar || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80',
       professional: bookingData.professional,
-      professionalId: bookingData.professional?.id || 'pro-1',
-      professionalName: bookingData.professional?.name || 'Aarav Mehta',
-      professionalAvatar: bookingData.professional?.avatar || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
+      professionalId: bookingData.professionalId || bookingData.professional?.id || 'pro-1',
+      professionalName: bookingData.creatorName || bookingData.professionalName || bookingData.professional?.name || 'Aarav Mehta',
+      professionalAvatar: bookingData.creatorAvatar || bookingData.professionalAvatar || bookingData.professional?.avatar || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
       service: bookingData.service,
-      serviceTitle: bookingData.service?.title || 'Custom Shoot',
-      eventDate: bookingData.eventDate || new Date().toISOString(),
-      eventTime: bookingData.eventTime || '09:00 AM',
-      location: {
-        city: bookingData.eventCity || bookingData.location?.city || 'Mumbai',
-        address: bookingData.location?.address || 'Client Venue',
-      },
-      eventType: bookingData.eventType || 'Wedding Ceremony',
-      totalAmount: bookingData.totalAmount || 35000,
-      advanceAmount: bookingData.advanceEscrowDeposit || Math.round((bookingData.totalAmount || 35000) * 0.3),
-      status: 'pending',
+      serviceTitle: typeof bookingData.service === 'string' ? bookingData.service : (bookingData.serviceTitle || bookingData.service?.title || 'Custom Shoot'),
+      eventDate: bookingData.date || bookingData.eventDate || new Date().toISOString(),
+      eventTime: bookingData.time || bookingData.eventTime || '09:00 AM',
+      location: typeof bookingData.location === 'object' && bookingData.location !== null
+        ? {
+            city: bookingData.location.city || bookingData.eventCity || 'Mumbai',
+            address: bookingData.location.address || 'Client Venue',
+          }
+        : {
+            city: bookingData.eventLocation || bookingData.location || 'Mumbai',
+            address: bookingData.eventLocation || bookingData.location || 'Client Venue',
+          },
+      eventType: typeof bookingData.service === 'string' ? bookingData.service : (bookingData.eventType || 'Wedding Ceremony'),
+      package: bookingData.package || 'Signature',
+      totalAmount: totalVal,
+      advancePaid: advanceVal,
+      advanceAmount: advanceVal,
+      balanceRemaining: balDue,
+      status: (bookingData.status || 'confirmed').toLowerCase(),
       paymentStatus: 'advance_paid',
-      notes: bookingData.notes || '',
+      notes: bookingData.requirements || bookingData.notes || '',
+      requirements: bookingData.requirements || bookingData.notes || '',
       createdAt: new Date().toISOString(),
     };
 
@@ -218,9 +239,9 @@ export const PlatformProvider = ({ children }) => {
         if (b.id === bookingId || b.bookingNumber === bookingId) {
           return {
             ...b,
-            status: newStatus,
+            status: newStatus.toLowerCase(),
             notes: notes !== undefined ? notes : b.notes,
-            paymentStatus: newStatus === 'completed' ? 'paid' : b.paymentStatus,
+            paymentStatus: newStatus.toLowerCase() === 'completed' ? 'paid' : b.paymentStatus,
           };
         }
         return b;
@@ -327,7 +348,7 @@ export const PlatformProvider = ({ children }) => {
       id: `srv-${Date.now()}`,
       title: serviceData.title,
       price: Number(serviceData.price),
-      pricingType: serviceData.pricingType || 'fixed',
+      pricingType: serviceData.pricingType || 'per_day',
       deliveryDays: Number(serviceData.deliveryDays) || 7,
       description: serviceData.description,
       inclusions: serviceData.inclusions || [
@@ -367,18 +388,27 @@ export const PlatformProvider = ({ children }) => {
     );
   };
 
-  // Wishlist Toggle
-  const toggleWishlist = (proId) => {
+  // Wishlist / Favorites Actions (Supports both pro objects and pro IDs)
+  const toggleWishlist = (proOrId) => {
+    const id = typeof proOrId === 'object' && proOrId !== null ? proOrId.id : proOrId;
+    if (!id) return;
     setWishlist((prev) => {
-      if (prev.includes(proId)) {
-        return prev.filter((id) => id !== proId);
+      if (prev.includes(id)) {
+        return prev.filter((item) => item !== id);
       } else {
-        return [...prev, proId];
+        return [...prev, id];
       }
     });
   };
 
-  const isWishlisted = (proId) => wishlist.includes(proId);
+  const toggleFavorite = toggleWishlist;
+
+  const isWishlisted = (proOrId) => {
+    const id = typeof proOrId === 'object' && proOrId !== null ? proOrId.id : proOrId;
+    return wishlist.includes(id);
+  };
+
+  const favorites = professionals.filter((p) => wishlist.includes(p.id));
 
   // Toggle User Status (Admin)
   const toggleUserStatus = (userId) => {
@@ -386,6 +416,18 @@ export const PlatformProvider = ({ children }) => {
       prev.map((u) => {
         if (u.id === userId) {
           return { ...u, status: u.status === 'active' ? 'deactivated' : 'active' };
+        }
+        return u;
+      })
+    );
+  };
+
+  // Update User Profile
+  const updateUserProfile = (userId, updatedData) => {
+    setUsers((prev) =>
+      prev.map((u) => {
+        if (u.id === userId) {
+          return { ...u, ...updatedData };
         }
         return u;
       })
@@ -413,6 +455,55 @@ export const PlatformProvider = ({ children }) => {
     setCategories((prev) => prev.filter((c) => c.id !== categoryId));
   };
 
+  // Add New Professional (Creator Onboarding)
+  const addProfessional = (proData) => {
+    const newPro = {
+      id: `pro-${Date.now()}`,
+      name: proData.name || 'New Creator Studio',
+      email: proData.email || 'creator@lenscraft.com',
+      role: proData.role || 'photographer',
+      category: proData.tagline || 'Fine Art Creator',
+      tagline: proData.tagline || 'Visual Storyteller',
+      bio: proData.bio || 'Preserving emotional human moments with cinematic lighting and timeless film tones.',
+      location: {
+        city: (proData.city || 'Indore').split(',')[0].trim(),
+        state: (proData.city || '').split(',')[1]?.trim() || 'Madhya Pradesh',
+        country: 'India',
+      },
+      startingPrice: Number(proData.startingPrice) || 25000,
+      priceUnit: 'per_day',
+      rating: 5.0,
+      reviewCount: 1,
+      completedShoots: 10,
+      avatar: proData.uploadedImages?.[0] || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
+      coverImage: proData.uploadedImages?.[0] || 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80',
+      isVerified: true,
+      specialties: typeof proData.specialties === 'string'
+        ? proData.specialties.split(',').map((s) => s.trim())
+        : (proData.specialties || ['Weddings', 'Portraits']),
+      portfolio: (proData.uploadedImages || []).map((url, i) => ({
+        id: `port-init-${i}`,
+        title: `${proData.name} Showcase ${i + 1}`,
+        category: 'Showcase',
+        url,
+        mediaType: 'image',
+      })),
+      services: [
+        {
+          id: `srv-init-${Date.now()}`,
+          title: 'Standard Creative Coverage',
+          price: Number(proData.startingPrice) || 25000,
+          pricingType: 'per_day',
+          deliveryDays: 7,
+          description: 'Comprehensive creative coverage with hand-edited color graded master exports.',
+          inclusions: ['4K Raw / Master JPEG Files', 'Cloud Archival Access', 'Commercial & Social License'],
+        },
+      ],
+    };
+    setProfessionals((prev) => [newPro, ...prev]);
+    return newPro;
+  };
+
   // Update Studio Profile Data
   const updateStudioProfile = (proId, profileData) => {
     setProfessionals((prev) =>
@@ -437,12 +528,15 @@ export const PlatformProvider = ({ children }) => {
     bookings,
     reviews,
     wishlist,
+    favorites,
     categories,
     users,
     pricingRates,
     setPricingRates,
     availabilitySchedule,
     setAvailabilitySchedule,
+    searchFilters,
+    setSearchFilters,
     createBooking,
     updateBookingStatus,
     cancelBooking,
@@ -452,10 +546,13 @@ export const PlatformProvider = ({ children }) => {
     addService,
     deleteService,
     toggleWishlist,
+    toggleFavorite,
     isWishlisted,
     toggleUserStatus,
+    updateUserProfile,
     addCategory,
     deleteCategory,
+    addProfessional,
     updateStudioProfile,
   };
 

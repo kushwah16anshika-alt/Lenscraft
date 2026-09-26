@@ -45,7 +45,12 @@ const AdminUsersPage = () => {
             <tbody className="divide-y divide-sky-500/10">
               {users.map((u) => (
                 <tr key={u.id} className="hover:bg-midnight-800/40 transition-colors">
-                  <td className="py-3.5 font-display font-bold text-white">{u.name}</td>
+                  <td className="py-3.5">
+                    <div className="flex items-center gap-2.5">
+                      <Avatar src={u.avatar} name={u.name} size="sm" />
+                      <span className="font-display font-bold text-white">{u.name}</span>
+                    </div>
+                  </td>
                   <td className="py-3.5 text-slate-300">{u.email}</td>
                   <td className="py-3.5 text-slate-300 font-mono">{u.phone || '+91 98200 11223'}</td>
                   <td className="py-3.5 text-slate-400">{formatDate(u.joined || '2025-02-01')}</td>
