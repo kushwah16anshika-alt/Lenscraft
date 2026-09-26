@@ -26,6 +26,7 @@ const STORAGE_KEYS = {
   USERS: 'lenscraft_platform_users',
   PRICING: 'lenscraft_platform_pricing',
   AVAILABILITY: 'lenscraft_platform_availability',
+  CONVERSATIONS: 'lenscraft_platform_conversations',
 };
 
 export const PlatformProvider = ({ children }) => {
@@ -132,6 +133,89 @@ export const PlatformProvider = ({ children }) => {
     }
   });
 
+  const [conversations, setConversations] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.CONVERSATIONS);
+      if (saved) return JSON.parse(saved);
+      return [
+        {
+          id: 'conv-1',
+          creatorId: 'pro-1',
+          creatorName: 'Aarav Mehta',
+          creatorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
+          creatorRole: 'Royal Wedding Photographer',
+          clientId: 'u-1',
+          clientName: 'Pooja Sethi',
+          clientAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80',
+          lastMessage: 'Looking forward to the Udaipur pre-wedding shoot! I have shortlisted 3 palace courtyards for golden hour.',
+          lastUpdated: '10 mins ago',
+          unreadCount: 1,
+          messages: [
+            {
+              id: 'm-1',
+              sender: 'client',
+              senderName: 'Pooja Sethi',
+              text: 'Hi Aarav! We love your editorial lighting. Are you available for a 2-day shoot in Udaipur this October?',
+              timestamp: '10:30 AM',
+            },
+            {
+              id: 'm-2',
+              sender: 'creator',
+              senderName: 'Aarav Mehta',
+              text: 'Hello Pooja! Thank you so much. Yes, October is a magnificent month in Rajasthan. The natural lighting at sunset across Lake Pichola is breathtaking.',
+              timestamp: '10:32 AM',
+            },
+            {
+              id: 'm-3',
+              sender: 'creator',
+              senderName: 'Aarav Mehta',
+              text: 'Looking forward to the Udaipur pre-wedding shoot! I have shortlisted 3 palace courtyards for golden hour.',
+              timestamp: '10:35 AM',
+            },
+          ],
+        },
+        {
+          id: 'conv-2',
+          creatorId: 'pro-2',
+          creatorName: 'Kabir Varma',
+          creatorAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80',
+          creatorRole: 'Cinematic Wedding Filmmaker',
+          clientId: 'u-1',
+          clientName: 'Pooja Sethi',
+          clientAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80',
+          lastMessage: 'Drone flight permits for the beach location in Goa are cleared.',
+          lastUpdated: '2 hours ago',
+          unreadCount: 0,
+          messages: [
+            {
+              id: 'm-201',
+              sender: 'client',
+              senderName: 'Pooja Sethi',
+              text: 'Hey Kabir, do you provide 4K ProRes master files on SSD with the teaser film?',
+              timestamp: 'Yesterday',
+            },
+            {
+              id: 'm-202',
+              sender: 'creator',
+              senderName: 'Kabir Varma',
+              text: 'Absolutely! All our cinematic films are mastered in 4K ProRes 422 with a Sandisk Extreme Pro SSD delivered to your home.',
+              timestamp: 'Yesterday',
+            },
+            {
+              id: 'm-203',
+              sender: 'creator',
+              senderName: 'Kabir Varma',
+              text: 'Drone flight permits for the beach location in Goa are cleared.',
+              timestamp: '2 hours ago',
+            },
+          ],
+        },
+      ];
+    } catch {
+      return [];
+    }
+  });
+
   const [searchFilters, setSearchFilters] = useState({
     search: '',
     category: 'all',
@@ -172,6 +256,10 @@ export const PlatformProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.AVAILABILITY, JSON.stringify(availabilitySchedule));
   }, [availabilitySchedule]);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEYS.CONVERSATIONS, JSON.stringify(conversations));
+  }, [conversations]);
 
   // 3. Platform Actions
 
@@ -523,12 +611,68 @@ export const PlatformProvider = ({ children }) => {
     );
   };
 
+  // Send Direct Message between Customer & Creative
+  const sendMessage = ({
+    creatorId,
+    creatorName,
+    creatorAvatar,
+    sender = 'client',
+    senderName = 'Client',
+    text,
+  }) => {
+    if (!text || !creatorId) return;
+
+    const newMessage = {
+      id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
+      sender,
+      senderName,
+      text,
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    };
+
+    setConversations((prev) => {
+      const existingIdx = prev.findIndex(
+        (c) => c.creatorId === creatorId || c.creatorName === creatorName
+      );
+
+      if (existingIdx >= 0) {
+        const updated = [...prev];
+        const conv = updated[existingIdx];
+        updated[existingIdx] = {
+          ...conv,
+          lastMessage: text,
+          lastUpdated: 'Just now',
+          messages: [...(conv.messages || []), newMessage],
+        };
+        return updated;
+      } else {
+        const newConv = {
+          id: `conv-${Date.now()}`,
+          creatorId,
+          creatorName,
+          creatorAvatar: creatorAvatar || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
+          creatorRole: 'Creative Studio',
+          clientId: 'u-1',
+          clientName: senderName || 'Client',
+          lastMessage: text,
+          lastUpdated: 'Just now',
+          unreadCount: 0,
+          messages: [newMessage],
+        };
+        return [newConv, ...prev];
+      }
+    });
+
+    return newMessage;
+  };
+
   const value = {
     professionals,
     bookings,
     reviews,
     wishlist,
     favorites,
+    conversations,
     categories,
     users,
     pricingRates,
@@ -554,6 +698,7 @@ export const PlatformProvider = ({ children }) => {
     deleteCategory,
     addProfessional,
     updateStudioProfile,
+    sendMessage,
   };
 
   return <PlatformContext.Provider value={value}>{children}</PlatformContext.Provider>;

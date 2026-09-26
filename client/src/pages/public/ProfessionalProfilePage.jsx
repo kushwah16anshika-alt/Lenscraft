@@ -14,6 +14,7 @@ import {
   ArrowRight,
   Maximize2,
   MessageSquarePlus,
+  MessageSquare,
   Sparkles,
   Calendar,
   Camera,
@@ -29,6 +30,7 @@ import { formatCurrency, formatDate } from '../../utils/formatters';
 import Avatar from '../../components/common/Avatar';
 import LightboxModal from '../../components/common/LightboxModal';
 import BookingModal from '../../components/common/BookingModal';
+import DirectChatModal from '../../components/common/DirectChatModal';
 import WriteReviewModal from '../../components/common/WriteReviewModal';
 import { usePlatform } from '../../context/PlatformContext';
 import { useToast } from '../../hooks/useToast';
