@@ -419,6 +419,7 @@ const UserDashboard = () => {
         isOpen={chatModalOpen}
         onClose={() => setChatModalOpen(false)}
         professional={selectedChatPro}
+        defaultSenderRole="client"
       />
     </div>
   );

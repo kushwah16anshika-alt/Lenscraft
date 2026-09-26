@@ -431,6 +431,7 @@ const ProfessionalDashboard = () => {
         isOpen={!!chatWithClient}
         onClose={() => setChatWithClient(null)}
         professional={chatWithClient}
+        defaultSenderRole="creator"
       />
     </div>
   );

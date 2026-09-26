@@ -6,6 +6,7 @@ import {
   MOCK_STATS,
 } from '../constants/mockData';
 import { CREATIVE_CATEGORIES } from '../constants/categories';
+import { messageService } from '../services/messageService';
 
 export const PlatformContext = createContext(null);
 
@@ -260,6 +261,23 @@ export const PlatformProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.CONVERSATIONS, JSON.stringify(conversations));
   }, [conversations]);
+
+  // Real-time cross-tab synchronization for direct customer & photographer chat
+  useEffect(() => {
+    const handleStorageChange = (e) => {
+      if (e.key === STORAGE_KEYS.CONVERSATIONS && e.newValue) {
+        try {
+          const parsed = JSON.parse(e.newValue);
+          if (Array.isArray(parsed)) {
+            setConversations(parsed);
+          }
+        } catch {}
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
 
   // 3. Platform Actions
 
@@ -611,22 +629,30 @@ export const PlatformProvider = ({ children }) => {
     );
   };
 
-  // Send Direct Message between Customer & Creative
-  const sendMessage = ({
+  // Send Real Message between Customer & Photographer
+  const sendMessage = async ({
     creatorId,
     creatorName,
     creatorAvatar,
+    clientId = 'u-1',
+    clientName = 'Client',
+    clientAvatar,
     sender = 'client',
-    senderName = 'Client',
+    senderName,
     text,
+    attachments = [],
   }) => {
     if (!text || !creatorId) return;
+
+    const resolvedSenderName =
+      senderName || (sender === 'creator' ? creatorName || 'Studio' : clientName || 'Client');
 
     const newMessage = {
       id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
       sender,
-      senderName,
-      text,
+      senderName: resolvedSenderName,
+      text: text.trim(),
+      attachments,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     };
 
@@ -640,8 +666,9 @@ export const PlatformProvider = ({ children }) => {
         const conv = updated[existingIdx];
         updated[existingIdx] = {
           ...conv,
-          lastMessage: text,
+          lastMessage: text.trim(),
           lastUpdated: 'Just now',
+          unreadCount: sender === 'client' ? (conv.unreadCount || 0) + 1 : 0,
           messages: [...(conv.messages || []), newMessage],
         };
         return updated;
@@ -649,19 +676,38 @@ export const PlatformProvider = ({ children }) => {
         const newConv = {
           id: `conv-${Date.now()}`,
           creatorId,
-          creatorName,
+          creatorName: creatorName || 'Studio',
           creatorAvatar: creatorAvatar || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
           creatorRole: 'Creative Studio',
-          clientId: 'u-1',
-          clientName: senderName || 'Client',
-          lastMessage: text,
+          clientId: clientId || 'u-1',
+          clientName: clientName || 'Client',
+          clientAvatar: clientAvatar || '',
+          lastMessage: text.trim(),
           lastUpdated: 'Just now',
-          unreadCount: 0,
+          unreadCount: sender === 'client' ? 1 : 0,
           messages: [newMessage],
         };
         return [newConv, ...prev];
       }
     });
+
+    // Synchronize with backend API asynchronously
+    try {
+      await messageService.sendMessage({
+        creatorId,
+        creatorName,
+        creatorAvatar,
+        clientId,
+        clientName,
+        clientAvatar,
+        sender,
+        senderName: resolvedSenderName,
+        text: text.trim(),
+        attachments,
+      });
+    } catch (err) {
+      // Offline / mock mode fallback handled gracefully
+    }
 
     return newMessage;
   };

@@ -191,6 +191,7 @@ const MyBookingsPage = () => {
         isOpen={!!selectedChatPro}
         onClose={() => setSelectedChatPro(null)}
         professional={selectedChatPro}
+        defaultSenderRole="client"
       />
 
       {/* Write Review Modal */}

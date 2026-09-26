@@ -540,6 +540,7 @@ const ProfessionalProfilePage = () => {
         isOpen={chatModalOpen}
         onClose={() => setChatModalOpen(false)}
         professional={pro}
+        defaultSenderRole="client"
       />
 
       <BookingModal
