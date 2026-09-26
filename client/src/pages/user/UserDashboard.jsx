@@ -21,11 +21,15 @@ import { useAuth } from '../../hooks/useAuth';
 import { usePlatform } from '../../context/PlatformContext';
 import { formatCurrency, formatDate } from '../../utils/formatters';
 import ProfessionalCard from '../../components/cards/ProfessionalCard';
+import Avatar from '../../components/common/Avatar';
+import DirectChatModal from '../../components/common/DirectChatModal';
 
 const UserDashboard = () => {
   const { user } = useAuth();
-  const { bookings, favorites, toggleFavorite, professionals } = usePlatform();
+  const { bookings, favorites, toggleFavorite, professionals, conversations } = usePlatform();
   const [activeTab, setActiveTab] = useState('upcoming');
+  const [selectedChatPro, setSelectedChatPro] = useState(null);
+  const [chatModalOpen, setChatModalOpen] = useState(false);
 
   const displayName = (user?.name || 'Anshika').toUpperCase();
 
@@ -203,9 +207,25 @@ const UserDashboard = () => {
                   <span className="text-slate-400 flex items-center gap-1">
                     <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" /> Escrow Secured
                   </span>
-                  <Link to={`/professionals/${b.creatorId || 'pro-1'}`} className="text-cyan-300 hover:text-cyan-200 hover:underline font-semibold">
-                    Open Production Chat →
-                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const matchedPro = professionals.find((p) => p.id === b.creatorId) || {
+                        id: b.creatorId || 'pro-1',
+                        name: b.creatorName || 'Arjun Mehta',
+                        avatar: b.avatar,
+                        role: 'photographer',
+                        category: b.service,
+                        startingPrice: b.totalAmount,
+                      };
+                      setSelectedChatPro(matchedPro);
+                      setChatModalOpen(true);
+                    }}
+                    className="text-cyan-300 hover:text-cyan-200 hover:underline font-semibold flex items-center gap-1 cursor-pointer"
+                  >
+                    <MessageSquare className="w-3.5 h-3.5" />
+                    <span>Open Production Chat →</span>
+                  </button>
                 </div>
               </div>
             ))}
@@ -246,14 +266,113 @@ const UserDashboard = () => {
           </div>
         )}
 
-        {/* TAB: MESSAGES */}
+        {/* TAB: MESSAGES & CREATIVE CHATS */}
         {activeTab === 'messages' && (
-          <div className="p-12 text-center glass-card border border-sky-500/20 rounded-2xl space-y-3 animate-reveal">
-            <MessageSquare className="w-10 h-10 text-cyan-400 mx-auto" />
-            <h3 className="text-lg font-display font-bold text-white">Active Creative Inquiries</h3>
-            <p className="text-xs text-slate-400 max-w-sm mx-auto">
-              You have 2 active pre-production chats with Arjun Mehta and Kabir Varma.
-            </p>
+          <div className="space-y-6 animate-reveal">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-display font-bold text-white flex items-center gap-2">
+                  <MessageSquare className="w-5 h-5 text-cyan-400" />
+                  <span>Direct Creator Channels</span>
+                </h3>
+                <p className="text-xs text-slate-400">
+                  Real-time pre-production discussions, moodboard reviews, and logistics with your hired studios.
+                </p>
+              </div>
+              <span className="text-xs font-mono text-cyan-300 font-semibold px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30">
+                {(conversations || []).length} Active Channels
+              </span>
+            </div>
+
+            {/* Active Conversation Threads */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {(conversations || []).map((conv) => {
+                const matchedPro = professionals.find((p) => p.id === conv.creatorId) || {
+                  id: conv.creatorId,
+                  name: conv.creatorName,
+                  avatar: conv.creatorAvatar,
+                  role: conv.creatorRole || 'photographer',
+                  category: conv.creatorRole || 'Royal Wedding Studio',
+                };
+
+                return (
+                  <div
+                    key={conv.id}
+                    className="p-5 glass-card border border-sky-500/20 hover:border-cyan-400/50 rounded-2xl space-y-3 transition-all shadow-lg flex flex-col justify-between"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex items-center gap-3">
+                        <div className="relative shrink-0">
+                          <Avatar src={conv.creatorAvatar} name={conv.creatorName} size="md" />
+                          <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-400 ring-2 ring-midnight-950" />
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-1.5">
+                            <h4 className="text-sm font-display font-bold text-white">
+                              {conv.creatorName}
+                            </h4>
+                            <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" />
+                          </div>
+                          <span className="text-[11px] text-cyan-300 font-mono">
+                            {conv.creatorRole || 'Verified Artist'}
+                          </span>
+                        </div>
+                      </div>
+
+                      <span className="text-[10px] font-mono text-slate-400">
+                        {conv.lastUpdated || 'Recently'}
+                      </span>
+                    </div>
+
+                    <p className="text-xs text-slate-300 bg-white/[0.03] p-3 rounded-xl border border-sky-500/10 line-clamp-2 italic">
+                      "{conv.lastMessage || 'Channel opened. Ready to assist with shoot planning.'}"
+                    </p>
+
+                    <div className="flex items-center justify-between pt-2 border-t border-sky-500/15">
+                      <span className="text-[10px] text-emerald-400 font-mono flex items-center gap-1">
+                        ● Direct Response Active
+                      </span>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedChatPro(matchedPro);
+                          setChatModalOpen(true);
+                        }}
+                        className="px-4 py-2 rounded-xl glow-btn-primary text-xs uppercase font-mono tracking-wider font-bold inline-flex items-center gap-1.5 shadow-md hover:scale-105 transition-all"
+                      >
+                        <MessageSquare className="w-3.5 h-3.5" />
+                        <span>Chat Now</span>
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Quick Start New Chat with Featured Studios */}
+            <div className="p-6 glass-panel border border-sky-500/20 rounded-2xl space-y-4">
+              <h4 className="text-xs font-mono uppercase tracking-wider text-slate-400 font-semibold">
+                Start a New Direct Inquiry:
+              </h4>
+              <div className="flex flex-wrap gap-3">
+                {professionals.slice(0, 4).map((p) => (
+                  <button
+                    key={p.id}
+                    type="button"
+                    onClick={() => {
+                      setSelectedChatPro(p);
+                      setChatModalOpen(true);
+                    }}
+                    className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl glass-panel hover:bg-cyan-500/15 border border-sky-500/20 hover:border-cyan-400 text-slate-200 hover:text-white transition-all text-xs"
+                  >
+                    <Avatar src={p.avatar} name={p.name} size="xs" />
+                    <span className="font-semibold">{p.name}</span>
+                    <span className="text-[10px] text-cyan-300 font-mono">({p.location?.city || 'Mumbai'})</span>
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
         )}
 
@@ -294,6 +413,13 @@ const UserDashboard = () => {
           </div>
         )}
       </div>
+
+      {/* Direct Chat Modal */}
+      <DirectChatModal
+        isOpen={chatModalOpen}
+        onClose={() => setChatModalOpen(false)}
+        professional={selectedChatPro}
+      />
     </div>
   );
 };

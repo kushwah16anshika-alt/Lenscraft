@@ -23,12 +23,15 @@ import { useAuth } from '../../hooks/useAuth';
 import { useToast } from '../../hooks/useToast';
 import { usePlatform } from '../../context/PlatformContext';
 import { formatCurrency, formatDate } from '../../utils/formatters';
+import Avatar from '../../components/common/Avatar';
+import DirectChatModal from '../../components/common/DirectChatModal';
 
 const ProfessionalDashboard = () => {
   const { user } = useAuth();
   const { success } = useToast();
-  const { bookings } = usePlatform();
+  const { bookings, conversations, professionals } = usePlatform();
   const [activeTab, setActiveTab] = useState('requests');
+  const [chatWithClient, setChatWithClient] = useState(null);
 
   const displayName = (user?.name || 'Arjun').toUpperCase();
 
@@ -174,6 +177,7 @@ const ProfessionalDashboard = () => {
         <div className="flex border-b border-sky-500/15 gap-6 overflow-x-auto no-scrollbar">
           {[
             { id: 'requests', label: `Booking Requests (${bookingRequests.length})` },
+            { id: 'messages', label: `Client Messages (${(conversations || []).length})` },
             { id: 'shoots', label: 'Upcoming Shoots (3)' },
             { id: 'earnings', label: 'Earnings & Escrow' },
             { id: 'portfolio', label: 'Portfolio' },
@@ -228,6 +232,22 @@ const ProfessionalDashboard = () => {
 
                     <div className="flex items-center gap-2">
                       <button
+                        onClick={() => {
+                          setChatWithClient({
+                            id: 'pro-1',
+                            name: 'Aarav Mehta',
+                            clientName: req.clientName,
+                            category: req.event,
+                          });
+                        }}
+                        className="p-2.5 rounded-xl glass-panel border border-sky-500/30 hover:border-cyan-400 text-cyan-300 text-xs font-semibold flex items-center gap-1.5"
+                        title="Chat with Client"
+                      >
+                        <MessageSquare className="w-3.5 h-3.5" />
+                        <span className="hidden sm:inline">Message</span>
+                      </button>
+
+                      <button
                         onClick={() => handleAcceptRequest(req.id)}
                         className="p-2.5 rounded-xl glow-btn-primary text-xs font-semibold flex items-center gap-1 shadow-md"
                         title="Accept Shoot"
@@ -248,6 +268,74 @@ const ProfessionalDashboard = () => {
                 </div>
               ))
             )}
+          </div>
+        )}
+
+        {/* TAB: CLIENT MESSAGES */}
+        {activeTab === 'messages' && (
+          <div className="space-y-6 animate-reveal">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-display font-bold text-white flex items-center gap-2">
+                  <MessageSquare className="w-5 h-5 text-cyan-400" />
+                  <span>Incoming Client Inquiries</span>
+                </h3>
+                <p className="text-xs text-slate-400">
+                  Direct production inquiries from clients planning upcoming shoots and campaigns.
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {(conversations || []).map((conv) => (
+                <div
+                  key={conv.id}
+                  className="p-5 glass-card border border-sky-500/20 hover:border-cyan-400/50 rounded-2xl space-y-3 transition-all shadow-lg flex flex-col justify-between"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <Avatar src={conv.clientAvatar} name={conv.clientName} size="md" />
+                      <div>
+                        <h4 className="text-sm font-display font-bold text-white">
+                          {conv.clientName || 'Client Inquiry'}
+                        </h4>
+                        <span className="text-[11px] text-cyan-300 font-mono">
+                          Client · {conv.creatorRole || 'Pre-Wedding Inquiry'}
+                        </span>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-mono text-slate-400">
+                      {conv.lastUpdated || 'Recently'}
+                    </span>
+                  </div>
+
+                  <p className="text-xs text-slate-300 bg-white/[0.03] p-3 rounded-xl border border-sky-500/10 line-clamp-2 italic">
+                    "{conv.lastMessage || 'Shoot inquiry received.'}"
+                  </p>
+
+                  <div className="flex items-center justify-between pt-2 border-t border-sky-500/15">
+                    <span className="text-[10px] text-emerald-400 font-mono">
+                      ● Active Inquiry
+                    </span>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setChatWithClient({
+                          id: conv.creatorId || 'pro-1',
+                          name: conv.creatorName || 'Aarav Mehta',
+                          avatar: conv.creatorAvatar,
+                        });
+                      }}
+                      className="px-4 py-2 rounded-xl glow-btn-primary text-xs uppercase font-mono tracking-wider font-bold inline-flex items-center gap-1.5 shadow-md hover:scale-105 transition-all"
+                    >
+                      <MessageSquare className="w-3.5 h-3.5" />
+                      <span>Reply in Studio Channel</span>
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 

@@ -61,6 +61,7 @@ const ProfessionalProfilePage = () => {
 
   const [activeTab, setActiveTab] = useState('portfolio');
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
+  const [chatModalOpen, setChatModalOpen] = useState(false);
   const [writeReviewOpen, setWriteReviewOpen] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState('Standard');
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -188,6 +189,15 @@ const ProfessionalProfilePage = () => {
                 title="Share Profile"
               >
                 <Share2 className="w-4 h-4" />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setChatModalOpen(true)}
+                className="px-4 py-3 rounded-full glass-panel text-cyan-300 hover:text-white border border-sky-500/30 hover:border-cyan-400 text-xs uppercase tracking-wider font-bold inline-flex items-center gap-1.5 transition-all"
+              >
+                <MessageSquare className="w-3.5 h-3.5 text-cyan-400" />
+                <span className="hidden sm:inline">Message Studio</span>
               </button>
 
               <button
@@ -496,7 +506,7 @@ const ProfessionalProfilePage = () => {
                 </div>
               </div>
 
-              {/* Direct Instant Booking Trigger */}
+              {/* Direct Instant Booking & Chat Trigger */}
               <div className="pt-2 space-y-3">
                 <button
                   type="button"
@@ -505,6 +515,15 @@ const ProfessionalProfilePage = () => {
                 >
                   <Calendar className="w-4 h-4" />
                   <span>Reserve Date with {pro.name.split(' ')[0]}</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setChatModalOpen(true)}
+                  className="w-full py-3 px-6 rounded-2xl glass-panel border border-sky-500/30 hover:border-cyan-400 text-cyan-300 hover:text-white text-xs uppercase font-mono tracking-wider font-semibold transition-all flex items-center justify-center gap-2"
+                >
+                  <MessageSquare className="w-4 h-4 text-cyan-400" />
+                  <span>Pre-Production Chat</span>
                 </button>
 
                 <p className="text-[11px] text-center text-slate-400 font-mono">
@@ -517,6 +536,12 @@ const ProfessionalProfilePage = () => {
       </div>
 
       {/* Modals */}
+      <DirectChatModal
+        isOpen={chatModalOpen}
+        onClose={() => setChatModalOpen(false)}
+        professional={pro}
+      />
+
       <BookingModal
         isOpen={bookingModalOpen}
         onClose={() => setBookingModalOpen(false)}

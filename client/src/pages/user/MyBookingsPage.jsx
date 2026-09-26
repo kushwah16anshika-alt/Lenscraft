@@ -1,21 +1,23 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Calendar, MapPin, Clock, ArrowUpRight, Ban, MessageSquarePlus, CheckCircle2, Sparkles } from 'lucide-react';
+import { Calendar, MapPin, Clock, ArrowUpRight, Ban, MessageSquarePlus, MessageSquare, CheckCircle2, Sparkles } from 'lucide-react';
 import Card from '../../components/common/Card';
 import Badge from '../../components/common/Badge';
 import Button from '../../components/common/Button';
 import Avatar from '../../components/common/Avatar';
 import Tabs from '../../components/common/Tabs';
 import WriteReviewModal from '../../components/common/WriteReviewModal';
+import DirectChatModal from '../../components/common/DirectChatModal';
 import { formatCurrency, formatDate } from '../../utils/formatters';
 import { usePlatform } from '../../hooks/usePlatform';
 import { useToast } from '../../hooks/useToast';
 
 const MyBookingsPage = () => {
-  const { bookings, cancelBooking } = usePlatform();
+  const { bookings, cancelBooking, professionals } = usePlatform();
   const { success, info } = useToast();
   const [filterTab, setFilterTab] = useState('all');
   const [selectedBookingForReview, setSelectedBookingForReview] = useState(null);
+  const [selectedChatPro, setSelectedChatPro] = useState(null);
 
   const tabs = [
     { id: 'all', label: 'All Bookings', count: bookings.length },
@@ -116,6 +118,28 @@ const MyBookingsPage = () => {
                     </Button>
                   )}
 
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      const matchedPro = professionals.find(
+                        (p) => p.id === (b.professionalId || b.professional?.id)
+                      ) || {
+                        id: b.professionalId || b.professional?.id || 'pro-1',
+                        name: b.professional?.name || b.professionalName || 'Creative Studio',
+                        avatar: b.professional?.avatar || b.professionalAvatar,
+                        role: 'photographer',
+                        category: b.service?.title || b.serviceTitle,
+                        startingPrice: b.totalAmount,
+                      };
+                      setSelectedChatPro(matchedPro);
+                    }}
+                    leftIcon={<MessageSquare className="w-3.5 h-3.5 text-cyan-400" />}
+                    className="border-sky-500/30 text-cyan-300 hover:text-white"
+                  >
+                    Chat Studio
+                  </Button>
+
                   <Link to={`/professionals/${b.professionalId || b.professional?.id || 'pro-1'}`}>
                     <Button variant="outline" size="sm" rightIcon={<ArrowUpRight className="w-3.5 h-3.5" />}>
                       View Studio
@@ -161,6 +185,13 @@ const MyBookingsPage = () => {
           </div>
         )}
       </div>
+
+      {/* Direct Studio Chat Modal */}
+      <DirectChatModal
+        isOpen={!!selectedChatPro}
+        onClose={() => setSelectedChatPro(null)}
+        professional={selectedChatPro}
+      />
 
       {/* Write Review Modal */}
       {selectedBookingForReview && (
