@@ -1,17 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Camera, Search, SlidersHorizontal, Sparkles, RotateCcw, MapPin, ArrowUpDown, Star, ShieldCheck } from 'lucide-react';
 import ProfessionalCard from '../../components/cards/ProfessionalCard';
 import { ROLES } from '../../constants/roles';
 import { usePlatform } from '../../context/PlatformContext';
 
 const PhotographersPage = () => {
+  const [searchParams] = useSearchParams();
   const { professionals, favorites, toggleFavorite } = usePlatform();
-  const [search, setSearch] = useState('');
-  const [cityFilter, setCityFilter] = useState('all');
-  const [genreFilter, setGenreFilter] = useState('all');
+  const [search, setSearch] = useState(searchParams.get('search') || '');
+  const [cityFilter, setCityFilter] = useState(searchParams.get('city') || 'all');
+  const [genreFilter, setGenreFilter] = useState(searchParams.get('category') || searchParams.get('genre') || 'all');
   const [priceFilter, setPriceFilter] = useState('all');
   const [ratingFilter, setRatingFilter] = useState('all');
   const [sortBy, setSortBy] = useState('recommended');
+
+  useEffect(() => {
+    const qCity = searchParams.get('city');
+    const qGenre = searchParams.get('category') || searchParams.get('genre');
+    const qSearch = searchParams.get('search');
+    if (qCity) setCityFilter(qCity);
+    if (qGenre) setGenreFilter(qGenre);
+    if (qSearch) setSearch(qSearch);
+  }, [searchParams]);
 
   const photographers = professionals.filter((p) => p.role === ROLES.PHOTOGRAPHER || p.category?.toLowerCase().includes('photograph'));
 

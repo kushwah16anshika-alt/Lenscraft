@@ -1,16 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Wand2, Search, ArrowUpDown, RotateCcw, Video, Camera, ShieldCheck } from 'lucide-react';
 import ProfessionalCard from '../../components/cards/ProfessionalCard';
 import { ROLES } from '../../constants/roles';
 import { usePlatform } from '../../context/PlatformContext';
 
 const EditorsPage = () => {
+  const [searchParams] = useSearchParams();
   const { professionals, favorites, toggleFavorite } = usePlatform();
-  const [search, setSearch] = useState('');
-  const [disciplineFilter, setDisciplineFilter] = useState('all');
+  const [search, setSearch] = useState(searchParams.get('search') || '');
+  const [disciplineFilter, setDisciplineFilter] = useState(searchParams.get('type') || searchParams.get('discipline') || 'all');
   const [specialtyFilter, setSpecialtyFilter] = useState('all');
   const [priceFilter, setPriceFilter] = useState('all');
   const [sortBy, setSortBy] = useState('recommended');
+
+  useEffect(() => {
+    const qType = searchParams.get('type') || searchParams.get('discipline');
+    const qSearch = searchParams.get('search');
+    if (qType) setDisciplineFilter(qType);
+    if (qSearch) setSearch(qSearch);
+  }, [searchParams]);
 
   const editors = professionals.filter(
     (p) => p.role === ROLES.EDITOR || p.category?.toLowerCase().includes('edit') || p.category?.toLowerCase().includes('color') || p.category?.toLowerCase().includes('post')
