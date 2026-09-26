@@ -34,8 +34,8 @@ const serviceSchema = new mongoose.Schema(
     },
     pricingType: {
       type: String,
-      enum: ['fixed', 'hourly', 'daily', 'per_minute'],
-      default: 'fixed',
+      enum: ['fixed', 'hourly', 'daily', 'per_hour', 'per_day', 'per_project', 'per_video', 'per_minute'],
+      default: 'per_day',
     },
     deliveryDays: {
       type: Number,
