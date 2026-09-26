@@ -425,6 +425,13 @@ const ProfessionalDashboard = () => {
           </div>
         )}
       </div>
+
+      {/* Direct Chat Modal for Studio */}
+      <DirectChatModal
+        isOpen={!!chatWithClient}
+        onClose={() => setChatWithClient(null)}
+        professional={chatWithClient}
+      />
     </div>
   );
 };
