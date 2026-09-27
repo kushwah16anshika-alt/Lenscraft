@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 const Avatar = ({
   src,
+  user,
   alt = 'Avatar',
   name = '',
   size = 'md',
@@ -9,7 +10,11 @@ const Avatar = ({
   className = '',
 }) => {
   const [imgError, setImgError] = useState(false);
-  const imageUrl = typeof src === 'object' && src !== null ? src.url : src;
+
+  // Support user object or direct src
+  const rawSrc = src || user?.avatar || user?.profileImage;
+  const imageUrl = typeof rawSrc === 'object' && rawSrc !== null ? rawSrc.url : rawSrc;
+  const displayName = name || user?.name || '';
 
   useEffect(() => {
     setImgError(false);
@@ -19,13 +24,13 @@ const Avatar = ({
     xs: 'w-6 h-6 text-xs',
     sm: 'w-8 h-8 text-xs',
     md: 'w-10 h-10 text-sm font-semibold',
-    lg: 'w-13 h-13 text-base font-semibold',
-    xl: 'w-18 h-18 text-xl font-bold font-serif',
+    lg: 'w-12 h-12 text-base font-semibold',
+    xl: 'w-16 h-16 text-xl font-bold font-serif',
     '2xl': 'w-24 h-24 text-2xl font-bold font-serif',
   };
 
   const getInitials = (fullName) => {
-    if (!fullName) return '?';
+    if (!fullName) return 'LC';
     return fullName
       .split(' ')
       .filter(Boolean)
@@ -40,13 +45,14 @@ const Avatar = ({
       {imageUrl && !imgError ? (
         <img
           src={imageUrl}
-          alt={alt || name}
+          alt={alt || displayName || 'User avatar'}
           className="w-full h-full object-cover rounded-full border border-sky-500/25 shadow-md shadow-black/40"
           onError={() => setImgError(true)}
+          loading="lazy"
         />
       ) : (
         <div className="w-full h-full rounded-full bg-gradient-to-br from-sky-500/20 to-cyan-500/10 text-cyan-300 flex items-center justify-center border border-sky-500/30 font-semibold shadow-inner">
-          {getInitials(name)}
+          {getInitials(displayName)}
         </div>
       )}
       {isOnline !== undefined && (
@@ -61,3 +67,4 @@ const Avatar = ({
 };
 
 export default Avatar;
+

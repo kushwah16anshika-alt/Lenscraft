@@ -1,10 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Aperture, ShieldCheck, Instagram, Youtube, Linkedin, Mail, ArrowRight, Sparkles, Camera } from 'lucide-react';
+import { Aperture, ShieldCheck, Instagram, Youtube, Linkedin, Mail, ArrowRight, Sparkles, Camera, Check } from 'lucide-react';
+import { useToast } from '../../hooks/useToast';
 
 const Footer = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { success, warning } = useToast();
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [isSubscribed, setIsSubscribed] = useState(false);
+
+  const handleSubscribe = (e) => {
+    e.preventDefault();
+    if (!newsletterEmail || !newsletterEmail.includes('@')) {
+      warning('Please enter a valid email address.');
+      return;
+    }
+    setIsSubscribed(true);
+    success('Thank you for subscribing to The Visual Dispatch!');
+    setNewsletterEmail('');
+  };
 
   const handleNavClick = (path) => {
     if (path.startsWith('/#')) {
@@ -45,23 +60,34 @@ const Footer = () => {
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 max-w-md lg:ml-auto w-full">
+          <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 max-w-md lg:ml-auto w-full">
             <div className="relative flex-1">
               <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
                 type="email"
+                value={newsletterEmail}
+                onChange={(e) => setNewsletterEmail(e.target.value)}
                 placeholder="Enter your email address..."
                 className="w-full pl-10 pr-4 py-3 rounded-full bg-midnight-950/80 border border-sky-500/20 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-all"
               />
             </div>
             <button
-              type="button"
-              onClick={() => alert('Thank you for subscribing to LensCraft!')}
-              className="px-6 py-3 rounded-full glow-btn-primary text-xs uppercase tracking-wider font-bold shrink-0 hover:scale-105 transition-all shadow-[0_0_15px_rgba(0,210,255,0.4)]"
+              type="submit"
+              className="px-6 py-3 rounded-full glow-btn-primary text-xs uppercase tracking-wider font-bold shrink-0 hover:scale-105 transition-all shadow-[0_0_15px_rgba(0,210,255,0.4)] flex items-center justify-center gap-1.5"
             >
-              Subscribe
+              {isSubscribed ? (
+                <>
+                  <Check className="w-3.5 h-3.5 text-cyan-300" />
+                  <span>Subscribed</span>
+                </>
+              ) : (
+                <>
+                  <span>Subscribe</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </>
+              )}
             </button>
-          </div>
+          </form>
         </div>
 
         {/* Directory Links Grid */}

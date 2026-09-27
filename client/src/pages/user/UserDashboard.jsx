@@ -26,54 +26,19 @@ import DirectChatModal from '../../components/common/DirectChatModal';
 
 const UserDashboard = () => {
   const { user } = useAuth();
-  const { bookings, favorites, toggleFavorite, professionals, conversations } = usePlatform();
+  const { bookings, favorites, toggleFavorite, professionals, conversations, reviews } = usePlatform();
   const [activeTab, setActiveTab] = useState('upcoming');
   const [selectedChatPro, setSelectedChatPro] = useState(null);
   const [chatModalOpen, setChatModalOpen] = useState(false);
 
-  const displayName = (user?.name || 'Anshika').toUpperCase();
+  const displayName = (user?.name || 'Guest Creator').toUpperCase();
 
-  const userBookings = bookings?.length > 0 ? bookings : [
-    {
-      id: 'BK-9281',
-      service: 'Wedding Photography',
-      date: '12 Oct 2026',
-      time: '10:00 AM – 06:00 PM',
-      creatorName: 'Arjun Mehta',
-      creatorId: 'pro-1',
-      package: 'Signature',
-      totalAmount: 28000,
-      advancePaid: 7000,
-      status: 'Confirmed',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
-    },
-    {
-      id: 'BK-7741',
-      service: 'Pre-Wedding Shoot',
-      date: '28 Nov 2026',
-      time: '04:00 PM – 07:30 PM',
-      creatorName: 'Kabir Varma',
-      creatorId: 'pro-2',
-      package: 'Essential',
-      totalAmount: 20000,
-      advancePaid: 5000,
-      status: 'Confirmed',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
-    },
-  ];
+  const userBookings = bookings || [];
+  const upcomingBookings = userBookings.filter((b) => b.status?.toLowerCase() !== 'completed' && b.status?.toLowerCase() !== 'cancelled');
+  const pastBookings = userBookings.filter((b) => b.status?.toLowerCase() === 'completed');
+  const nextShoot = upcomingBookings[0] || null;
 
-  const pastBookings = [
-    {
-      id: 'BK-5520',
-      service: 'Fashion Lookbook Editorial',
-      date: '15 Jan 2026',
-      creatorName: 'Nisha Singhania',
-      creatorId: 'pro-4',
-      package: 'Signature',
-      totalAmount: 32000,
-      status: 'Completed',
-    },
-  ];
+  const savedCreatorsList = favorites?.length > 0 ? favorites : [];
 
   return (
     <div className="min-h-screen text-slate-100 pb-24 text-left space-y-8 animate-reveal">
@@ -98,17 +63,17 @@ const UserDashboard = () => {
         <div className="flex flex-wrap items-center gap-3 relative z-10">
           <div className="px-5 py-3 rounded-2xl glass-panel border border-sky-500/20">
             <span className="text-[10px] uppercase font-mono tracking-wider text-slate-400 block">Upcoming</span>
-            <span className="text-2xl font-mono font-bold text-white">2</span>
+            <span className="text-2xl font-mono font-bold text-white">{upcomingBookings.length}</span>
           </div>
 
           <div className="px-5 py-3 rounded-2xl glass-panel border border-sky-500/20">
             <span className="text-[10px] uppercase font-mono tracking-wider text-slate-400 block">Saved Creators</span>
-            <span className="text-2xl font-mono font-bold text-cyan-300">12</span>
+            <span className="text-2xl font-mono font-bold text-cyan-300">{savedCreatorsList.length}</span>
           </div>
 
           <div className="px-5 py-3 rounded-2xl glass-panel border border-sky-500/20">
             <span className="text-[10px] uppercase font-mono tracking-wider text-slate-400 block">Completed</span>
-            <span className="text-2xl font-mono font-bold text-white">8</span>
+            <span className="text-2xl font-mono font-bold text-white">{pastBookings.length}</span>
           </div>
         </div>
       </div>
@@ -116,34 +81,59 @@ const UserDashboard = () => {
       {/* ─────────────────────────────────────────────────────────────
           2. FEATURED UPCOMING BOOKING BANNER
           ───────────────────────────────────────────────────────────── */}
-      <div className="p-6 glass-panel border border-cyan-400/40 rounded-3xl relative overflow-hidden space-y-4 shadow-[0_0_25px_rgba(0,210,255,0.15)]">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      {nextShoot ? (
+        <div className="p-6 glass-panel border border-cyan-400/40 rounded-3xl relative overflow-hidden space-y-4 shadow-[0_0_25px_rgba(0,210,255,0.15)]">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="p-3 rounded-2xl bg-cyan-500/10 border border-cyan-400/30 text-cyan-400">
+                <Calendar className="w-5 h-5" />
+              </div>
+              <div>
+                <span className="text-[10px] uppercase font-mono tracking-widest text-cyan-400 font-semibold">
+                  Next Confirmed Shoot
+                </span>
+                <h3 className="text-lg font-display font-bold text-white">
+                  {nextShoot.service || nextShoot.serviceTitle || 'Creative Production'} · {nextShoot.date || nextShoot.eventDate}
+                </h3>
+                <p className="text-xs text-slate-400">
+                  Creator: <strong className="text-cyan-300">{nextShoot.creatorName || nextShoot.professionalName || 'Verified Studio'}</strong> · {nextShoot.package || 'Signature'} Package (₹{nextShoot.totalAmount?.toLocaleString('en-IN')})
+                </p>
+              </div>
+            </div>
+
+            <Link
+              to={nextShoot.professionalId ? `/professionals/${nextShoot.professionalId}` : '/photographers'}
+              className="px-5 py-2.5 rounded-full glow-btn-primary text-xs uppercase font-mono tracking-wider font-bold self-start sm:self-auto inline-flex items-center gap-1.5 shadow-[0_0_15px_rgba(0,210,255,0.4)]"
+            >
+              <span>View Creator Profile</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+        </div>
+      ) : (
+        <div className="p-6 glass-panel border border-sky-500/20 rounded-3xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="p-3 rounded-2xl bg-cyan-500/10 border border-cyan-400/30 text-cyan-400">
+            <div className="p-3 rounded-2xl bg-sky-500/10 border border-sky-400/30 text-sky-400">
               <Calendar className="w-5 h-5" />
             </div>
             <div>
-              <span className="text-[10px] uppercase font-mono tracking-widest text-cyan-400 font-semibold">
-                Next Confirmed Shoot
-              </span>
-              <h3 className="text-lg font-display font-bold text-white">
-                Wedding Photography · 12 Oct 2026
+              <h3 className="text-sm font-display font-bold text-white">
+                No upcoming shoots scheduled
               </h3>
               <p className="text-xs text-slate-400">
-                Creator: <strong className="text-cyan-300">Arjun Mehta</strong> · Signature Package (₹28,000)
+                Explore our curated network of photographers, videographers, and retouchers to reserve your next date.
               </p>
             </div>
           </div>
-
           <Link
-            to="/professionals/pro-1"
-            className="px-5 py-2.5 rounded-full glow-btn-primary text-xs uppercase font-mono tracking-wider font-bold self-start sm:self-auto inline-flex items-center gap-1.5 shadow-[0_0_15px_rgba(0,210,255,0.4)]"
+            to="/photographers"
+            className="px-5 py-2.5 rounded-full glow-btn-primary text-xs uppercase font-mono tracking-wider font-bold self-start sm:self-auto shrink-0 inline-flex items-center gap-1.5"
           >
-            <span>View Booking Details</span>
+            <span>Discover Creators</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
-      </div>
+      )}
 
       {/* ─────────────────────────────────────────────────────────────
           3. SECTION TABS & CONTENT
@@ -152,9 +142,9 @@ const UserDashboard = () => {
         {/* Navigation Tabs */}
         <div className="flex border-b border-sky-500/15 gap-6 overflow-x-auto no-scrollbar">
           {[
-            { id: 'upcoming', label: 'Upcoming Bookings' },
-            { id: 'past', label: 'Past Bookings' },
-            { id: 'saved', label: 'Saved Creators (12)' },
+            { id: 'upcoming', label: `Upcoming Bookings (${upcomingBookings.length})` },
+            { id: 'past', label: `Past Bookings (${pastBookings.length})` },
+            { id: 'saved', label: `Saved Creators (${savedCreatorsList.length})` },
             { id: 'messages', label: 'Messages' },
             { id: 'reviews', label: 'Reviews' },
             { id: 'profile', label: 'Profile Settings' },
@@ -178,91 +168,137 @@ const UserDashboard = () => {
 
         {/* TAB: UPCOMING BOOKINGS */}
         {activeTab === 'upcoming' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-reveal">
-            {userBookings.map((b) => (
-              <div key={b.id} className="p-6 glass-card border border-sky-500/20 rounded-2xl space-y-4 shadow-lg">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <span className="text-[10px] uppercase font-mono text-cyan-400">Ref: {b.id}</span>
-                    <h4 className="text-base font-display font-bold text-white">{b.service}</h4>
-                    <p className="text-xs text-slate-400">Creator: {b.creatorName}</p>
-                  </div>
-                  <span className="text-[10px] uppercase font-mono px-2.5 py-1 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/30">
-                    {b.status}
-                  </span>
-                </div>
+          <div className="animate-reveal">
+            {upcomingBookings.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {upcomingBookings.map((b) => (
+                  <div key={b.id} className="p-6 glass-card border border-sky-500/20 rounded-2xl space-y-4 shadow-lg">
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <span className="text-[10px] uppercase font-mono text-cyan-400">Ref: {b.id}</span>
+                        <h4 className="text-base font-display font-bold text-white">{b.service || b.serviceTitle || 'Creative Session'}</h4>
+                        <p className="text-xs text-slate-400">Creator: {b.creatorName || b.professionalName || 'Verified Studio'}</p>
+                      </div>
+                      <span className="text-[10px] uppercase font-mono px-2.5 py-1 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/30">
+                        {b.status || 'Confirmed'}
+                      </span>
+                    </div>
 
-                <div className="grid grid-cols-2 gap-2 text-xs py-3 border-y border-sky-500/15 text-slate-300">
-                  <div>
-                    <span className="text-[10px] uppercase font-mono text-slate-500 block">Date & Time</span>
-                    <span className="font-semibold text-white">{b.date}</span>
-                  </div>
-                  <div>
-                    <span className="text-[10px] uppercase font-mono text-slate-500 block">Total Amount</span>
-                    <span className="font-mono font-bold text-cyan-300">₹{b.totalAmount?.toLocaleString('en-IN')}</span>
-                  </div>
-                </div>
+                    <div className="grid grid-cols-2 gap-2 text-xs py-3 border-y border-sky-500/15 text-slate-300">
+                      <div>
+                        <span className="text-[10px] uppercase font-mono text-slate-500 block">Date & Time</span>
+                        <span className="font-semibold text-white">{b.date || b.eventDate}</span>
+                        {b.time && <span className="block text-[10px] text-cyan-400">{b.time}</span>}
+                      </div>
+                      <div>
+                        <span className="text-[10px] uppercase font-mono text-slate-500 block">Total Amount</span>
+                        <span className="font-mono font-bold text-cyan-300">₹{b.totalAmount?.toLocaleString('en-IN')}</span>
+                      </div>
+                    </div>
 
-                <div className="flex items-center justify-between text-xs pt-1">
-                  <span className="text-slate-400 flex items-center gap-1">
-                    <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" /> Escrow Secured
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const matchedPro = professionals.find((p) => p.id === b.creatorId) || {
-                        id: b.creatorId || 'pro-1',
-                        name: b.creatorName || 'Arjun Mehta',
-                        avatar: b.avatar,
-                        role: 'photographer',
-                        category: b.service,
-                        startingPrice: b.totalAmount,
-                      };
-                      setSelectedChatPro(matchedPro);
-                      setChatModalOpen(true);
-                    }}
-                    className="text-cyan-300 hover:text-cyan-200 hover:underline font-semibold flex items-center gap-1 cursor-pointer"
-                  >
-                    <MessageSquare className="w-3.5 h-3.5" />
-                    <span>Open Production Chat →</span>
-                  </button>
-                </div>
+                    <div className="flex items-center justify-between text-xs pt-1">
+                      <span className="text-slate-400 flex items-center gap-1">
+                        <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" /> Escrow Secured
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const matchedPro = professionals.find((p) => p.id === (b.creatorId || b.professionalId)) || {
+                            id: b.creatorId || b.professionalId || 'pro-1',
+                            name: b.creatorName || b.professionalName || 'Arjun Mehta',
+                            avatar: b.avatar || b.professionalAvatar,
+                            role: 'photographer',
+                            category: b.service || 'Royal Wedding Studio',
+                            startingPrice: b.totalAmount,
+                          };
+                          setSelectedChatPro(matchedPro);
+                          setChatModalOpen(true);
+                        }}
+                        className="text-cyan-300 hover:text-cyan-200 hover:underline font-semibold flex items-center gap-1 cursor-pointer"
+                      >
+                        <MessageSquare className="w-3.5 h-3.5" />
+                        <span>Open Production Chat →</span>
+                      </button>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
+            ) : (
+              <div className="p-12 text-center glass-card border border-sky-500/20 rounded-3xl space-y-4">
+                <Calendar className="w-10 h-10 text-slate-500 mx-auto" />
+                <h3 className="text-lg font-display font-bold text-white">No Upcoming Bookings Found</h3>
+                <p className="text-xs text-slate-400 max-w-sm mx-auto">
+                  Reserve dates with top verified photographers, videographers, and editors with 100% escrow protection.
+                </p>
+                <Link
+                  to="/photographers"
+                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full glow-btn-primary text-xs uppercase font-mono font-bold"
+                >
+                  <span>Browse Talent Directory</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+            )}
           </div>
         )}
 
         {/* TAB: PAST BOOKINGS */}
         {activeTab === 'past' && (
           <div className="space-y-4 animate-reveal">
-            {pastBookings.map((pb) => (
-              <div key={pb.id} className="p-5 glass-card border border-sky-500/20 rounded-2xl flex items-center justify-between">
-                <div>
-                  <h4 className="text-sm font-display font-bold text-white">{pb.service}</h4>
-                  <p className="text-xs text-slate-400">{pb.date} · {pb.creatorName}</p>
+            {pastBookings.length > 0 ? (
+              pastBookings.map((pb) => (
+                <div key={pb.id} className="p-5 glass-card border border-sky-500/20 rounded-2xl flex items-center justify-between">
+                  <div>
+                    <h4 className="text-sm font-display font-bold text-white">{pb.service}</h4>
+                    <p className="text-xs text-slate-400">{pb.date} · {pb.creatorName}</p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs font-mono font-bold text-white">₹{pb.totalAmount?.toLocaleString('en-IN')}</span>
+                    <span className="text-[10px] uppercase font-mono px-2.5 py-1 rounded-full bg-slate-800 text-slate-400 border border-slate-700">
+                      Archived
+                    </span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-xs font-mono font-bold text-white">₹{pb.totalAmount.toLocaleString('en-IN')}</span>
-                  <span className="text-[10px] uppercase font-mono px-2.5 py-1 rounded-full bg-slate-800 text-slate-400 border border-slate-700">
-                    Archived
-                  </span>
-                </div>
+              ))
+            ) : (
+              <div className="p-10 text-center glass-card border border-sky-500/20 rounded-3xl space-y-2">
+                <p className="text-sm text-slate-300 font-display">No completed shoot archives yet.</p>
+                <p className="text-xs text-slate-500">Your delivered sessions and cloud master galleries will appear here.</p>
               </div>
-            ))}
+            )}
           </div>
         )}
 
         {/* TAB: SAVED CREATORS */}
         {activeTab === 'saved' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-reveal">
-            {professionals.slice(0, 4).map((pro) => (
-              <ProfessionalCard
-                key={pro.id}
-                professional={pro}
-                isWishlisted={true}
-                onWishlistToggle={toggleFavorite}
-              />
-            ))}
+          <div className="animate-reveal">
+            {savedCreatorsList.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {savedCreatorsList.map((pro) => (
+                  <ProfessionalCard
+                    key={pro.id}
+                    professional={pro}
+                    isWishlisted={true}
+                    onWishlistToggle={toggleFavorite}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="p-12 text-center glass-card border border-sky-500/20 rounded-3xl space-y-4">
+                <Heart className="w-10 h-10 text-slate-500 mx-auto" />
+                <h3 className="text-lg font-display font-bold text-white">No Saved Creators Yet</h3>
+                <p className="text-xs text-slate-400 max-w-sm mx-auto">
+                  Click the heart icon on any creator card or profile to shortlist your favorite talent for upcoming events.
+                </p>
+                <Link
+                  to="/photographers"
+                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full glow-btn-primary text-xs uppercase font-mono font-bold"
+                >
+                  <span>Explore Portfolios</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+            )}
           </div>
         )}
 

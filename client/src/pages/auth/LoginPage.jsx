@@ -9,8 +9,27 @@ const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showForgotModal, setShowForgotModal] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState('');
+  const [forgotLoading, setForgotLoading] = useState(false);
   const { login, quickDemoLogin } = useAuth();
   const { success, error: toastError } = useToast();
+
+  const handleForgotPassword = (e) => {
+    e.preventDefault();
+    const targetEmail = forgotEmail || email;
+    if (!targetEmail || !targetEmail.includes('@')) {
+      toastError('Please enter a valid email address.');
+      return;
+    }
+    setForgotLoading(true);
+    setTimeout(() => {
+      setForgotLoading(false);
+      setShowForgotModal(false);
+      success(`Password reset instructions sent to ${targetEmail}`);
+      setForgotEmail('');
+    }, 600);
+  };
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -97,13 +116,16 @@ const LoginPage = () => {
             <label className="text-xs uppercase font-mono tracking-wider text-slate-300 font-medium">
               Password
             </label>
-            <a
-              href="#forgot"
-              onClick={(e) => { e.preventDefault(); alert('Password reset link sent to your registered email.'); }}
+            <button
+              type="button"
+              onClick={() => {
+                setForgotEmail(email);
+                setShowForgotModal(true);
+              }}
               className="text-[11px] font-mono text-cyan-400 hover:text-cyan-300 hover:underline"
             >
               Forgot password?
-            </a>
+            </button>
           </div>
           <div className="relative">
             <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -177,6 +199,59 @@ const LoginPage = () => {
           Create an account
         </Link>
       </p>
+
+      {/* Forgot Password Modal */}
+      {showForgotModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
+          <div className="w-full max-w-md rounded-2xl glass-panel border border-sky-500/30 p-6 space-y-4 shadow-2xl relative">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-cyan-400">
+                <Sparkles className="w-4 h-4" />
+                <h3 className="text-sm uppercase font-mono font-bold tracking-wider text-white">Reset Password</h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowForgotModal(false)}
+                className="text-slate-400 hover:text-white text-lg p-1"
+              >
+                ✕
+              </button>
+            </div>
+            <p className="text-xs text-slate-300">
+              Enter your account email address and we'll dispatch a secure recovery link to reset your password.
+            </p>
+            <form onSubmit={handleForgotPassword} className="space-y-4 pt-1">
+              <div className="relative">
+                <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <input
+                  type="email"
+                  required
+                  value={forgotEmail}
+                  onChange={(e) => setForgotEmail(e.target.value)}
+                  placeholder="your.email@example.com"
+                  className="w-full pl-10 pr-3.5 py-2.5 rounded-xl glass-input border border-sky-500/20 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400"
+                />
+              </div>
+              <div className="flex items-center justify-end gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowForgotModal(false)}
+                  className="px-4 py-2 rounded-xl text-xs font-mono text-slate-400 hover:text-white"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={forgotLoading}
+                  className="px-5 py-2.5 rounded-xl glow-btn-primary text-xs uppercase font-mono font-bold"
+                >
+                  {forgotLoading ? 'Sending...' : 'Send Reset Link'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
