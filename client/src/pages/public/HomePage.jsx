@@ -840,7 +840,7 @@ const HomePage = () => {
           SECTION 5: PHOTOGRAPHY / VIDEOGRAPHY / EDITING
           Discipline Deep-Dive Core Pillars
           ───────────────────────────────────────────────────────────── */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10 border-t border-sky-500/15">
+      <section id="services" className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10 border-t border-sky-500/15">
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/20 text-xs font-mono text-cyan-300">
             <Camera className="w-3.5 h-3.5 text-cyan-400" />
