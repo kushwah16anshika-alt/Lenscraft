@@ -1,4 +1,4 @@
-import express from 'express';
+import express from './server/node_modules/express/index.js';
 import apiRoutes from './server/src/routes/index.js';
 
 const app = express();
