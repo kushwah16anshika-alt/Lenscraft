@@ -289,7 +289,7 @@ export const PlatformProvider = ({ children }) => {
 
     const totalVal = Number(bookingData.totalAmount) || 25000;
     const advanceVal = Number(bookingData.advancePaid) || Number(bookingData.advanceAmount) || Number(bookingData.advanceEscrowDeposit) || Math.round(totalVal * 0.25);
-    const balDue = Number(bookingData.balanceRemaining) !== undefined ? Number(bookingData.balanceRemaining) : (totalVal - advanceVal);
+    const balDue = bookingData.balanceRemaining !== undefined && bookingData.balanceRemaining !== null ? Number(bookingData.balanceRemaining) : (totalVal - advanceVal);
 
     const newBooking = {
       id: newBookingId,
