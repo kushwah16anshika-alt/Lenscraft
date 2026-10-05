@@ -4,6 +4,7 @@ import { Mail, Lock, Sparkles, ArrowRight, UserCheck, Camera, Video, Film, Users
 import { useAuth } from '../../hooks/useAuth';
 import { useToast } from '../../hooks/useToast';
 import { ROLES, ROLE_LABELS } from '../../constants/roles';
+import GoogleAuthButton from '../../components/auth/GoogleAuthButton';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -90,6 +91,22 @@ const LoginPage = () => {
         <p className="text-xs text-slate-400 mt-1">
           Sign in to manage your appointments, bookings, and creative collections.
         </p>
+      </div>
+
+      {/* Google Authentication One-Click Action */}
+      <div className="space-y-2">
+        <GoogleAuthButton
+          mode="login"
+          onSuccess={(user) => {
+            redirectToRoleDashboard(user.role);
+          }}
+        />
+        <div className="relative flex items-center justify-center py-2">
+          <div className="w-full border-t border-sky-500/15" />
+          <span className="bg-[#030712] px-3 text-[10px] uppercase font-mono text-slate-500 tracking-widest relative">
+            OR WITH EMAIL
+          </span>
+        </div>
       </div>
 
       {/* Standard Form */}

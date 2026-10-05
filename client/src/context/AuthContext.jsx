@@ -107,6 +107,34 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Google OAuth Login / Registration
+  const googleLogin = async ({ credential, accessToken, role, professionType } = {}) => {
+    setLoading(true);
+    try {
+      const response = await authService.googleAuth({
+        credential,
+        accessToken,
+        role,
+        professionType,
+      });
+      const { user: userData, token: userToken } = response.data;
+
+      setUser(userData);
+      setToken(userToken);
+      localStorage.setItem('lenscraft_user', JSON.stringify(userData));
+      localStorage.setItem('lenscraft_token', userToken);
+
+      return { success: true, user: userData };
+    } catch (error) {
+      return {
+        success: false,
+        message: error.message || 'Google authentication failed',
+      };
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Update User Profile state & local storage
   const updateUser = (updatedData) => {
     const updatedUser = { ...user, ...updatedData };
@@ -137,6 +165,7 @@ export const AuthProvider = ({ children }) => {
     isAdmin,
     isUser,
     login,
+    googleLogin,
     quickDemoLogin,
     register,
     updateUser,

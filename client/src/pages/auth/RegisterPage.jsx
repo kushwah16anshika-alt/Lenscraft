@@ -4,6 +4,7 @@ import { Mail, Lock, User, Phone, ArrowRight, Camera, Video, Film, Users, Check,
 import { useAuth } from '../../hooks/useAuth';
 import { useToast } from '../../hooks/useToast';
 import { ROLES, ROLE_LABELS } from '../../constants/roles';
+import GoogleAuthButton from '../../components/auth/GoogleAuthButton';
 
 const RegisterPage = () => {
   const [searchParams] = useSearchParams();
@@ -108,6 +109,27 @@ const RegisterPage = () => {
               </button>
             );
           })}
+        </div>
+      </div>
+
+      {/* 1-Click Google Registration */}
+      <div className="space-y-2 pt-1">
+        <GoogleAuthButton
+          mode="register"
+          role={role}
+          onSuccess={(user) => {
+            if (user.role === ROLES.USER) {
+              navigate('/user/dashboard', { replace: true });
+            } else {
+              navigate('/professional/dashboard', { replace: true });
+            }
+          }}
+        />
+        <div className="relative flex items-center justify-center py-2">
+          <div className="w-full border-t border-sky-500/15" />
+          <span className="bg-[#030712] px-3 text-[10px] uppercase font-mono text-slate-500 tracking-widest relative">
+            OR REGISTER WITH EMAIL
+          </span>
         </div>
       </div>
 

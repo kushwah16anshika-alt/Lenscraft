@@ -6,6 +6,11 @@ export const authService = {
     return await api.post('/auth/login', credentials);
   },
 
+  // Authenticate with Google ID Token or Access Token
+  googleAuth: async (googleData) => {
+    return await api.post('/auth/google', googleData);
+  },
+
   // Register a new user/creative
   register: async (userData) => {
     return await api.post('/auth/register', userData);

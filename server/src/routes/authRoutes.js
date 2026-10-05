@@ -1,6 +1,6 @@
 import express from 'express';
 import { body } from 'express-validator';
-import { register, login, getMe, logout } from '../controllers/authController.js';
+import { register, login, googleAuth, getMe, logout } from '../controllers/authController.js';
 import { protect } from '../middleware/authMiddleware.js';
 import { validate } from '../middleware/validateMiddleware.js';
 
@@ -23,6 +23,7 @@ const loginValidation = [
 
 router.post('/register', registerValidation, register);
 router.post('/login', loginValidation, login);
+router.post('/google', googleAuth);
 router.get('/me', protect, getMe);
 router.post('/logout', protect, logout);
 
