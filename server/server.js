@@ -172,6 +172,15 @@ const server = app.listen(PORT, () => {
   console.log(`==================================================\n`);
 });
 
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`\n⚠️  Port ${PORT} is already in use by another running server process.`);
+    console.error(`👉 You can terminate the existing process or set PORT=${Number(PORT) + 1} in your .env file.\n`);
+  } else {
+    console.error('✗ Server runtime error:', err);
+  }
+});
+
 // Graceful Shutdown Handlers
 const handleGracefulShutdown = (signal) => {
   console.log(`\n[${signal}] Received. Shutting down gracefully...`);

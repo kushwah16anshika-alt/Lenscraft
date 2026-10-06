@@ -85,10 +85,15 @@ export const createBooking = async (req, res, next) => {
 export const getMyBookings = async (req, res, next) => {
   try {
     const { status } = req.query;
-    const query = { user: req.user._id };
+    const isCreative = CREATIVE_ROLES.includes(req.user.role);
+    const query = isCreative
+      ? { $or: [{ professional: req.user._id }, { user: req.user._id }] }
+      : { user: req.user._id };
+
     if (status && status !== 'all') query.status = status;
 
     const bookings = await Booking.find(query)
+      .populate('user', 'name email phone avatar')
       .populate('professional', 'name email phone avatar location role')
       .populate('service', 'title category price deliveryDays')
       .sort({ createdAt: -1 });
