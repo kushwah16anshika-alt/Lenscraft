@@ -95,25 +95,25 @@ const VideoReelPlayer = ({
   playlist = null
 }) => {
   // Setup clips list based on props or default playlist
-  const clips = playlist || (videoUrl ? [
+  const clips = playlist || [
     {
       id: 'custom-1',
-      title: title || '4K Cinematic Showreel',
-      subtitle: subtitle || 'Captured on Cinema Camera · Master Color Grade',
-      videoUrl: videoUrl,
+      title: title || DEFAULT_PLAYLIST[0].title,
+      subtitle: subtitle || DEFAULT_PLAYLIST[0].subtitle,
+      videoUrl: videoUrl || DEFAULT_PLAYLIST[0].videoUrl,
       poster: poster || DEFAULT_PLAYLIST[0].poster,
-      duration: '0:15',
-      category: 'Signature',
-      camera: 'RED V-Raptor 8K VV',
-      lens: 'Cooke Anamorphic /i 40mm',
-      iso: '800',
-      fps: '23.976',
-      shutter: '180°',
-      codec: 'ProRes 4444 XQ 4K',
-      colorSpace: 'REDWideGamutRGB'
+      duration: DEFAULT_PLAYLIST[0].duration,
+      category: DEFAULT_PLAYLIST[0].category,
+      camera: DEFAULT_PLAYLIST[0].camera,
+      lens: DEFAULT_PLAYLIST[0].lens,
+      iso: DEFAULT_PLAYLIST[0].iso,
+      fps: DEFAULT_PLAYLIST[0].fps,
+      shutter: DEFAULT_PLAYLIST[0].shutter,
+      codec: DEFAULT_PLAYLIST[0].codec,
+      colorSpace: DEFAULT_PLAYLIST[0].colorSpace
     },
     ...DEFAULT_PLAYLIST.slice(1)
-  ] : DEFAULT_PLAYLIST);
+  ];
 
   const [activeClipIndex, setActiveClipIndex] = useState(0);
   const currentClip = clips[activeClipIndex] || clips[0];
@@ -121,6 +121,7 @@ const VideoReelPlayer = ({
   const videoRef = useRef(null);
   const containerRef = useRef(null);
   const progressBarRef = useRef(null);
+  const feedbackTimerRef = useRef(null);
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
@@ -137,17 +138,27 @@ const VideoReelPlayer = ({
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
   const [showShortcutsHelp, setShowShortcutsHelp] = useState(false);
   const [autoScrollPlay, setAutoScrollPlay] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const [hoverTime, setHoverTime] = useState(null);
   const [hoverPosition, setHoverPosition] = useState(0);
   const [showCenterFeedback, setShowCenterFeedback] = useState(null);
 
   // Format seconds to mm:ss
   const formatTime = (seconds) => {
-    if (isNaN(seconds) || seconds === null) return '0:00';
+    if (isNaN(seconds) || seconds === null || !isFinite(seconds)) return '0:00';
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
     return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
   };
+
+  // Quick feedback icon animation
+  const triggerFeedback = useCallback((type) => {
+    if (feedbackTimerRef.current) clearTimeout(feedbackTimerRef.current);
+    setShowCenterFeedback(type);
+    feedbackTimerRef.current = setTimeout(() => {
+      setShowCenterFeedback(null);
+    }, 650);
+  }, []);
 
   // Play / Pause toggle
   const togglePlay = useCallback(() => {
@@ -162,18 +173,10 @@ const VideoReelPlayer = ({
       setIsPlaying(false);
       triggerFeedback('pause');
     }
-  }, []);
-
-  // Quick feedback icon animation
-  const triggerFeedback = (type) => {
-    setShowCenterFeedback(type);
-    setTimeout(() => {
-      setShowCenterFeedback(null);
-    }, 650);
-  };
+  }, [triggerFeedback]);
 
   // Mute toggle
-  const toggleMute = () => {
+  const toggleMute = useCallback(() => {
     if (!videoRef.current) return;
     const nextMuted = !isMuted;
     videoRef.current.muted = nextMuted;
@@ -182,7 +185,7 @@ const VideoReelPlayer = ({
       videoRef.current.volume = 0.8;
       setVolume(0.8);
     }
-  };
+  }, [isMuted]);
 
   // Volume slider change
   const handleVolumeChange = (e) => {
@@ -201,29 +204,45 @@ const VideoReelPlayer = ({
   };
 
   // Seek +/- 5s
-  const handleSeek = (delta) => {
+  const handleSeek = useCallback((delta) => {
     if (!videoRef.current) return;
-    const newTime = Math.max(0, Math.min(videoRef.current.duration || 0, videoRef.current.currentTime + delta));
-    videoRef.current.currentTime = newTime;
-    setCurrentTime(newTime);
+    try {
+      const dur = videoRef.current.duration || 0;
+      const newTime = Math.max(0, Math.min(dur, (videoRef.current.currentTime || 0) + delta));
+      if (!isNaN(newTime) && isFinite(newTime)) {
+        videoRef.current.currentTime = newTime;
+        setCurrentTime(newTime);
+      }
+    } catch (err) {
+      console.warn('Seek error:', err);
+    }
     triggerFeedback(delta > 0 ? 'forward' : 'rewind');
-  };
+  }, [triggerFeedback]);
 
   // Handle Scrub / Seek click on timeline
   const handleTimelineClick = (e) => {
     if (!progressBarRef.current || !videoRef.current) return;
     const rect = progressBarRef.current.getBoundingClientRect();
+    if (!rect.width) return;
     const clickX = e.clientX - rect.left;
     const percentage = Math.max(0, Math.min(1, clickX / rect.width));
-    const targetTime = percentage * (videoRef.current.duration || 0);
-    videoRef.current.currentTime = targetTime;
-    setCurrentTime(targetTime);
+    const dur = videoRef.current.duration || 0;
+    const targetTime = percentage * dur;
+    if (!isNaN(targetTime) && isFinite(targetTime)) {
+      try {
+        videoRef.current.currentTime = targetTime;
+        setCurrentTime(targetTime);
+      } catch (err) {
+        console.warn('Timeline scrub error:', err);
+      }
+    }
   };
 
   // Handle timeline hover for tooltip preview
   const handleTimelineMouseMove = (e) => {
     if (!progressBarRef.current || !videoRef.current) return;
     const rect = progressBarRef.current.getBoundingClientRect();
+    if (!rect.width) return;
     const hoverX = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
     const percentage = hoverX / rect.width;
     setHoverPosition(percentage * 100);
@@ -244,18 +263,32 @@ const VideoReelPlayer = ({
   };
 
   // Fullscreen toggle
-  const toggleFullscreen = () => {
+  const toggleFullscreen = useCallback(() => {
     if (!containerRef.current) return;
-    if (!document.fullscreenElement) {
-      containerRef.current.requestFullscreen().then(() => {
-        setIsFullscreen(true);
-      }).catch(() => {});
-    } else {
-      document.exitFullscreen().then(() => {
-        setIsFullscreen(false);
-      }).catch(() => {});
+    try {
+      if (!document.fullscreenElement) {
+        if (containerRef.current.requestFullscreen) {
+          containerRef.current.requestFullscreen().then(() => {
+            setIsFullscreen(true);
+          }).catch(() => {});
+        } else if (containerRef.current.webkitRequestFullscreen) {
+          containerRef.current.webkitRequestFullscreen();
+          setIsFullscreen(true);
+        }
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen().then(() => {
+            setIsFullscreen(false);
+          }).catch(() => {});
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+          setIsFullscreen(false);
+        }
+      }
+    } catch (err) {
+      console.warn('Fullscreen error:', err);
     }
-  };
+  }, []);
 
   // Picture in Picture
   const togglePictureInPicture = async () => {
@@ -263,7 +296,7 @@ const VideoReelPlayer = ({
     try {
       if (document.pictureInPictureElement) {
         await document.exitPictureInPicture();
-      } else if (document.pictureInPictureEnabled) {
+      } else if (document.pictureInPictureEnabled && typeof videoRef.current.requestPictureInPicture === 'function') {
         await videoRef.current.requestPictureInPicture();
       }
     } catch (err) {
@@ -278,25 +311,29 @@ const VideoReelPlayer = ({
     setCurrentTime(0);
     setTimeout(() => {
       if (videoRef.current) {
-        videoRef.current.currentTime = 0;
+        try {
+          if (videoRef.current.readyState >= 1) {
+            videoRef.current.currentTime = 0;
+          }
+        } catch (e) {}
         videoRef.current.play().catch(() => {});
       }
     }, 100);
   };
 
   // Cycle through LUTs
-  const cycleLut = () => {
+  const cycleLut = useCallback(() => {
     const currentIndex = COLOR_GRADES.findIndex(g => g.id === activeLut.id);
     const nextIndex = (currentIndex + 1) % COLOR_GRADES.length;
     setActiveLut(COLOR_GRADES[nextIndex]);
     triggerFeedback('lut');
-  };
+  }, [activeLut, triggerFeedback]);
 
   // Listen to time updates & buffer
   const onTimeUpdate = () => {
     if (!videoRef.current) return;
-    setCurrentTime(videoRef.current.currentTime);
-    if (videoRef.current.buffered.length > 0) {
+    setCurrentTime(videoRef.current.currentTime || 0);
+    if (videoRef.current.buffered && videoRef.current.buffered.length > 0) {
       const bufferedEnd = videoRef.current.buffered.end(videoRef.current.buffered.length - 1);
       const dur = videoRef.current.duration || 1;
       setBuffered((bufferedEnd / dur) * 100);
@@ -305,7 +342,7 @@ const VideoReelPlayer = ({
 
   const onLoadedMetadata = () => {
     if (!videoRef.current) return;
-    setDuration(videoRef.current.duration);
+    setDuration(videoRef.current.duration || 0);
     videoRef.current.playbackRate = playbackSpeed;
   };
 
@@ -345,13 +382,19 @@ const VideoReelPlayer = ({
     return () => document.removeEventListener('fullscreenchange', handleFsChange);
   }, []);
 
-  // Keyboard Shortcuts (only when focused or hovering over player)
+  // Cleanup feedback timer on unmount
+  useEffect(() => {
+    return () => {
+      if (feedbackTimerRef.current) clearTimeout(feedbackTimerRef.current);
+    };
+  }, []);
+
+  // Keyboard Shortcuts (when hovering over player or in fullscreen)
   useEffect(() => {
     const handleKeyDown = (e) => {
       // Avoid capturing when user is in an input or textarea
       if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName)) return;
 
-      const isHovered = containerRef.current && containerRef.current.matches(':hover');
       if (!isHovered && !document.fullscreenElement) return;
 
       if (e.code === 'Space') {
@@ -377,32 +420,43 @@ const VideoReelPlayer = ({
         handleSeek(5);
       } else if (e.code === 'ArrowUp') {
         e.preventDefault();
-        const nextVol = Math.min(1, volume + 0.1);
-        setVolume(nextVol);
-        if (videoRef.current) {
-          videoRef.current.volume = nextVol;
-          videoRef.current.muted = false;
-          setIsMuted(false);
-        }
+        setVolume(prev => {
+          const nextVol = Math.min(1, parseFloat((prev + 0.1).toFixed(2)));
+          if (videoRef.current) {
+            videoRef.current.volume = nextVol;
+            videoRef.current.muted = false;
+            setIsMuted(false);
+          }
+          return nextVol;
+        });
       } else if (e.code === 'ArrowDown') {
         e.preventDefault();
-        const nextVol = Math.max(0, volume - 0.1);
-        setVolume(nextVol);
-        if (videoRef.current) {
-          videoRef.current.volume = nextVol;
-          if (nextVol === 0) setIsMuted(true);
-        }
+        setVolume(prev => {
+          const nextVol = Math.max(0, parseFloat((prev - 0.1).toFixed(2)));
+          if (videoRef.current) {
+            videoRef.current.volume = nextVol;
+            if (nextVol === 0) setIsMuted(true);
+          }
+          return nextVol;
+        });
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [togglePlay, volume, activeLut, isMuted]);
+  }, [togglePlay, toggleMute, toggleFullscreen, cycleLut, handleSeek, isHovered]);
 
   const selectedAspect = ASPECT_RATIOS.find(r => r.id === aspectRatio) || ASPECT_RATIOS[0];
 
   return (
-    <div className="space-y-4 text-left w-full select-none">
+    <div
+      className="space-y-4 text-left w-full select-none"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        setHoverTime(null);
+      }}
+    >
       {/* Header bar with Master Tag, LUT indicator & Playlist Selector */}
       <div className="flex flex-wrap items-center justify-between gap-2.5 pb-1">
         <div className="flex items-center gap-2">
@@ -419,7 +473,7 @@ const VideoReelPlayer = ({
             type="button"
             onClick={() => setShowLutMenu(!showLutMenu)}
             className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-mono border bg-slate-900/80 backdrop-blur-md transition-all hover:bg-slate-800 ${activeLut.badgeColor}`}
-            title="Click to change color grading LUT profile (Shortcut: C)"
+            title="Click to change color grading LUT profile (Shortcut: C or L)"
           >
             <Sparkles className="w-3 h-3" />
             <span className="hidden xs:inline">LUT:</span>
@@ -472,12 +526,13 @@ const VideoReelPlayer = ({
       >
         {/* Dynamic ambient backdrop filter light */}
         <div
-          className="absolute -inset-4 opacity-30 blur-2xl pointer-events-none transition-all duration-700 -z-10"
+          className={`absolute -inset-4 blur-2xl pointer-events-none transition-all duration-700 -z-10 ${
+            isPlaying ? 'opacity-30' : 'opacity-0'
+          }`}
           style={{
             backgroundImage: `url(${currentClip.poster})`,
             backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            display: isPlaying ? 'block' : 'none'
+            backgroundPosition: 'center'
           }}
         />
 
@@ -526,7 +581,7 @@ const VideoReelPlayer = ({
               <div className="flex items-center gap-2 text-cyan-400 font-bold border-b border-cyan-500/20 pb-1">
                 <Radio className="w-3 h-3 text-red-500 animate-pulse" />
                 <span>CAMERA REC LIVE</span>
-                <span className="text-[9px] bg-red-600/30 text-red-400 px-1.5 py-0.2 rounded border border-red-500/40">RAW</span>
+                <span className="text-[9px] bg-red-600/30 text-red-400 px-1.5 py-0.5 rounded border border-red-500/40">RAW</span>
               </div>
               <div>CAM: <span className="text-white">{currentClip.camera || 'RED V-Raptor 8K VV'}</span></div>
               <div>LENS: <span className="text-white">{currentClip.lens || 'Cooke 40mm T2.3'}</span></div>
@@ -934,3 +989,4 @@ const VideoReelPlayer = ({
 };
 
 export default VideoReelPlayer;
+
