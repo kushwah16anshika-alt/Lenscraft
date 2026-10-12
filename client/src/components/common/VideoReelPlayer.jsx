@@ -116,7 +116,7 @@ const VideoReelPlayer = ({
   ];
 
   const [activeClipIndex, setActiveClipIndex] = useState(0);
-  const currentClip = clips[activeClipIndex] || clips[0];
+  const currentClip = clips[activeClipIndex] || clips[0] || DEFAULT_PLAYLIST[0];
 
   const videoRef = useRef(null);
   const containerRef = useRef(null);

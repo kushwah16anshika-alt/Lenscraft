@@ -70,6 +70,19 @@ const ProfessionalProfilePage = () => {
   const [activeLightboxIndex, setActiveLightboxIndex] = useState(0);
 
   const pro = professionals.find((p) => p.id === id) || professionals[0];
+
+  if (!pro) {
+    return (
+      <div className="min-h-screen bg-[#030712] text-slate-100 flex flex-col items-center justify-center p-6 text-center">
+        <h2 className="text-2xl font-bold font-display text-white mb-2">Creator Profile Not Found</h2>
+        <p className="text-sm text-slate-400 mb-6">The requested creator could not be located.</p>
+        <Link to="/explore" className="px-6 py-2.5 rounded-xl glow-btn-primary font-mono text-xs uppercase font-bold">
+          Explore Creators
+        </Link>
+      </div>
+    );
+  }
+
   const proReviews = reviews.filter((r) => r.creatorId === pro.id || r.professionalId === pro.id);
   const isSaved = favorites?.some((f) => f.id === pro.id);
   const city = typeof pro.location === 'object' ? pro.location.city : pro.location;
