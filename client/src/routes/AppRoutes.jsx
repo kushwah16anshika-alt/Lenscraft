@@ -23,6 +23,7 @@ const ServicesPage = lazy(() => import('../pages/public/ServicesPage'));
 const FeaturesPage = lazy(() => import('../pages/public/FeaturesPage'));
 const AboutPage = lazy(() => import('../pages/public/AboutPage'));
 const ContactPage = lazy(() => import('../pages/public/ContactPage'));
+const ColorLabPage = lazy(() => import('../pages/public/ColorLabPage'));
 const NotFoundPage = lazy(() => import('../pages/public/NotFoundPage'));
 
 // Auth Pages (Lazy Loaded)
@@ -88,6 +89,8 @@ const AppRoutes = () => {
           <Route path="/professional/:id" element={<ProfessionalProfilePage />} />
           <Route path="/services" element={<ServicesPage />} />
           <Route path="/features" element={<FeaturesPage />} />
+          <Route path="/color-lab" element={<ColorLabPage />} />
+          <Route path="/colorlab" element={<ColorLabPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="*" element={<NotFoundPage />} />
