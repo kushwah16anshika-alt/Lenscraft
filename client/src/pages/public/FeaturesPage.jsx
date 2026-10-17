@@ -194,6 +194,19 @@ const FeaturesPage = () => {
         'Zero hidden licensing royalties or reprint fees',
       ],
     },
+    {
+      id: 'color-lab',
+      icon: Sliders,
+      number: '07',
+      title: 'Cinematic Color Lab & Film LUT Studio',
+      summary: 'Test authentic Kodak Portra, CineStill 800T, and cinema LUTs with live interactive before/after split screen.',
+      points: [
+        '8 calibrated analogue 35mm and cinema emulsion profiles',
+        'Real-time sliders for grain, halation bloom, and temperature',
+        'Custom photo drag-and-drop testing with lossless canvas export',
+        'Direct recipe transfer to DaVinci Resolve and verified colorists',
+      ],
+    },
   ];
 
   const faqs = [
@@ -874,6 +887,13 @@ const FeaturesPage = () => {
             >
               Launch AI Matchmaker
             </Button>
+            <Link
+              to="/color-lab"
+              className="px-6 py-3 rounded-xl glow-btn-primary text-midnight-950 text-xs font-bold uppercase tracking-wider inline-flex items-center gap-2 hover:scale-105 transition-all shadow-lg"
+            >
+              <Sliders className="w-4 h-4" />
+              <span>Try Film Color Lab</span>
+            </Link>
             <button
               onClick={() => setCreatorModalOpen(true)}
               className="px-6 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/20 text-xs font-semibold transition-all hover:border-cyan-400/50"

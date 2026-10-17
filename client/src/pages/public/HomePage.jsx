@@ -913,6 +913,73 @@ const HomePage = () => {
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
+          SECTION 5.5: CINEMATIC COLOR LAB & FILM LUT STUDIO SHOWCASE
+          Interactive Film Simulation Feature Showcase
+          ───────────────────────────────────────────────────────────── */}
+      <section className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10">
+        <div className="relative rounded-3xl overflow-hidden glass-card border border-sky-500/30 p-8 sm:p-12 shadow-2xl bg-gradient-to-r from-sky-950/40 via-midnight-950/80 to-indigo-950/40">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none" />
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+            <div className="lg:col-span-7 space-y-5 text-left">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-xs font-mono text-cyan-300">
+                <SlidersHorizontal className="w-3.5 h-3.5 text-cyan-400" />
+                <span>NEW FEATURE · INTERACTIVE STUDIO TOOL</span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold text-white tracking-tight">
+                Cinematic Color Lab & <span className="text-gradient-cyan text-glow-cyan">Film LUT Studio</span>
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-xl">
+                Experience real-time Kodak Portra 400, CineStill 800T, and Hollywood blockbuster color science. Adjust grain, warmth, and halation live with split-screen before/after comparison on curated stills or your own client photos.
+              </p>
+
+              <div className="flex flex-wrap items-center gap-3 pt-2">
+                <Link
+                  to="/color-lab"
+                  className="px-6 py-3 rounded-full glow-btn-primary text-xs uppercase tracking-wider font-bold inline-flex items-center gap-2 shadow-[0_0_20px_rgba(0,210,255,0.4)] hover:scale-105 transition-all"
+                >
+                  <SlidersHorizontal className="w-4 h-4 text-midnight-950" />
+                  <span>Launch Color Lab</span>
+                  <ArrowRight className="w-4 h-4 text-midnight-950" />
+                </Link>
+                <Link
+                  to="/editors?type=photo"
+                  className="px-5 py-3 rounded-full glass-panel text-slate-200 hover:text-white border border-sky-500/20 hover:border-cyan-400 text-xs font-mono inline-flex items-center gap-2 transition-all"
+                >
+                  <span>Explore Colorist Portfolios</span>
+                </Link>
+              </div>
+            </div>
+
+            <div className="lg:col-span-5">
+              <div className="p-4 sm:p-5 rounded-2xl glass-panel border border-sky-500/25 space-y-3">
+                <div className="flex items-center justify-between text-xs font-mono text-cyan-300">
+                  <span>Film Stock Emulations</span>
+                  <span>8 Master Profiles</span>
+                </div>
+                <div className="grid grid-cols-2 gap-2 text-left">
+                  {[
+                    { name: 'Kodak Portra 400', tag: 'Creamy Skin Tones', color: '#f59e0b' },
+                    { name: 'Teal & Orange', tag: 'Blockbuster Cinema', color: '#00d2ff' },
+                    { name: 'CineStill 800T', tag: 'Neon Tungsten Halation', color: '#ec4899' },
+                    { name: 'Fujifilm Pro 400H', tag: 'Pastel Wedding Greens', color: '#10b981' },
+                  ].map((item, i) => (
+                    <div key={i} className="p-2.5 rounded-xl bg-midnight-950/70 border border-sky-500/15 space-y-1">
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full" style={{ backgroundColor: item.color }} />
+                        <span className="text-xs font-bold text-white line-clamp-1">{item.name}</span>
+                      </div>
+                      <span className="text-[10px] text-slate-400 font-mono block truncate">{item.tag}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─────────────────────────────────────────────────────────────
           SECTION 6: TRENDING PORTFOLIOS
           Asymmetric Visual Masonry Gallery + Lightbox Modal
           ───────────────────────────────────────────────────────────── */}

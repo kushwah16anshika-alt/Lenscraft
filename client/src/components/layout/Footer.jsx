@@ -210,6 +210,11 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
+                <Link to="/color-lab" className="hover:text-cyan-300 transition-colors font-medium text-cyan-400">
+                  Color Lab (Film LUTs)
+                </Link>
+              </li>
+              <li>
                 <Link to="/explore" className="hover:text-cyan-300 transition-colors">
                   Complete Directory
                 </Link>
