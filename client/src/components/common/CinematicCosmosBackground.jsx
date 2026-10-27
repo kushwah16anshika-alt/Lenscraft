@@ -96,9 +96,12 @@ const CinematicCosmosBackground = () => {
   }, []);
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <div
+      className="fixed inset-0 pointer-events-none z-0 overflow-hidden max-w-full w-full"
+      style={{ contain: 'paint' }}
+    >
       {/* Background Canvas for Starfield & Floating Particles */}
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full opacity-60" />
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full opacity-60 pointer-events-none" />
 
       {/* Atmospheric Luminous Light Orbs */}
       <div

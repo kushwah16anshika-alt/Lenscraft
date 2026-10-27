@@ -40,7 +40,10 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-[#02050e] text-slate-300 pt-20 pb-12 text-left border-t border-sky-500/15 relative z-20 overflow-hidden">
+    <footer
+      className="bg-[#02050e] text-slate-300 pt-20 pb-12 text-left border-t border-sky-500/15 relative z-20 overflow-hidden max-w-full w-full"
+      style={{ contain: 'paint' }}
+    >
       {/* Background ambient lighting */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-sky-500/5 blur-[140px] pointer-events-none" />
 

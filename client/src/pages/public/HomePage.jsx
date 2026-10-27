@@ -393,15 +393,15 @@ const HomePage = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-[#030712] text-slate-100 selection:bg-cyan-500 selection:text-midnight-950 overflow-x-hidden">
-      {/* Cinematic Cosmos Dynamic Background */}
-      <CinematicCosmosBackground />
-
+    <div className="relative min-h-screen bg-[#030712] text-slate-100 selection:bg-cyan-500 selection:text-midnight-950 overflow-x-hidden w-full max-w-full">
       {/* ─────────────────────────────────────────────────────────────
           SECTION 1: CINEMATIC HERO
           "Find the Perfect Lens for Your Story"
           ───────────────────────────────────────────────────────────── */}
-      <section className="relative min-h-[92vh] flex flex-col justify-center items-center px-4 sm:px-6 lg:px-8 pt-24 pb-16 overflow-hidden text-center">
+      <section
+        className="relative min-h-[92vh] flex flex-col justify-center items-center px-4 sm:px-6 lg:px-8 pt-24 pb-16 overflow-hidden max-w-full text-center"
+        style={{ contain: 'paint' }}
+      >
         {/* Background Editorial Visual */}
         <div className="absolute inset-0 z-0 pointer-events-none">
           <img
@@ -417,17 +417,17 @@ const HomePage = () => {
         <div className="absolute top-12 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-cyan-500/10 blur-[150px] pointer-events-none" />
 
         {/* Hero Content */}
-        <div className="relative z-10 max-w-5xl mx-auto space-y-6 sm:space-y-8 animate-reveal">
+        <div className="relative z-10 max-w-5xl mx-auto space-y-6 sm:space-y-8 animate-reveal w-full px-2">
           {/* Eyebrow Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-pill border border-sky-400/30 text-xs font-medium text-cyan-300 shadow-[0_0_15px_rgba(0,210,255,0.25)]">
-            <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-            <span className="uppercase tracking-widest font-mono text-[11px]">
+          <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 rounded-full glass-pill border border-sky-400/30 text-xs font-medium text-cyan-300 shadow-[0_0_15px_rgba(0,210,255,0.25)] max-w-full">
+            <Sparkles className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+            <span className="uppercase tracking-wider sm:tracking-widest font-mono text-[10px] sm:text-[11px] truncate">
               PREMIUM PHOTOGRAPHY & CINEMA PLATFORM
             </span>
           </div>
 
           {/* Main Headline */}
-          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-display font-extrabold tracking-tight text-white uppercase leading-[1.05]">
+          <h1 className="text-3xl sm:text-6xl md:text-7xl lg:text-8xl font-display font-extrabold tracking-tight text-white uppercase leading-[1.08] break-words">
             Find the Perfect <span className="text-gradient-cyan text-glow-cyan">Lens</span><br />
             for Your Story.
           </h1>

@@ -86,9 +86,18 @@ const Navbar = () => {
     }
   };
 
-  const navLinks = [
+  const desktopNavLinks = [
+    { label: 'Photographers', path: '/photographers' },
+    { label: 'Videographers', path: '/videographers' },
+    { label: 'Editors', path: '/editors' },
+    { label: 'Color Lab', path: '/color-lab' },
+    { label: 'Services', path: '/services' },
+    { label: 'About', path: '/about' },
+  ];
+
+  const mobileNavLinks = [
     { label: 'Home', path: '/' },
-    { label: 'AI Recommend', path: '/recommendations' },
+    { label: 'AI Recommendations', path: '/recommendations', isAi: true },
     { label: 'Photographers', path: '/photographers' },
     { label: 'Videographers', path: '/videographers' },
     { label: 'Editors', path: '/editors' },
@@ -122,25 +131,25 @@ const Navbar = () => {
       {/* Floating Glassmorphism Navbar */}
       <header className="sticky top-0 z-40 w-full transition-all duration-300 px-3 sm:px-6 lg:px-8 pt-3 pb-2">
         <div
-          className={`max-w-7xl mx-auto rounded-full transition-all duration-300 px-4 sm:px-6 py-2.5 flex items-center justify-between ${
+          className={`max-w-7xl mx-auto rounded-full transition-all duration-300 px-3 sm:px-5 lg:px-6 py-2 sm:py-2.5 flex items-center justify-between gap-2 ${
             isScrolled
               ? 'bg-[#060b19]/90 backdrop-blur-xl border border-sky-500/25 shadow-[0_10px_35px_rgba(0,0,0,0.8),0_0_20px_rgba(0,210,255,0.15)]'
               : 'bg-[#060b19]/70 backdrop-blur-md border border-sky-500/15 shadow-xl'
           }`}
         >
           {/* 1. Left: Brand Logo with Camera Lens Icon */}
-          <Link to="/" className="flex items-center gap-2.5 group shrink-0">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-sky-500/20 to-indigo-500/20 border border-sky-400/40 group-hover:border-cyan-400 flex items-center justify-center transition-all duration-300 group-hover:shadow-[0_0_15px_rgba(0,210,255,0.4)]">
+          <Link to="/" className="flex items-center gap-2 group shrink-0">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-sky-500/20 to-indigo-500/20 border border-sky-400/40 group-hover:border-cyan-400 flex items-center justify-center transition-all duration-300 group-hover:shadow-[0_0_15px_rgba(0,210,255,0.4)] shrink-0">
               <Aperture className="w-4 h-4 text-cyan-400 group-hover:rotate-45 transition-transform duration-500" />
             </div>
-            <span className="text-lg sm:text-xl font-display font-bold tracking-wider text-white group-hover:text-cyan-300 transition-colors">
+            <span className="text-base sm:text-lg lg:text-xl font-display font-bold tracking-wider text-white group-hover:text-cyan-300 transition-colors">
               LENSCRAFT
             </span>
           </Link>
 
-          {/* 2. Center: Futuristic Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1.5">
-            {navLinks.map((link) => {
+          {/* 2. Center: Streamlined Navigation Links */}
+          <nav className="hidden lg:flex items-center gap-0.5 xl:gap-2">
+            {desktopNavLinks.map((link) => {
               const isAnchor = link.path.startsWith('/#');
               const isActive = !isAnchor && location.pathname === link.path;
 
@@ -148,9 +157,9 @@ const Navbar = () => {
                 <button
                   key={link.label}
                   onClick={() => handleNavClick(link)}
-                  className={`px-2 xl:px-3 py-1.5 rounded-full text-[11px] xl:text-xs font-medium uppercase tracking-wider transition-all duration-200 cursor-pointer whitespace-nowrap ${
+                  className={`px-2 xl:px-3 py-1.5 rounded-full text-[11px] xl:text-xs font-medium tracking-wide transition-all duration-200 cursor-pointer whitespace-nowrap ${
                     isActive
-                      ? 'text-cyan-400 bg-sky-500/10 border border-sky-500/30 shadow-[0_0_12px_rgba(0,210,255,0.2)]'
+                      ? 'text-cyan-400 bg-cyan-500/10 border border-cyan-500/30 shadow-[0_0_12px_rgba(0,210,255,0.2)]'
                       : 'text-slate-300 hover:text-white hover:bg-white/5'
                   }`}
                 >
@@ -160,12 +169,12 @@ const Navbar = () => {
             })}
           </nav>
 
-          {/* 3. Right: Actions & Book a Shoot CTA */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          {/* 3. Right: Actions */}
+          <div className="flex items-center gap-1 sm:gap-2 xl:gap-3 shrink-0">
             {/* Quick Search */}
             <button
               onClick={() => setSearchModalOpen(true)}
-              className="p-2 rounded-full text-slate-300 hover:text-cyan-300 hover:bg-white/5 transition-colors"
+              className="p-1.5 sm:p-2 rounded-full text-slate-300 hover:text-cyan-300 hover:bg-white/5 transition-colors shrink-0"
               title="Search Creators (⌘K)"
               aria-label="Search Creators"
             >
@@ -175,17 +184,17 @@ const Navbar = () => {
             {/* AI Photographer Recommendation System */}
             <Link
               to="/recommendations"
-              className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold text-cyan-300 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 hover:border-cyan-400 transition-all shadow-[0_0_12px_rgba(0,210,255,0.2)] hover:scale-105 cursor-pointer"
+              className="flex items-center gap-1.5 px-2 sm:px-3 py-1.5 rounded-full text-xs font-semibold text-cyan-300 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 hover:border-cyan-400 transition-all shadow-[0_0_12px_rgba(0,210,255,0.2)] hover:scale-105 cursor-pointer shrink-0"
               title="AI Photographer Recommendation System"
             >
               <Sparkles className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
-              <span className="hidden md:inline">AI Recommend</span>
+              <span className="hidden sm:inline">AI Recommend</span>
             </Link>
 
-            {/* Glowing "Book a Shoot" CTA */}
+            {/* Glowing "Book a Shoot" CTA - shown on desktop screens */}
             <button
               onClick={() => setBookingModalOpen(true)}
-              className="px-4 sm:px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider glow-btn-primary transition-all duration-300 shadow-[0_0_20px_rgba(0,210,255,0.4)] hover:scale-105 flex items-center gap-1.5 shrink-0"
+              className="hidden xl:inline-flex px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider glow-btn-primary transition-all duration-300 shadow-[0_0_20px_rgba(0,210,255,0.4)] hover:scale-105 items-center gap-1.5 shrink-0"
             >
               <Calendar className="w-3.5 h-3.5 text-midnight-950" />
               <span>Book a Shoot</span>
@@ -193,13 +202,13 @@ const Navbar = () => {
 
             {/* User Dropdown / Auth CTA */}
             {isAuthenticated ? (
-              <div className="relative" ref={userDropdownRef}>
+              <div className="relative shrink-0" ref={userDropdownRef}>
                 <button
                   onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                  className="flex items-center gap-2 p-1 pl-2 rounded-full bg-white/5 border border-sky-500/20 hover:border-sky-500/40 transition-all"
+                  className="flex items-center gap-1.5 p-1 pl-2 rounded-full bg-white/5 border border-sky-500/20 hover:border-sky-500/40 transition-all"
                 >
                   <Avatar user={user} size="sm" />
-                  <span className="text-xs text-slate-200 font-medium hidden md:inline max-w-[80px] truncate">
+                  <span className="text-xs text-slate-200 font-medium hidden xl:inline max-w-[80px] truncate">
                     {user?.name?.split(' ')[0]}
                   </span>
                   <ChevronDown className="w-3.5 h-3.5 text-slate-400 pr-1" />
@@ -250,19 +259,19 @@ const Navbar = () => {
                 )}
               </div>
             ) : (
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
                 <Link
                   to="/login"
-                  className="hidden sm:inline-flex px-3.5 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white hover:bg-white/5 transition-all"
+                  className="hidden sm:inline-flex px-3 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white hover:bg-white/5 transition-all shrink-0"
                 >
                   Sign In
                 </Link>
 
-                {/* Quick Demo Switcher */}
-                <div className="relative" ref={demoDropdownRef}>
+                {/* Quick Demo Switcher - hidden on mobile, visible on sm+ */}
+                <div className="relative shrink-0 hidden sm:block" ref={demoDropdownRef}>
                   <button
                     onClick={() => setDemoDropdownOpen(!demoDropdownOpen)}
-                    className="p-1.5 rounded-full bg-indigo-500/20 text-indigo-300 hover:bg-indigo-500/30 border border-indigo-400/30 transition-all text-xs flex items-center gap-1"
+                    className="p-1.5 sm:px-2.5 sm:py-1 rounded-full bg-indigo-500/20 text-indigo-300 hover:bg-indigo-500/30 border border-indigo-400/30 transition-all text-xs flex items-center gap-1 shrink-0"
                     title="Quick Demo Role"
                   >
                     <UserIcon className="w-3.5 h-3.5" />
@@ -310,50 +319,119 @@ const Navbar = () => {
             {/* Mobile Hamburger Menu Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-full text-slate-300 hover:text-white hover:bg-white/5 transition-colors"
+              className="lg:hidden p-1.5 sm:p-2 rounded-full text-cyan-400 hover:text-white bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 hover:border-cyan-400 transition-colors shrink-0"
               aria-label="Toggle Navigation Menu"
             >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {mobileMenuOpen ? <X className="w-5 h-5 text-cyan-300" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
 
         {/* Mobile Dropdown Menu */}
         {mobileMenuOpen && (
-          <div className="lg:hidden mt-2 max-w-7xl mx-auto rounded-3xl glass-panel border border-sky-500/30 shadow-2xl p-5 space-y-4 animate-reveal">
-            <nav className="flex flex-col space-y-2">
-              {navLinks.map((link) => {
-                const isAi = link.path === '/recommendations';
+          <div className="lg:hidden mt-2 max-w-7xl mx-auto rounded-3xl glass-panel border border-sky-500/30 shadow-2xl p-4 sm:p-5 space-y-4 animate-reveal">
+            {/* Mobile Quick Demo Switcher */}
+            <div className="p-3 rounded-2xl bg-indigo-500/10 border border-indigo-500/25 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] uppercase font-mono tracking-wider text-indigo-300 flex items-center gap-1.5 font-semibold">
+                  <UserIcon className="w-3.5 h-3.5 text-indigo-400" />
+                  Test Demo Profiles
+                </span>
+                <span className="text-[10px] font-mono text-slate-400">1-Click Login</span>
+              </div>
+              <div className="grid grid-cols-3 gap-1.5">
+                <button
+                  onClick={() => {
+                    quickDemoLogin(ROLES.USER);
+                    setMobileMenuOpen(false);
+                  }}
+                  className="py-1.5 px-2 rounded-lg bg-white/5 hover:bg-sky-500/20 text-[11px] text-slate-200 hover:text-cyan-300 border border-white/10 text-center font-medium transition-colors"
+                >
+                  Client
+                </button>
+                <button
+                  onClick={() => {
+                    quickDemoLogin(ROLES.PHOTOGRAPHER);
+                    setMobileMenuOpen(false);
+                  }}
+                  className="py-1.5 px-2 rounded-lg bg-white/5 hover:bg-sky-500/20 text-[11px] text-slate-200 hover:text-cyan-300 border border-white/10 text-center font-medium transition-colors"
+                >
+                  Creator
+                </button>
+                <button
+                  onClick={() => {
+                    quickDemoLogin(ROLES.ADMIN);
+                    setMobileMenuOpen(false);
+                  }}
+                  className="py-1.5 px-2 rounded-lg bg-white/5 hover:bg-sky-500/20 text-[11px] text-slate-200 hover:text-cyan-300 border border-white/10 text-center font-medium transition-colors"
+                >
+                  Admin
+                </button>
+              </div>
+            </div>
+
+            <nav className="flex flex-col space-y-1.5">
+              {mobileNavLinks.map((link) => {
+                const isAnchor = link.path.startsWith('/#');
+                const isActive = !isAnchor && location.pathname === link.path;
+                const isAi = link.isAi || link.path === '/recommendations';
+
                 return (
                   <button
                     key={link.label}
                     onClick={() => handleNavClick(link)}
                     className={`w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium transition-colors flex items-center justify-between ${
-                      isAi
+                      isActive
                         ? 'text-cyan-300 bg-cyan-500/15 border border-cyan-400/30 font-bold shadow-[0_0_12px_rgba(0,210,255,0.2)]'
+                        : isAi
+                        ? 'text-cyan-300 bg-cyan-500/10 border border-cyan-400/20 font-medium'
                         : 'text-slate-200 hover:text-cyan-300 hover:bg-sky-500/10'
                     }`}
                   >
-                    <span>{link.label}</span>
-                    {isAi && (
+                    <span className="flex items-center gap-2">
+                      {isAi && <Sparkles className="w-4 h-4 text-cyan-400" />}
+                      {link.label}
+                    </span>
+                    {isAi ? (
                       <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-cyan-500 text-slate-950 font-bold uppercase">
                         AI
                       </span>
-                    )}
+                    ) : isActive ? (
+                      <span className="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+                    ) : null}
                   </button>
                 );
               })}
             </nav>
 
             <div className="pt-3 border-t border-white/10 flex flex-col gap-2.5">
+              {!isAuthenticated && (
+                <div className="grid grid-cols-2 gap-2 pb-1">
+                  <Link
+                    to="/login"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="w-full py-2 rounded-xl text-xs font-semibold text-center text-slate-200 bg-white/5 border border-white/10 hover:bg-white/10 transition-colors"
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    to="/register"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="w-full py-2 rounded-xl text-xs font-semibold text-center text-cyan-300 bg-cyan-500/10 border border-cyan-500/30 hover:bg-cyan-500/20 transition-colors"
+                  >
+                    Create Account
+                  </Link>
+                </div>
+              )}
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
                   setBookingModalOpen(true);
                 }}
-                className="w-full py-2.5 rounded-full text-xs font-bold uppercase tracking-wider glow-btn-primary text-center"
+                className="w-full py-2.5 rounded-full text-xs font-bold uppercase tracking-wider glow-btn-primary text-center flex items-center justify-center gap-2"
               >
-                Book a Shoot
+                <Calendar className="w-4 h-4 text-midnight-950" />
+                <span>Book a Shoot</span>
               </button>
               <button
                 onClick={() => {
