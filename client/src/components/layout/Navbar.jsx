@@ -172,15 +172,15 @@ const Navbar = () => {
               <Search className="w-4 h-4" />
             </button>
 
-            {/* AI Matchmaker */}
-            <button
-              onClick={() => setMatchmakerModalOpen(true)}
-              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-slate-200 hover:text-cyan-300 bg-white/5 hover:bg-sky-500/10 border border-white/10 hover:border-sky-500/30 transition-all"
-              title="Find matches with AI"
+            {/* AI Photographer Recommendation System */}
+            <Link
+              to="/recommendations"
+              className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold text-cyan-300 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 hover:border-cyan-400 transition-all shadow-[0_0_12px_rgba(0,210,255,0.2)] hover:scale-105 cursor-pointer"
+              title="AI Photographer Recommendation System"
             >
-              <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-              <span className="hidden md:inline">AI Match</span>
-            </button>
+              <Sparkles className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
+              <span className="hidden md:inline">AI Recommend</span>
+            </Link>
 
             {/* Glowing "Book a Shoot" CTA */}
             <button
@@ -322,15 +322,27 @@ const Navbar = () => {
         {mobileMenuOpen && (
           <div className="lg:hidden mt-2 max-w-7xl mx-auto rounded-3xl glass-panel border border-sky-500/30 shadow-2xl p-5 space-y-4 animate-reveal">
             <nav className="flex flex-col space-y-2">
-              {navLinks.map((link) => (
-                <button
-                  key={link.label}
-                  onClick={() => handleNavClick(link)}
-                  className="w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium text-slate-200 hover:text-cyan-300 hover:bg-sky-500/10 transition-colors"
-                >
-                  {link.label}
-                </button>
-              ))}
+              {navLinks.map((link) => {
+                const isAi = link.path === '/recommendations';
+                return (
+                  <button
+                    key={link.label}
+                    onClick={() => handleNavClick(link)}
+                    className={`w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium transition-colors flex items-center justify-between ${
+                      isAi
+                        ? 'text-cyan-300 bg-cyan-500/15 border border-cyan-400/30 font-bold shadow-[0_0_12px_rgba(0,210,255,0.2)]'
+                        : 'text-slate-200 hover:text-cyan-300 hover:bg-sky-500/10'
+                    }`}
+                  >
+                    <span>{link.label}</span>
+                    {isAi && (
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-cyan-500 text-slate-950 font-bold uppercase">
+                        AI
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
             </nav>
 
             <div className="pt-3 border-t border-white/10 flex flex-col gap-2.5">

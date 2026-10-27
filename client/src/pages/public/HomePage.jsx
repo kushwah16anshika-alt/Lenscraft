@@ -449,6 +449,14 @@ const HomePage = () => {
             </button>
 
             <Link
+              to="/recommendations"
+              className="px-8 py-4 rounded-full bg-gradient-to-r from-cyan-500/25 via-sky-500/30 to-indigo-500/25 hover:from-cyan-500/40 hover:to-sky-500/45 border border-cyan-400/50 hover:border-cyan-300 text-cyan-300 hover:text-white text-xs sm:text-sm uppercase tracking-wider font-bold inline-flex items-center gap-2 hover:scale-105 transition-all shadow-[0_0_20px_rgba(0,210,255,0.3)] cursor-pointer"
+            >
+              <Sparkles className="w-4 h-4 text-cyan-400 animate-pulse" />
+              <span>AI Match Recommendations</span>
+            </Link>
+
+            <Link
               to="/photographers"
               className="px-8 py-4 rounded-full btn-secondary-luxury text-xs sm:text-sm uppercase tracking-wider font-semibold inline-flex items-center gap-2 hover:scale-105 transition-transform cursor-pointer"
             >
@@ -522,6 +530,45 @@ const HomePage = () => {
                 <SlidersHorizontal className="w-4 h-4" />
                 <span>Filters & Sorting</span>
               </button>
+            </div>
+          </div>
+
+          {/* AI Recommendation System Promo Banner */}
+          <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-sky-950/50 via-cyan-950/30 to-indigo-950/50 border border-cyan-400/30 shadow-[0_0_25px_rgba(0,210,255,0.15)] flex flex-col md:flex-row items-center justify-between gap-4 text-left">
+            <div className="flex items-center gap-3.5">
+              <div className="w-10 h-10 rounded-xl bg-cyan-500/15 border border-cyan-400/40 flex items-center justify-center text-cyan-300 shrink-0 shadow-[0_0_15px_rgba(0,210,255,0.3)]">
+                <Sparkles className="w-5 h-5 animate-pulse" />
+              </div>
+              <div className="space-y-0.5">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-bold text-white uppercase tracking-wide font-mono">
+                    Technology 1: AI Photographer Recommendation System
+                  </span>
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 font-mono font-bold">
+                    Active
+                  </span>
+                </div>
+                <p className="text-xs text-slate-300">
+                  Select Event, Location, Budget, Style, & Preferred Date to receive content-based weighted ranking with real-time MongoDB availability verification.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 shrink-0 w-full md:w-auto">
+              <button
+                type="button"
+                onClick={() => setMatchmakerOpen(true)}
+                className="flex-1 md:flex-none px-4 py-2.5 rounded-xl glass-panel text-xs text-cyan-300 hover:text-white border border-cyan-400/30 hover:border-cyan-400 font-mono transition-all text-center cursor-pointer"
+              >
+                Quick Modal
+              </button>
+              <Link
+                to="/recommendations"
+                className="flex-1 md:flex-none px-5 py-2.5 rounded-xl glow-btn-primary text-xs uppercase font-mono font-bold tracking-wider flex items-center justify-center gap-1.5 shadow-[0_0_15px_rgba(0,210,255,0.3)] cursor-pointer"
+              >
+                <span>Launch AI Engine</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
             </div>
           </div>
 
