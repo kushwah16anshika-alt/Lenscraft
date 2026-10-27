@@ -139,7 +139,7 @@ const Navbar = () => {
           </Link>
 
           {/* 2. Center: Futuristic Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
+          <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1.5">
             {navLinks.map((link) => {
               const isAnchor = link.path.startsWith('/#');
               const isActive = !isAnchor && location.pathname === link.path;
@@ -148,7 +148,7 @@ const Navbar = () => {
                 <button
                   key={link.label}
                   onClick={() => handleNavClick(link)}
-                  className={`px-3.5 py-1.5 rounded-full text-xs font-medium uppercase tracking-wider transition-all duration-200 cursor-pointer ${
+                  className={`px-2 xl:px-3 py-1.5 rounded-full text-[11px] xl:text-xs font-medium uppercase tracking-wider transition-all duration-200 cursor-pointer whitespace-nowrap ${
                     isActive
                       ? 'text-cyan-400 bg-sky-500/10 border border-sky-500/30 shadow-[0_0_12px_rgba(0,210,255,0.2)]'
                       : 'text-slate-300 hover:text-white hover:bg-white/5'
