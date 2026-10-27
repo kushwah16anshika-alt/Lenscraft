@@ -1,23 +1,43 @@
 """
-Lenscraft AI Photography Style Classification Microservice
-Powered by Hugging Face Transformers & OpenAI CLIP (clip-vit-base-patch32)
+Lenscraft AI & ML Microservice
+1. Zero-shot Photography Category Classifier (CLIP / Hugging Face)
+2. Scikit-learn Smart Package Recommendation Engine
 """
 
 import io
 import os
+import sys
 import requests
 from typing import List, Optional
 from fastapi import FastAPI, File, UploadFile, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, HttpUrl
-from PIL import Image
-import torch
-from transformers import CLIPProcessor, CLIPModel
+
+# Import Smart Recommender module
+from smart_recommender import (
+    load_recommender_model,
+    score_and_rank_packages,
+    RecommendationRequest,
+    RecommendationResponse,
+)
+
+# Optional PyTorch & CLIP imports with graceful degradation
+try:
+    from PIL import Image
+    import torch
+    from transformers import CLIPProcessor, CLIPModel
+    TORCH_AVAILABLE = True
+except ImportError:
+    TORCH_AVAILABLE = False
+    Image = None
+    torch = None
+    CLIPProcessor = None
+    CLIPModel = None
 
 app = FastAPI(
-    title="Lenscraft Computer Vision Style Classifier",
-    description="Zero-shot Photography Category Classifier using OpenAI CLIP",
-    version="1.0.0",
+    title="Lenscraft AI & ML Service",
+    description="Photography Style Classifier & Scikit-learn Smart Package Recommender",
+    version="2.0.0",
 )
 
 # Enable CORS for internal cross-service calls
@@ -29,22 +49,32 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Model configuration
+# Pre-load Scikit-learn Smart Recommender model at startup
+load_recommender_model()
+
+# Model configuration for CLIP
 MODEL_ID = os.getenv("CLIP_MODEL_ID", "openai/clip-vit-base-patch32")
 CONFIDENCE_THRESHOLD = float(os.getenv("CONFIDENCE_THRESHOLD", "0.35"))
 
-print(f"Loading CLIP model: {MODEL_ID}...")
-try:
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    model = CLIPModel.from_pretrained(MODEL_ID).to(device)
-    processor = CLIPProcessor.from_pretrained(MODEL_ID)
-    model.eval()
-    print(f"✓ CLIP model loaded successfully on device: {device}")
-except Exception as e:
-    print(f"⚠️ Warning: Failed to pre-load CLIP model on startup: {e}")
-    model = None
-    processor = None
-    device = "cpu"
+model = None
+processor = None
+device = "cpu"
+
+if TORCH_AVAILABLE:
+    print(f"Loading CLIP model: {MODEL_ID}...")
+    try:
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        model = CLIPModel.from_pretrained(MODEL_ID).to(device)
+        processor = CLIPProcessor.from_pretrained(MODEL_ID)
+        model.eval()
+        print(f"[OK] CLIP model loaded successfully on device: {device}")
+    except Exception as e:
+        print(f"[WARN] Failed to pre-load CLIP model on startup: {e}")
+        model = None
+        processor = None
+        device = "cpu"
+else:
+    print("ℹ️ PyTorch / Transformers not installed in current environment; CLIP image classification will use cloud fallback.")
 
 # Supported photography categories & corresponding domain-tailored prompts
 CATEGORY_PROMPTS = [
@@ -160,16 +190,37 @@ def run_clip_inference(pil_image: Image.Image) -> ClassificationResponse:
 
 @app.get("/health")
 def health_check():
+    rec_model = load_recommender_model()
     return {
         "status": "healthy",
-        "service": "Lenscraft AI Photography Style Classifier",
-        "model": MODEL_ID,
+        "service": "Lenscraft AI & ML Microservice",
+        "clip_model": MODEL_ID if TORCH_AVAILABLE and model is not None else "cloud_fallback",
+        "smart_recommender_status": "loaded" if rec_model is not None else "unloaded",
         "device": device,
     }
 
 
+@app.post("/recommend/packages", response_model=RecommendationResponse)
+async def recommend_packages(request: RecommendationRequest):
+    """
+    Ranks real Lenscraft packages using the trained Scikit-learn Pipeline
+    based on customer budget, event type, location, style, and required services.
+    """
+    if not request.packages or len(request.packages) == 0:
+        raise HTTPException(status_code=400, detail="Package candidate list cannot be empty.")
+
+    try:
+        response = score_and_rank_packages(request)
+        return response
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Recommendation engine error: {str(e)}")
+
+
 @app.post("/classify", response_model=ClassificationResponse)
 async def classify_image(request: ClassificationRequest):
+    if not TORCH_AVAILABLE or model is None:
+        raise HTTPException(status_code=503, detail="Local CLIP classifier unavailable; please use cloud inference fallback.")
+
     if not request.imageUrl:
         raise HTTPException(status_code=400, detail="Missing imageUrl parameter")
 
@@ -185,6 +236,9 @@ async def classify_image(request: ClassificationRequest):
 
 @app.post("/classify/upload", response_model=ClassificationResponse)
 async def classify_uploaded_image(file: UploadFile = File(...)):
+    if not TORCH_AVAILABLE or model is None:
+        raise HTTPException(status_code=503, detail="Local CLIP classifier unavailable; please use cloud inference fallback.")
+
     if not file.content_type.startswith("image/"):
         raise HTTPException(status_code=400, detail="File must be an image")
 

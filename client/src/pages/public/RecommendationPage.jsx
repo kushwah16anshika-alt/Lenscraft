@@ -188,9 +188,18 @@ const RecommendationPage = () => {
       {/* Hero Header */}
       <section className="relative py-10 sm:py-16 px-4 sm:px-6 lg:px-8 border-b border-sky-500/15 overflow-hidden">
         <div className="max-w-6xl mx-auto space-y-3 relative z-10 text-center sm:text-left">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/25 text-cyan-300 text-xs font-mono uppercase tracking-widest">
-            <Sparkles className="w-4 h-4 text-cyan-400 animate-pulse" />
-            <span>Technology 1: AI Photographer Recommendation Engine</span>
+          <div className="flex flex-wrap items-center gap-2.5">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/25 text-cyan-300 text-xs font-mono uppercase tracking-widest">
+              <Sparkles className="w-4 h-4 text-cyan-400 animate-pulse" />
+              <span>Technology 1: AI Photographer Matchmaker</span>
+            </div>
+            <Link
+              to="/smart-packages"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 text-xs font-mono uppercase tracking-widest transition-all hover:scale-105"
+            >
+              <span>Explore ML Smart Packages</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
           </div>
           <h1 className="text-2xl sm:text-4xl lg:text-5xl font-display font-extrabold tracking-tight text-white leading-tight">
             MATCH WITH YOUR <span className="text-gradient-cyan text-glow-cyan">IDEAL PHOTOGRAPHER</span>

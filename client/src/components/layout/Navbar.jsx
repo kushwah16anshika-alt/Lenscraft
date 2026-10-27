@@ -90,6 +90,7 @@ const Navbar = () => {
     { label: 'Photographers', path: '/photographers' },
     { label: 'Videographers', path: '/videographers' },
     { label: 'Editors', path: '/editors' },
+    { label: 'Smart Packages', path: '/smart-packages' },
     { label: 'Color Lab', path: '/color-lab' },
     { label: 'Services', path: '/services', hideOnLg: true },
     { label: 'About', path: '/about', hideOnLg: true, hideOnXl: true },
@@ -97,8 +98,9 @@ const Navbar = () => {
 
   const mobileNavLinks = [
     { label: 'Home', path: '/' },
-    { label: 'AI Assistant', path: '/assistant', isAi: true, isAmber: true },
+    { label: 'Smart Packages (ML)', path: '/smart-packages', isAi: true, isAmber: true },
     { label: 'AI Recommendations', path: '/recommendations', isAi: true, isCyan: true },
+    { label: 'AI Assistant', path: '/assistant', isAi: true, isAmber: true },
     { label: 'Photographers', path: '/photographers' },
     { label: 'Videographers', path: '/videographers' },
     { label: 'Editors', path: '/editors' },
