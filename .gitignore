@@ -59,6 +59,7 @@ pnpm-debug.log*
 lerna-debug.log*
 
 # 7. Caches & Temporary Files
+screenshot*.png
 .cache/
 .vite/
 client/.vite/

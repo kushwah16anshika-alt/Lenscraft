@@ -6,6 +6,7 @@ import { ToastProvider } from './context/ToastContext';
 import { PlatformProvider } from './context/PlatformContext';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import CameraFlashTransition from './components/common/CameraFlashTransition';
+import FloatingAssistantWidget from './components/common/FloatingAssistantWidget';
 import AppRoutes from './routes/AppRoutes';
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || 'lenscraft-google-client.apps.googleusercontent.com';
@@ -21,6 +22,8 @@ function App() {
                 {/* Cinematic Camera Shutter & Strobe Flash Transition */}
                 <CameraFlashTransition />
                 <AppRoutes />
+                {/* Technology 3: Floating Conversational AI Assistant */}
+                <FloatingAssistantWidget />
               </ToastProvider>
             </PlatformProvider>
           </AuthProvider>

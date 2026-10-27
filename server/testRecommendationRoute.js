@@ -70,9 +70,8 @@ const runRouteTests = async () => {
 
     console.log('✓ ALL HTTP ROUTE TESTS PASSED!');
   } finally {
-    server.close();
+    await new Promise((resolve) => server.close(resolve));
     await mongoose.disconnect();
-    process.exit(0);
   }
 };
 

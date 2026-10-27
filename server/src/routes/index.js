@@ -11,6 +11,7 @@ import adminRoutes from './adminRoutes.js';
 import messageRoutes from './messageRoutes.js';
 import recommendationRoutes from './recommendationRoutes.js';
 import aiRoutes from './aiRoutes.js';
+import assistantRoutes from './assistantRoutes.js';
 
 const router = express.Router();
 
@@ -26,5 +27,6 @@ router.use('/admin', adminRoutes);
 router.use('/messages', messageRoutes);
 router.use('/recommendations', recommendationRoutes);
 router.use('/ai', aiRoutes);
+router.use('/assistant', assistantRoutes);
 
 export default router;

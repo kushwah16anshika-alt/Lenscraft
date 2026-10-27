@@ -25,6 +25,7 @@ const AboutPage = lazy(() => import('../pages/public/AboutPage'));
 const ContactPage = lazy(() => import('../pages/public/ContactPage'));
 const ColorLabPage = lazy(() => import('../pages/public/ColorLabPage'));
 const RecommendationPage = lazy(() => import('../pages/public/RecommendationPage'));
+const AssistantPage = lazy(() => import('../pages/public/AssistantPage'));
 const NotFoundPage = lazy(() => import('../pages/public/NotFoundPage'));
 
 // Auth Pages (Lazy Loaded)
@@ -97,6 +98,9 @@ const AppRoutes = () => {
           <Route path="/recommendations" element={<RecommendationPage />} />
           <Route path="/ai-recommendation" element={<RecommendationPage />} />
           <Route path="/recommend" element={<RecommendationPage />} />
+          <Route path="/assistant" element={<AssistantPage />} />
+          <Route path="/ai-assistant" element={<AssistantPage />} />
+          <Route path="/chat" element={<AssistantPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
 

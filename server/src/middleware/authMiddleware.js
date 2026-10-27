@@ -33,3 +33,22 @@ export const protect = async (req, res, next) => {
     return ApiResponse.error(res, 'Not authorized, no token provided', 401);
   }
 };
+
+export const optionalAuth = async (req, res, next) => {
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer')
+  ) {
+    try {
+      const token = req.headers.authorization.split(' ')[1];
+      const decoded = jwt.verify(
+        token,
+        process.env.JWT_SECRET || 'lenscraft_fallback_secret_key_2025'
+      );
+      req.user = await User.findById(decoded.id).select('-password');
+    } catch (err) {
+      // Ignore token failure for optional auth
+    }
+  }
+  next();
+};
