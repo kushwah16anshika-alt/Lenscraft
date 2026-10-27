@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { Wand2, Search, ArrowUpDown, RotateCcw, Video, Camera, ShieldCheck } from 'lucide-react';
+import { useSearchParams, Link } from 'react-router-dom';
+import { Wand2, Search, ArrowUpDown, RotateCcw, Video, Camera, ShieldCheck, SlidersHorizontal, ArrowRight } from 'lucide-react';
 import ProfessionalCard from '../../components/cards/ProfessionalCard';
 import { ROLES } from '../../constants/roles';
 import { usePlatform } from '../../context/PlatformContext';
@@ -68,11 +68,64 @@ const EditorsPage = () => {
             <span>Post-Production & Color Grading Directory</span>
           </div>
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-display font-extrabold tracking-tight text-white">
-            RETURNING & <span className="text-gradient-cyan text-glow-cyan">COLOR EDITORS</span>
+            RETOUCHING & <span className="text-gradient-cyan text-glow-cyan">COLOR EDITORS</span>
           </h1>
           <p className="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
             Discover verified high-end retouchers, DaVinci Resolve colorists, sound designers, and post-production studios.
           </p>
+        </div>
+      </section>
+
+      {/* Interactive Color Lab Showcase Callout */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 relative z-10">
+        <div className="relative rounded-3xl overflow-hidden glass-card border border-sky-500/30 p-6 sm:p-8 shadow-2xl bg-gradient-to-r from-sky-950/40 via-midnight-950/80 to-indigo-950/40">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center relative z-10">
+            <div className="lg:col-span-8 space-y-3">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-xs font-mono text-cyan-300">
+                <SlidersHorizontal className="w-3.5 h-3.5 text-cyan-400" />
+                <span>INTERACTIVE COLORIST TOOL</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-display font-bold text-white tracking-tight">
+                Cinematic Color Lab & <span className="text-gradient-cyan text-glow-cyan">Film LUT Studio</span>
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-2xl">
+                Test 8 calibrated analogue 35mm film stock simulations (Kodak Portra 400, CineStill 800T, Fujifilm Pro 400H) with real-time sliders for grain, halation bloom, and temperature before commissioning your grade.
+              </p>
+              <div className="pt-1 flex flex-wrap items-center gap-3">
+                <Link
+                  to="/color-lab"
+                  className="px-5 py-2.5 rounded-full glow-btn-primary text-xs uppercase tracking-wider font-bold inline-flex items-center gap-2 shadow-[0_0_15px_rgba(0,210,255,0.4)] hover:scale-105 transition-all text-midnight-950"
+                >
+                  <SlidersHorizontal className="w-4 h-4 text-midnight-950" />
+                  <span>Launch Film Color Lab</span>
+                  <ArrowRight className="w-4 h-4 text-midnight-950" />
+                </Link>
+                <Link
+                  to="/features"
+                  className="px-4 py-2.5 rounded-full glass-panel text-slate-300 hover:text-white border border-sky-500/20 hover:border-cyan-400 text-xs font-mono inline-flex items-center gap-1.5 transition-all"
+                >
+                  <span>Compare Post SLAs & Rates</span>
+                </Link>
+              </div>
+            </div>
+
+            <div className="lg:col-span-4 grid grid-cols-2 gap-2 text-left">
+              {[
+                { name: 'Kodak Portra 400', tag: 'Creamy Skin Tones', color: '#f59e0b' },
+                { name: 'Teal & Orange', tag: 'Blockbuster Cinema', color: '#00d2ff' },
+                { name: 'CineStill 800T', tag: 'Neon Tungsten Bloom', color: '#ec4899' },
+                { name: 'Fujifilm Pro 400H', tag: 'Pastel Wedding Greens', color: '#10b981' },
+              ].map((item, i) => (
+                <div key={i} className="p-2.5 rounded-xl bg-midnight-950/70 border border-sky-500/15 space-y-1">
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full" style={{ backgroundColor: item.color }} />
+                    <span className="text-xs font-bold text-white line-clamp-1">{item.name}</span>
+                  </div>
+                  <span className="text-[10px] text-slate-400 font-mono block truncate">{item.tag}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 

@@ -89,10 +89,11 @@ const Navbar = () => {
   const navLinks = [
     { label: 'Home', path: '/' },
     { label: 'Photographers', path: '/photographers' },
+    { label: 'Videographers', path: '/videographers' },
+    { label: 'Editors', path: '/editors' },
     { label: 'Color Lab', path: '/color-lab' },
-    { label: 'Services', path: '/#services' },
-    { label: 'Portfolio', path: '/#portfolio' },
-    { label: 'Stories', path: '/#stories' },
+    { label: 'Services', path: '/services' },
+    { label: 'Features', path: '/features' },
     { label: 'About', path: '/about' },
   ];
 

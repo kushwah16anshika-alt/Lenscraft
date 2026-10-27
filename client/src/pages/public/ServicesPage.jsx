@@ -700,7 +700,12 @@ const ServicesPage = () => {
             </p>
           </div>
 
-          <div className="flex items-center gap-3 shrink-0">
+          <div className="flex flex-wrap items-center gap-3 shrink-0">
+            <Link to="/color-lab">
+              <Button variant="outline" size="md" leftIcon={<SlidersHorizontal className="w-4 h-4 text-cyan-400" />}>
+                Try Film Color Lab
+              </Button>
+            </Link>
             <Link to="/photographers">
               <Button variant="primary" size="md" rightIcon={<ArrowRight className="w-4 h-4" />}>
                 Browse All Talent

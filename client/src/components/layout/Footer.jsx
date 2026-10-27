@@ -156,19 +156,29 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <button onClick={() => handleNavClick('/#services')} className="hover:text-cyan-300 transition-colors cursor-pointer text-left">
-                  Services
-                </button>
+                <Link to="/videographers" className="hover:text-cyan-300 transition-colors">
+                  Videographers
+                </Link>
               </li>
               <li>
-                <button onClick={() => handleNavClick('/#portfolio')} className="hover:text-cyan-300 transition-colors cursor-pointer text-left">
-                  Portfolio
-                </button>
+                <Link to="/editors" className="hover:text-cyan-300 transition-colors">
+                  Editors & Retouchers
+                </Link>
               </li>
               <li>
-                <button onClick={() => handleNavClick('/#stories')} className="hover:text-cyan-300 transition-colors cursor-pointer text-left">
-                  Stories
-                </button>
+                <Link to="/services" className="hover:text-cyan-300 transition-colors">
+                  Services & Packages
+                </Link>
+              </li>
+              <li>
+                <Link to="/features" className="hover:text-cyan-300 transition-colors">
+                  Features & Guarantee
+                </Link>
+              </li>
+              <li>
+                <Link to="/color-lab" className="hover:text-cyan-300 transition-colors font-medium text-cyan-400">
+                  Color Lab (Film LUTs)
+                </Link>
               </li>
               <li>
                 <Link to="/about" className="hover:text-cyan-300 transition-colors">

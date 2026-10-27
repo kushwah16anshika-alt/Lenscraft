@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { Video, Search, ArrowUpDown, RotateCcw, ShieldCheck } from 'lucide-react';
+import { useSearchParams, Link } from 'react-router-dom';
+import { Video, Search, ArrowUpDown, RotateCcw, ShieldCheck, SlidersHorizontal, ArrowRight, Play } from 'lucide-react';
 import ProfessionalCard from '../../components/cards/ProfessionalCard';
 import { ROLES } from '../../constants/roles';
 import { usePlatform } from '../../context/PlatformContext';
@@ -69,6 +69,67 @@ const VideographersPage = () => {
           <p className="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
             Discover verified cinema directors, drone pilots, wedding filmmakers, and commercial video specialists ready to capture motion that moves audiences.
           </p>
+        </div>
+      </section>
+
+      {/* Interactive Cinema Showcase Callout */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 relative z-10">
+        <div className="relative rounded-3xl overflow-hidden glass-card border border-sky-500/30 p-6 sm:p-8 shadow-2xl bg-gradient-to-r from-sky-950/40 via-midnight-950/80 to-indigo-950/40">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center relative z-10">
+            <div className="lg:col-span-8 space-y-3">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-xs font-mono text-cyan-300">
+                <Video className="w-3.5 h-3.5 text-cyan-400" />
+                <span>4K CINEMA & HOLLYWOOD COLOR SCIENCE</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-display font-bold text-white tracking-tight">
+                Cinema-Grade Workflows & <span className="text-gradient-cyan text-glow-cyan">Color Science</span>
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-2xl">
+                Every accredited filmmaker on LensCraft shoots on cinema sensors (Sony FX6/FX3, RED Komodo, ARRI) with dual-card redundancy and delivers in ProRes or 10-bit Rec.709 with Hollywood LUT grading.
+              </p>
+              <div className="pt-1 flex flex-wrap items-center gap-3">
+                <Link
+                  to="/color-lab"
+                  className="px-5 py-2.5 rounded-full glow-btn-primary text-xs uppercase tracking-wider font-bold inline-flex items-center gap-2 shadow-[0_0_15px_rgba(0,210,255,0.4)] hover:scale-105 transition-all text-midnight-950"
+                >
+                  <SlidersHorizontal className="w-4 h-4 text-midnight-950" />
+                  <span>Test Film Stocks in Color Lab</span>
+                  <ArrowRight className="w-4 h-4 text-midnight-950" />
+                </Link>
+                <Link
+                  to="/services"
+                  className="px-4 py-2.5 rounded-full glass-panel text-slate-300 hover:text-white border border-sky-500/20 hover:border-cyan-400 text-xs font-mono inline-flex items-center gap-1.5 transition-all"
+                >
+                  <span>Explore Cinema Packages & Turnarounds</span>
+                </Link>
+              </div>
+            </div>
+
+            <div className="lg:col-span-4 p-4 rounded-2xl bg-midnight-950/80 border border-sky-500/20 space-y-2.5 text-xs text-slate-300">
+              <div className="flex items-center justify-between text-cyan-400 font-mono text-[11px] pb-1 border-b border-white/10">
+                <span>Production Standards</span>
+                <span>Verified Spec</span>
+              </div>
+              <div className="space-y-1.5 text-[11px]">
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-400">Capture Format</span>
+                  <span className="font-mono text-white">4K DCI / 10-bit 4:2:2</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-400">Sound Rig</span>
+                  <span className="font-mono text-white">32-Bit Float Wireless</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-400">Drone Pilot</span>
+                  <span className="font-mono text-cyan-300">DGCA Certified Aerials</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-400">Teaser SLA</span>
+                  <span className="font-mono text-emerald-400">Guaranteed 48-Hour</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
