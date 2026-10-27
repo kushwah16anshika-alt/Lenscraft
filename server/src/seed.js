@@ -314,6 +314,354 @@ const professionalsData = [
       },
     ],
   },
+  {
+    user: {
+      name: 'Kabir Sen',
+      email: 'kabir.bhopal@lenscraft.com',
+      password: 'password123',
+      role: ROLES.PHOTOGRAPHER,
+      phone: '+91 98260 12345',
+      avatar: {
+        url: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=400&q=80',
+      },
+      location: {
+        city: 'Bhopal',
+        state: 'Madhya Pradesh',
+        country: 'India',
+        address: 'Arera Colony, Bhopal',
+      },
+      bio: 'Bhopal-based candid wedding and pre-wedding photographer passionate about authentic emotions, subtle lighting, and joyous family celebrations.',
+    },
+    profile: {
+      professionType: ROLES.PHOTOGRAPHER,
+      tagline: 'Soulful candid moments & authentic Bhopal wedding memories',
+      about: 'Specialized in candid wedding and lifestyle portraiture across Bhopal and central India. Over 6 years of experience documenting intimate weddings and grand celebrations.',
+      experienceYears: 6,
+      specialties: ['Wedding Photography', 'Candid', 'Portraits', 'Pre-Wedding'],
+      equipment: ['Sony A7 IV', 'Sony 35mm f/1.4 GM', 'Sony 85mm f/1.8', 'Godox V1 Flash'],
+      softwareSkills: ['Adobe Lightroom Classic', 'Photoshop'],
+      startingPrice: 12000,
+      priceUnit: 'per_day',
+      rating: 4.92,
+      reviewCount: 38,
+      completedBookingsCount: 64,
+      isFeatured: true,
+      instagramUrl: 'https://instagram.com/kabir_candid_bhopal',
+      portfolio: [
+        {
+          title: 'Bhopal Lake View Candid Wedding',
+          mediaType: 'image',
+          url: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80',
+          category: 'Wedding',
+          tags: ['Candid', 'Wedding', 'Bhopal', 'Emotions'],
+          isFeatured: true,
+        },
+        {
+          title: 'Upper Lake Sunset Pre-Wedding',
+          mediaType: 'image',
+          url: 'https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=1200&q=80',
+          category: 'Pre-Wedding',
+          tags: ['Pre-Wedding', 'Candid', 'Sunset'],
+          isFeatured: true,
+        },
+      ],
+      availability: [
+        { dayOfWeek: 'Monday', isAvailable: true, startTime: '09:00', endTime: '20:00' },
+        { dayOfWeek: 'Tuesday', isAvailable: true, startTime: '09:00', endTime: '20:00' },
+        { dayOfWeek: 'Wednesday', isAvailable: true, startTime: '09:00', endTime: '20:00' },
+        { dayOfWeek: 'Thursday', isAvailable: true, startTime: '09:00', endTime: '20:00' },
+        { dayOfWeek: 'Friday', isAvailable: true, startTime: '09:00', endTime: '21:00' },
+        { dayOfWeek: 'Saturday', isAvailable: true, startTime: '08:00', endTime: '22:00' },
+        { dayOfWeek: 'Sunday', isAvailable: true, startTime: '08:00', endTime: '22:00' },
+      ],
+    },
+    services: [
+      {
+        title: 'Intimate Candid Wedding Package',
+        category: 'Wedding Photography',
+        professionType: ROLES.PHOTOGRAPHER,
+        description: 'Full day candid wedding ceremony coverage with 1 lead candid shooter, raw emotion capture, family portraits, and 150+ color-graded high-res stills.',
+        price: 14000,
+        pricingType: 'daily',
+        deliveryDays: 10,
+        inclusions: ['1 Dedicated Candid Shooter', '150+ Color-Graded Photos', 'Online Digital Gallery', 'High-Res Delivery'],
+        revisionsAllowed: 2,
+        coverImage: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80',
+      },
+      {
+        title: 'Pre-Wedding Candid Shoot',
+        category: 'Wedding Photography',
+        professionType: ROLES.PHOTOGRAPHER,
+        description: '3 hours relaxed couple shoot around scenic Bhopal locations with 35 retouched frames.',
+        price: 9500,
+        pricingType: 'fixed',
+        deliveryDays: 5,
+        inclusions: ['3 Hours Shoot', '35 Retouched Images', 'Location Assistance'],
+        revisionsAllowed: 2,
+        coverImage: 'https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=800&q=80',
+      },
+    ],
+  },
+  {
+    user: {
+      name: 'Devansh Patel',
+      email: 'devansh.indore@lenscraft.com',
+      password: 'password123',
+      role: ROLES.PHOTOGRAPHER,
+      phone: '+91 98270 54321',
+      avatar: {
+        url: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=400&q=80',
+      },
+      location: {
+        city: 'Indore',
+        state: 'Madhya Pradesh',
+        country: 'India',
+        address: 'Vijay Nagar, Indore',
+      },
+      bio: 'Candid and documentary wedding specialist based in Indore, actively traveling across Bhopal, Ujjain, and Central India.',
+    },
+    profile: {
+      professionType: ROLES.PHOTOGRAPHER,
+      tagline: 'Documentary Wedding Stills & Candid Frames Across MP',
+      about: 'Known for unobtrusive candid coverage that captures real moments as they happen without staging.',
+      experienceYears: 5,
+      specialties: ['Wedding Photography', 'Candid', 'Cinematic', 'Events'],
+      equipment: ['Canon EOS R6 Mark II', 'Canon RF 24-70mm f/2.8', 'RF 50mm f/1.2'],
+      softwareSkills: ['Lightroom', 'Photoshop'],
+      startingPrice: 15000,
+      priceUnit: 'per_day',
+      travelsToClient: true,
+      maxTravelDistanceKm: 250,
+      rating: 4.86,
+      reviewCount: 29,
+      completedBookingsCount: 42,
+      isFeatured: false,
+      portfolio: [
+        {
+          title: 'Indore Grand Sangeet Candid Shots',
+          mediaType: 'image',
+          url: 'https://images.unsplash.com/photo-1465847899084-d164df4dedc6?auto=format&fit=crop&w=1200&q=80',
+          category: 'Wedding',
+          tags: ['Candid', 'Sangeet', 'Wedding'],
+          isFeatured: true,
+        },
+      ],
+      availability: [
+        { dayOfWeek: 'Monday', isAvailable: true, startTime: '09:00', endTime: '18:00' },
+        { dayOfWeek: 'Tuesday', isAvailable: true, startTime: '09:00', endTime: '18:00' },
+        { dayOfWeek: 'Wednesday', isAvailable: true, startTime: '09:00', endTime: '18:00' },
+        { dayOfWeek: 'Thursday', isAvailable: true, startTime: '09:00', endTime: '18:00' },
+        { dayOfWeek: 'Friday', isAvailable: true, startTime: '09:00', endTime: '18:00' },
+        { dayOfWeek: 'Saturday', isAvailable: true, startTime: '09:00', endTime: '21:00' },
+        { dayOfWeek: 'Sunday', isAvailable: true, startTime: '09:00', endTime: '21:00' },
+      ],
+    },
+    services: [
+      {
+        title: 'Candid Ceremony Highlights',
+        category: 'Wedding Photography',
+        professionType: ROLES.PHOTOGRAPHER,
+        description: 'Complete ceremony coverage with 1 lead candid shooter and delivery of 120 color-graded frames.',
+        price: 15000,
+        pricingType: 'daily',
+        deliveryDays: 7,
+        inclusions: ['1 Shooter', '120 Edited Photos', 'Travel within MP Included'],
+        revisionsAllowed: 2,
+        coverImage: 'https://images.unsplash.com/photo-1465847899084-d164df4dedc6?auto=format&fit=crop&w=800&q=80',
+      },
+    ],
+  },
+  {
+    user: {
+      name: 'Ananya Deshmukh',
+      email: 'ananya.traditional@lenscraft.com',
+      password: 'password123',
+      role: ROLES.PHOTOGRAPHER,
+      phone: '+91 94250 88990',
+      avatar: {
+        url: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80',
+      },
+      location: {
+        city: 'Bhopal',
+        state: 'Madhya Pradesh',
+        country: 'India',
+        address: 'MP Nagar, Bhopal',
+      },
+      bio: 'Traditional and ritual wedding photographer in Bhopal with 10+ years covering royal heritage and traditional ceremonies.',
+    },
+    profile: {
+      professionType: ROLES.PHOTOGRAPHER,
+      tagline: 'Preserving Heritage Rituals & Traditional Grandeur',
+      about: 'Focusing on formal stage portraits, traditional wedding rituals, and comprehensive family coverage.',
+      experienceYears: 10,
+      specialties: ['Traditional Wedding', 'Ritual Photography', 'Events'],
+      equipment: ['Nikon Z8', 'Nikkor Z 24-70mm f/2.8 S', 'Elinchrom Studio Strobes'],
+      softwareSkills: ['Photoshop', 'Lightroom'],
+      startingPrice: 20000,
+      priceUnit: 'per_day',
+      rating: 4.75,
+      reviewCount: 42,
+      completedBookingsCount: 95,
+      isFeatured: false,
+      portfolio: [
+        {
+          title: 'Traditional Vedic Wedding Rituals',
+          mediaType: 'image',
+          url: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1200&q=80',
+          category: 'Wedding',
+          tags: ['Traditional', 'Wedding', 'Rituals'],
+          isFeatured: true,
+        },
+      ],
+      availability: [
+        { dayOfWeek: 'Monday', isAvailable: true, startTime: '09:00', endTime: '18:00' },
+        { dayOfWeek: 'Tuesday', isAvailable: true, startTime: '09:00', endTime: '18:00' },
+        { dayOfWeek: 'Wednesday', isAvailable: true, startTime: '09:00', endTime: '18:00' },
+        { dayOfWeek: 'Thursday', isAvailable: true, startTime: '09:00', endTime: '18:00' },
+        { dayOfWeek: 'Friday', isAvailable: true, startTime: '09:00', endTime: '18:00' },
+        { dayOfWeek: 'Saturday', isAvailable: true, startTime: '09:00', endTime: '18:00' },
+        { dayOfWeek: 'Sunday', isAvailable: false }, // Closed on Sundays!
+      ],
+    },
+    services: [
+      {
+        title: 'Grand Traditional Wedding Coverage',
+        category: 'Wedding Photography',
+        professionType: ROLES.PHOTOGRAPHER,
+        description: 'Comprehensive 8-hour stage and ritual coverage with 2 photographers and printed photobook.',
+        price: 22000,
+        pricingType: 'daily',
+        deliveryDays: 14,
+        inclusions: ['2 Photographers', 'All RAW & JPEGs', 'Hardcover Photobook'],
+        revisionsAllowed: 1,
+        coverImage: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=80',
+      },
+    ],
+  },
+  {
+    user: {
+      name: 'Vikramaditya Rao',
+      email: 'vikram.booked@lenscraft.com',
+      password: 'password123',
+      role: ROLES.PHOTOGRAPHER,
+      phone: '+91 98930 11223',
+      avatar: {
+        url: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80',
+      },
+      location: {
+        city: 'Bhopal',
+        state: 'Madhya Pradesh',
+        country: 'India',
+        address: 'Shahpura, Bhopal',
+      },
+      bio: 'Contemporary candid wedding photographer based in Bhopal.',
+    },
+    profile: {
+      professionType: ROLES.PHOTOGRAPHER,
+      tagline: 'Modern Candid Visuals for Nuptials in MP',
+      about: 'Capturing candid wedding frames with modern cinematic grading.',
+      experienceYears: 4,
+      specialties: ['Candid', 'Wedding Photography', 'Pre-Wedding'],
+      equipment: ['Sony A7 III', 'Sigma 24-70mm f/2.8'],
+      softwareSkills: ['Lightroom'],
+      startingPrice: 15000,
+      priceUnit: 'per_day',
+      rating: 4.8,
+      reviewCount: 22,
+      completedBookingsCount: 30,
+      portfolio: [
+        {
+          title: 'Candid Joy in Bhopal Courtyard',
+          mediaType: 'image',
+          url: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80',
+          category: 'Wedding',
+          tags: ['Candid', 'Wedding'],
+          isFeatured: true,
+        },
+      ],
+      availability: [
+        { dayOfWeek: 'Monday', isAvailable: true, startTime: '09:00', endTime: '18:00' },
+        { dayOfWeek: 'Tuesday', isAvailable: true, startTime: '09:00', endTime: '18:00' },
+        { dayOfWeek: 'Wednesday', isAvailable: true, startTime: '09:00', endTime: '18:00' },
+        { dayOfWeek: 'Thursday', isAvailable: true, startTime: '09:00', endTime: '18:00' },
+        { dayOfWeek: 'Friday', isAvailable: true, startTime: '09:00', endTime: '18:00' },
+        { dayOfWeek: 'Saturday', isAvailable: true, startTime: '09:00', endTime: '20:00' },
+        { dayOfWeek: 'Sunday', isAvailable: true, startTime: '09:00', endTime: '20:00' },
+      ],
+    },
+    services: [
+      {
+        title: 'Essential Candid Wedding',
+        category: 'Wedding Photography',
+        professionType: ROLES.PHOTOGRAPHER,
+        description: 'Single shooter candid wedding day coverage.',
+        price: 15000,
+        pricingType: 'daily',
+        deliveryDays: 7,
+        inclusions: ['1 Photographer', '100 Edited Photos'],
+        revisionsAllowed: 1,
+        coverImage: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80',
+      },
+    ],
+  },
+  {
+    user: {
+      name: 'Neha Kapoor',
+      email: 'neha.bhopal@lenscraft.com',
+      password: 'password123',
+      role: ROLES.PHOTOGRAPHER,
+      phone: '+91 97555 44332',
+      avatar: {
+        url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
+      },
+      location: {
+        city: 'Bhopal',
+        state: 'Madhya Pradesh',
+        country: 'India',
+        address: 'Kolar Road, Bhopal',
+      },
+      bio: 'Fashion and portrait photographer with creative studio setups.',
+    },
+    profile: {
+      professionType: ROLES.PHOTOGRAPHER,
+      tagline: 'High-Fashion & Studio Portraits in Bhopal',
+      about: 'Editorial fashion portraits, brand lookbooks, and modeling portfolios.',
+      experienceYears: 3,
+      specialties: ['Fashion', 'Portraits', 'Candid'],
+      equipment: ['Canon EOS R5', 'Canon 85mm f/1.4'],
+      softwareSkills: ['Photoshop', 'Capture One'],
+      startingPrice: 16000,
+      priceUnit: 'per_day',
+      rating: 4.7,
+      reviewCount: 15,
+      completedBookingsCount: 18,
+      portfolio: [
+        {
+          title: 'Studio Haute Couture',
+          mediaType: 'image',
+          url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1200&q=80',
+          category: 'Fashion',
+          tags: ['Fashion', 'Studio'],
+          isFeatured: true,
+        },
+      ],
+      availability: [], // EMPTY SCHEDULE: To test unverified availability handling
+    },
+    services: [
+      {
+        title: 'Editorial Portrait & Fashion Shoot',
+        category: 'Fashion',
+        professionType: ROLES.PHOTOGRAPHER,
+        description: '4-hour fashion shoot in studio with 20 retouched editorial portraits.',
+        price: 16000,
+        pricingType: 'fixed',
+        deliveryDays: 5,
+        inclusions: ['4 Hours', '20 Retouched Images'],
+        revisionsAllowed: 2,
+        coverImage: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80',
+      },
+    ],
+  },
 ];
 
 const demoClientsAndAdmin = [
@@ -357,22 +705,32 @@ export const seedDatabase = async () => {
     await ProfessionalProfile.deleteMany({});
     await Service.deleteMany({});
     await Category.deleteMany({});
-    console.log('✓ Cleared existing collections.');
+    await Booking.deleteMany({});
+    console.log('✓ Cleared existing collections (Users, Profiles, Services, Categories, Bookings).');
 
     // 1. Seed Categories
     const createdCategories = await Category.insertMany(categoriesData);
     console.log(`✓ Inserted ${createdCategories.length} categories.`);
 
     // 2. Seed Admin & Demo Client
+    let demoClientUser = null;
     for (const item of demoClientsAndAdmin) {
-      await User.create(item);
+      const u = await User.create(item);
+      if (item.role === ROLES.USER) {
+        demoClientUser = u;
+      }
     }
     console.log(`✓ Created demo admin and client users.`);
 
     // 3. Seed Professionals + Profiles + Services
+    let vikramUser = null;
     for (const prof of professionalsData) {
       // Create user
       const user = await User.create(prof.user);
+
+      if (user.email === 'vikram.booked@lenscraft.com') {
+        vikramUser = user;
+      }
 
       // Create professional profile
       const profileData = {
@@ -395,6 +753,32 @@ export const seedDatabase = async () => {
       }
     }
 
+    // 4. Seed a confirmed booking for Vikramaditya Rao on 2026-11-15 to test availability exclusion
+    if (vikramUser && demoClientUser) {
+      const bookedDate = new Date('2026-11-15T10:00:00.000Z');
+      await Booking.create({
+        bookingReference: `LC-TEST-BOOKED`,
+        user: demoClientUser._id,
+        professional: vikramUser._id,
+        eventType: 'Wedding Photography',
+        eventDate: bookedDate,
+        startTime: '09:00',
+        endTime: '19:00',
+        durationHours: 10,
+        location: {
+          city: 'Bhopal',
+          venueName: 'Jehan Numa Palace',
+          address: 'Shamla Hills, Bhopal',
+        },
+        totalAmount: 15000,
+        advanceAmount: 4500,
+        status: BOOKING_STATUS.ACCEPTED,
+        paymentStatus: PAYMENT_STATUS.ADVANCE_PAID,
+        notes: 'Confirmed wedding shoot booking in Bhopal for testing calendar collision.',
+      });
+      console.log('✓ Created confirmed test booking for Vikramaditya Rao on 2026-11-15.');
+    }
+
     console.log(`✓ Inserted ${professionalsData.length} professional profiles and services.`);
     console.log('\n=============================================');
     console.log('🚀 DATABASE SEEDING COMPLETED SUCCESSFULLY!');
@@ -402,7 +786,12 @@ export const seedDatabase = async () => {
     console.log('Demo Credentials:');
     console.log('• Admin: admin@lenscraft.com / adminpassword123');
     console.log('• Client: client@lenscraft.com / password123');
-    console.log('• Photographer: aarav.photographer@lenscraft.com / password123');
+    console.log('• Photographer (Mumbai): aarav.photographer@lenscraft.com / password123');
+    console.log('• Photographer (Bhopal Candid, ₹14k): kabir.bhopal@lenscraft.com / password123');
+    console.log('• Photographer (Indore, ₹15k): devansh.indore@lenscraft.com / password123');
+    console.log('• Photographer (Bhopal Traditional, ₹22k): ananya.traditional@lenscraft.com / password123');
+    console.log('• Photographer (Bhopal Booked 2026-11-15): vikram.booked@lenscraft.com / password123');
+    console.log('• Photographer (Bhopal Unverified Avail): neha.bhopal@lenscraft.com / password123');
     console.log('• Videographer: rohan.video@lenscraft.com / password123');
     console.log('• Video Editor: priya.editor@lenscraft.com / password123');
     console.log('=============================================\n');
