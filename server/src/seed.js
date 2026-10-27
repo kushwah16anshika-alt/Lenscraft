@@ -4,7 +4,9 @@ import User from './models/User.js';
 import ProfessionalProfile from './models/ProfessionalProfile.js';
 import Service from './models/Service.js';
 import Category from './models/Category.js';
+import Booking from './models/Booking.js';
 import { ROLES } from './constants/roles.js';
+import { BOOKING_STATUS, PAYMENT_STATUS } from './constants/bookingStatus.js';
 
 dotenv.config();
 
