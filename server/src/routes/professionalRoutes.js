@@ -5,6 +5,7 @@ import {
   getProfessionalDashboard,
   updateProfessionalProfile,
   addPortfolioItem,
+  confirmAiClassification,
   deletePortfolioItem,
   getProfessionalAppointments,
 } from '../controllers/professionalController.js';
@@ -41,6 +42,13 @@ router.post(
   protect,
   authorizeRoles(...CREATIVE_ROLES),
   addPortfolioItem
+);
+
+router.patch(
+  '/me/portfolio/:itemId/ai-confirmation',
+  protect,
+  authorizeRoles(...CREATIVE_ROLES),
+  confirmAiClassification
 );
 
 router.delete(

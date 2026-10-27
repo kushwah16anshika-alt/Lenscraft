@@ -121,6 +121,7 @@ export const addPortfolioItem = async (req, res, next) => {
       mediaType: mediaType || 'image',
       url,
       isFeatured: !!isFeatured,
+      aiClassification: req.body.aiClassification || undefined,
     };
 
     profile.portfolio.push(newItem);
@@ -129,6 +130,51 @@ export const addPortfolioItem = async (req, res, next) => {
     return ApiResponse.success(res, 'Portfolio item added successfully', {
       portfolio: profile.portfolio,
       item: profile.portfolio[profile.portfolio.length - 1],
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Update / confirm AI classification on a portfolio item
+// @route   PATCH /api/professionals/me/portfolio/:itemId/ai-confirmation
+// @access  Private (Creative role)
+export const confirmAiClassification = async (req, res, next) => {
+  try {
+    const { itemId } = req.params;
+    const { category, isConfirmedByUser, isOverridden } = req.body;
+
+    const profile = await ProfessionalProfile.findOne({ user: req.user._id });
+    if (!profile) {
+      return ApiResponse.error(res, 'Professional profile not found', 404);
+    }
+
+    const item = profile.portfolio.id(itemId) || profile.portfolio.find((i) => i._id.toString() === itemId);
+    if (!item) {
+      return ApiResponse.error(res, 'Portfolio item not found', 404);
+    }
+
+    if (category) {
+      item.category = category;
+    }
+
+    if (!item.aiClassification) {
+      item.aiClassification = {};
+    }
+
+    if (isConfirmedByUser !== undefined) {
+      item.aiClassification.isConfirmedByUser = !!isConfirmedByUser;
+    }
+    if (isOverridden !== undefined) {
+      item.aiClassification.isOverridden = !!isOverridden;
+    }
+    item.aiClassification.needsReview = false;
+
+    await profile.save();
+
+    return ApiResponse.success(res, 'Portfolio AI classification updated successfully', {
+      item,
+      portfolio: profile.portfolio,
     });
   } catch (error) {
     next(error);

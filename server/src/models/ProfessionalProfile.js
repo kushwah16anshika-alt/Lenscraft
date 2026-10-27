@@ -15,6 +15,35 @@ const portfolioItemSchema = new mongoose.Schema({
   category: { type: String, default: 'General' },
   tags: [{ type: String }],
   isFeatured: { type: Boolean, default: false },
+  aiClassification: {
+    suggestedCategory: {
+      type: String,
+      enum: [
+        'Wedding photography',
+        'Portrait photography',
+        'Fashion photography',
+        'Nature and landscape photography',
+        'Product photography',
+        'Event photography',
+        'Food photography',
+        'Architecture and interior photography',
+        'Other or uncertain',
+      ],
+      default: 'Other or uncertain',
+    },
+    confidence: { type: Number, min: 0, max: 1, default: 0 },
+    allPredictions: [
+      {
+        category: { type: String },
+        confidence: { type: Number },
+      },
+    ],
+    isConfirmedByUser: { type: Boolean, default: false },
+    isOverridden: { type: Boolean, default: false },
+    modelName: { type: String, default: 'clip-vit-base-patch32' },
+    needsReview: { type: Boolean, default: false },
+    classifiedAt: { type: Date, default: Date.now },
+  },
   createdAt: { type: Date, default: Date.now },
 });
 

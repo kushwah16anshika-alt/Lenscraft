@@ -18,3 +18,5 @@ export class ApiResponse {
     return res.status(statusCode).json(payload);
   }
 }
+
+export default ApiResponse;

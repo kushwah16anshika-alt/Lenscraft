@@ -411,11 +411,12 @@ export const PlatformProvider = ({ children }) => {
   // Add Portfolio Item to Professional
   const addPortfolioItem = (proId, item) => {
     const newItem = {
-      id: `port-${Date.now()}`,
+      id: item.id || `port-${Date.now()}`,
       title: item.title,
       category: item.category || 'General',
       url: item.url,
       mediaType: item.mediaType || 'image',
+      aiClassification: item.aiClassification || undefined,
     };
 
     setProfessionals((prev) =>
@@ -431,6 +432,35 @@ export const PlatformProvider = ({ children }) => {
     );
 
     return newItem;
+  };
+
+  // Update AI classification / manual override on portfolio item
+  const updatePortfolioItemAiClassification = (proId, itemId, aiData) => {
+    setProfessionals((prev) =>
+      prev.map((pro) => {
+        if (pro.id === proId || (!proId && pro.id === 'pro-1')) {
+          return {
+            ...pro,
+            portfolio: (pro.portfolio || []).map((item) => {
+              if (item.id === itemId) {
+                return {
+                  ...item,
+                  category: aiData.category || item.category,
+                  aiClassification: {
+                    ...(item.aiClassification || {}),
+                    isConfirmedByUser: aiData.isConfirmedByUser ?? item.aiClassification?.isConfirmedByUser,
+                    isOverridden: aiData.isOverridden ?? item.aiClassification?.isOverridden,
+                    needsReview: false,
+                  },
+                };
+              }
+              return item;
+            }),
+          };
+        }
+        return pro;
+      })
+    );
   };
 
   // Delete Portfolio Item
@@ -732,6 +762,7 @@ export const PlatformProvider = ({ children }) => {
     cancelBooking,
     addReview,
     addPortfolioItem,
+    updatePortfolioItemAiClassification,
     deletePortfolioItem,
     addService,
     deleteService,

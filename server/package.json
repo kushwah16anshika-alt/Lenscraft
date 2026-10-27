@@ -10,6 +10,7 @@
     "seed": "node src/seed.js"
   },
   "dependencies": {
+    "@huggingface/inference": "^4.13.32",
     "bcryptjs": "^3.0.2",
     "cloudinary": "^2.5.1",
     "compression": "^1.8.2",
