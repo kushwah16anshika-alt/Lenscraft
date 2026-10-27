@@ -24,6 +24,7 @@ const FeaturesPage = lazy(() => import('../pages/public/FeaturesPage'));
 const AboutPage = lazy(() => import('../pages/public/AboutPage'));
 const ContactPage = lazy(() => import('../pages/public/ContactPage'));
 const ColorLabPage = lazy(() => import('../pages/public/ColorLabPage'));
+const RecommendationPage = lazy(() => import('../pages/public/RecommendationPage'));
 const NotFoundPage = lazy(() => import('../pages/public/NotFoundPage'));
 
 // Auth Pages (Lazy Loaded)
@@ -93,6 +94,9 @@ const AppRoutes = () => {
           <Route path="/colorlab" element={<ColorLabPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/recommendations" element={<RecommendationPage />} />
+          <Route path="/ai-recommendation" element={<RecommendationPage />} />
+          <Route path="/recommend" element={<RecommendationPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
 

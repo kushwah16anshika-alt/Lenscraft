@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { Camera, Search, SlidersHorizontal, Sparkles, RotateCcw, MapPin, ArrowUpDown, Star, ShieldCheck } from 'lucide-react';
+import { useSearchParams, Link } from 'react-router-dom';
+import { Camera, Search, SlidersHorizontal, Sparkles, RotateCcw, MapPin, ArrowUpDown, Star, ShieldCheck, ArrowRight } from 'lucide-react';
 import ProfessionalCard from '../../components/cards/ProfessionalCard';
 import { ROLES } from '../../constants/roles';
 import { usePlatform } from '../../context/PlatformContext';
@@ -75,6 +75,28 @@ const PhotographersPage = () => {
 
       {/* Discovery & Filter Controls */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 space-y-6 relative z-10">
+        {/* AI Recommendation System Promo Banner */}
+        <div className="flex flex-col sm:flex-row items-center justify-between p-4 sm:p-5 rounded-3xl bg-gradient-to-r from-cyan-500/15 via-indigo-500/10 to-transparent border border-cyan-500/35 shadow-xl gap-4">
+          <div className="flex items-center gap-3.5">
+            <div className="w-10 h-10 rounded-2xl bg-cyan-500/20 border border-cyan-400/30 flex items-center justify-center text-cyan-400 shrink-0">
+              <Sparkles className="w-5 h-5 animate-pulse" />
+            </div>
+            <div>
+              <h4 className="text-sm font-display font-bold text-white">Need an Instant Custom Recommendation?</h4>
+              <p className="text-xs text-slate-300">
+                Match photographers by event type, location (Bhopal, Indore, etc.), candid style, budget, and live verified schedule.
+              </p>
+            </div>
+          </div>
+          <Link
+            to="/recommendations"
+            className="px-4 sm:px-5 py-2.5 rounded-2xl glow-btn-primary text-xs font-bold font-mono uppercase tracking-wider shrink-0 flex items-center gap-2 hover:scale-102 transition-transform shadow-[0_0_15px_rgba(0,210,255,0.3)]"
+          >
+            <span>AI Photographer Match</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+
         <div className="p-5 sm:p-6 rounded-3xl glass-panel border border-sky-500/25 space-y-4 shadow-xl">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
             {/* Search Input */}

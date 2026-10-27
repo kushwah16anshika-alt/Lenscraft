@@ -88,6 +88,7 @@ const Navbar = () => {
 
   const navLinks = [
     { label: 'Home', path: '/' },
+    { label: 'AI Recommend', path: '/recommendations' },
     { label: 'Photographers', path: '/photographers' },
     { label: 'Videographers', path: '/videographers' },
     { label: 'Editors', path: '/editors' },

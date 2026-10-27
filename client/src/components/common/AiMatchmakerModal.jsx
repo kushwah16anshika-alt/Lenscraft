@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Sparkles,
@@ -15,9 +15,12 @@ import {
   Star,
   ShieldCheck,
   Zap,
+  RefreshCw,
+  SlidersHorizontal,
 } from 'lucide-react';
 import { MOCK_PROFESSIONALS } from '../../constants/mockData';
 import { ROLES, ROLE_LABELS } from '../../constants/roles';
+import { recommendationService } from '../../services/recommendationService';
 import Button from './Button';
 import Avatar from './Avatar';
 
@@ -71,7 +74,98 @@ const AiMatchmakerModal = ({ isOpen, onClose }) => {
   const [includeDrone, setIncludeDrone] = useState(true);
   const [fastTeaser, setFastTeaser] = useState(true);
 
-  if (!isOpen) return null;
+  const [matches, setMatches] = useState([]);
+  const [loadingMatches, setLoadingMatches] = useState(false);
+  const [matchError, setMatchError] = useState(null);
+
+  // Fallback offline mock creator matcher
+  const getMatchedCreators = () => {
+    let list = MOCK_PROFESSIONALS.filter((p) => {
+      const city = typeof p.location === 'object' ? p.location.city : p.location;
+      if (selectedCity !== 'All Locations' && city && !city.toLowerCase().includes(selectedCity.toLowerCase())) {
+        return false;
+      }
+      if (maxBudget && p.startingPrice && p.startingPrice > maxBudget * 1.15) {
+        return false;
+      }
+      return true;
+    });
+
+    if (list.length === 0) {
+      list = MOCK_PROFESSIONALS;
+    }
+
+    return list.slice(0, 3).map((creator, idx) => ({
+      ...creator,
+      matchScore: 95 - idx * 4,
+    }));
+  };
+
+  const fetchApiRecommendations = async () => {
+    setLoadingMatches(true);
+    setMatchError(null);
+    try {
+      let mappedEvent = 'Wedding';
+      if (selectedOccasion === 'wedding') mappedEvent = 'Wedding';
+      else if (selectedOccasion === 'pre-wedding') mappedEvent = 'Pre-Wedding';
+      else if (selectedOccasion === 'fashion') mappedEvent = 'Fashion';
+      else if (selectedOccasion === 'commercial') mappedEvent = 'Commercial';
+
+      let mappedStyle = 'Candid';
+      if (selectedAesthetic === 'cinematic') mappedStyle = 'Cinematic';
+      else if (selectedAesthetic === 'fine-art') mappedStyle = 'Fine-Art';
+      else if (selectedAesthetic === 'bold-fashion') mappedStyle = 'Fashion';
+      else if (selectedAesthetic === 'documentary') mappedStyle = 'Candid';
+
+      let effectiveBudget = maxBudget;
+      if (!effectiveBudget) {
+        if (budgetTier === 'budget') effectiveBudget = 20000;
+        else if (budgetTier === 'standard') effectiveBudget = 40000;
+        else effectiveBudget = 80000;
+      }
+
+      const res = await recommendationService.getRecommendations({
+        eventType: mappedEvent,
+        location: selectedCity !== 'All Locations' ? selectedCity : '',
+        photographyStyle: mappedStyle,
+        maxBudget: effectiveBudget,
+        excludeUnavailable: false,
+      });
+
+      if (res.success && res.data?.recommendations?.length > 0) {
+        setMatches(
+          res.data.recommendations.slice(0, 4).map((r) => ({
+            id: r.id,
+            name: r.name,
+            avatar: r.avatar || r.coverImage,
+            isVerified: r.isVerified,
+            tagline: r.profile?.tagline,
+            rating: r.profile?.rating || 5.0,
+            reviewCount: r.profile?.reviewCount || 0,
+            location: r.location,
+            startingPrice: r.displayPrice,
+            bestPackage: r.bestMatchingPackage?.title,
+            matchScore: r.overallScore,
+            availabilityStatus: r.availabilityStatus,
+            matchReasons: r.matchReasons,
+          }))
+        );
+      } else {
+        setMatches(getMatchedCreators());
+      }
+    } catch (e) {
+      console.warn('Real recommendation query error:', e);
+      setMatches(getMatchedCreators());
+    } finally {
+      setLoadingMatches(false);
+    }
+  };
+
+  useEffect(() => {
+    if (step === 4 && isOpen) {
+      fetchApiRecommendations();
+    }
+  }, [step, isOpen]);
 
   // Natural Language Query Parser
   const handleNaturalSearch = (e) => {
@@ -106,7 +200,7 @@ const AiMatchmakerModal = ({ isOpen, onClose }) => {
       setSelectedAesthetic('bold-fashion');
     }
 
-    // 4. Detect Budget Numbers (e.g. 30000, 30k, 50,000)
+    // 4. Detect Budget Numbers
     const budgetMatch = lower.match(/(?:under|below|budget|within|upto|₹|rs\.?)\s*(\d+[\d,]*\s*k?)/i) || lower.match(/(\d+000)/);
     if (budgetMatch) {
       let numStr = budgetMatch[1].replace(/,/g, '').toLowerCase();
@@ -127,37 +221,6 @@ const AiMatchmakerModal = ({ isOpen, onClose }) => {
     // Jump straight to results step 4
     setStep(4);
   };
-
-  // Find target matches based on selections
-  const occasionObj = OCCASIONS.find((o) => o.id === selectedOccasion) || OCCASIONS[0];
-  
-  const getMatchedCreators = () => {
-    let list = MOCK_PROFESSIONALS.filter((p) => {
-      const city = typeof p.location === 'object' ? p.location.city : p.location;
-      if (selectedCity !== 'All Locations' && city && !city.toLowerCase().includes(selectedCity.toLowerCase())) {
-        return false;
-      }
-      if (maxBudget && p.startingPrice && p.startingPrice > maxBudget * 1.15) {
-        return false;
-      }
-      return true;
-    });
-
-    if (list.length === 0) {
-      list = MOCK_PROFESSIONALS;
-    }
-
-    // Sort matching highest ratings
-    return list.slice(0, 3).map((creator, idx) => {
-      const matchScore = 98 - idx * 3;
-      return {
-        ...creator,
-        matchScore,
-      };
-    });
-  };
-
-  const matches = getMatchedCreators();
 
   const handleResetAndClose = () => {
     setStep(1);
@@ -475,64 +538,98 @@ const AiMatchmakerModal = ({ isOpen, onClose }) => {
                 </span>
               </div>
 
-              <div className="space-y-3.5">
-                {matches.map((creator) => (
-                  <div
-                    key={creator.id}
-                    className="p-4 rounded-xl glass-card hover:border-cyan-500/50 transition-all shadow-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
-                  >
-                    <div className="flex items-center gap-3.5">
-                      <Avatar
-                        src={creator.avatar}
-                        name={creator.name}
-                        size="lg"
-                        className="shrink-0 ring-2 ring-cyan-500/30"
-                      />
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2">
-                          <h5 className="text-sm font-bold text-white">{creator.name}</h5>
-                          {creator.isVerified && (
-                            <ShieldCheck className="w-4 h-4 text-cyan-400" title="Verified Roster" />
-                          )}
-                          <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-cyan-500 text-slate-950">
-                            {creator.matchScore}% Match
-                          </span>
-                        </div>
-                        <p className="text-xs text-slate-400 line-clamp-1">{creator.tagline}</p>
-                        <div className="flex items-center gap-3 text-[11px] text-slate-400 font-medium">
-                          <span className="flex items-center gap-1">
-                            <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                            {creator.rating} ({creator.reviewCount} reviews)
-                          </span>
-                          <span>·</span>
-                          <span className="flex items-center gap-1">
-                            <MapPin className="w-3 h-3 text-cyan-400" />
-                            {creator.location?.city}
-                          </span>
+              {loadingMatches ? (
+                <div className="py-12 flex flex-col items-center justify-center gap-3">
+                  <RefreshCw className="w-8 h-8 text-cyan-400 animate-spin" />
+                  <p className="text-xs font-mono text-cyan-300">Scoring MongoDB photographers with weighted vectors...</p>
+                </div>
+              ) : (
+                <div className="space-y-3.5">
+                  {matches.map((creator) => (
+                    <div
+                      key={creator.id}
+                      className="p-4 rounded-xl glass-card hover:border-cyan-500/50 transition-all shadow-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+                    >
+                      <div className="flex items-center gap-3.5">
+                        <Avatar
+                          src={creator.avatar}
+                          name={creator.name}
+                          size="lg"
+                          className="shrink-0 ring-2 ring-cyan-500/30"
+                        />
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2">
+                            <h5 className="text-sm font-bold text-white">{creator.name}</h5>
+                            {creator.isVerified && (
+                              <ShieldCheck className="w-4 h-4 text-cyan-400" title="Verified Roster" />
+                            )}
+                            <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-cyan-500 text-slate-950">
+                              {creator.matchScore}% Match
+                            </span>
+                            {creator.availabilityStatus === 'VERIFIED_AVAILABLE' && (
+                              <span className="px-1.5 py-0.5 rounded text-[9px] font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                                Open
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-xs text-slate-400 line-clamp-1">{creator.tagline}</p>
+                          <div className="flex items-center gap-3 text-[11px] text-slate-400 font-medium">
+                            <span className="flex items-center gap-1">
+                              <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                              {creator.rating} ({creator.reviewCount} reviews)
+                            </span>
+                            <span>·</span>
+                            <span className="flex items-center gap-1">
+                              <MapPin className="w-3 h-3 text-cyan-400" />
+                              {typeof creator.location === 'object' ? creator.location.city : creator.location}
+                            </span>
+                            {creator.bestPackage && (
+                              <>
+                                <span>·</span>
+                                <span className="text-cyan-300 font-mono text-[10px] truncate max-w-[140px]">
+                                  {creator.bestPackage}
+                                </span>
+                              </>
+                            )}
+                          </div>
                         </div>
                       </div>
-                    </div>
 
-                    <div className="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-2 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-800 shrink-0">
-                      <div className="text-left sm:text-right">
-                        <span className="text-xs font-bold text-white">
-                          ₹{creator.startingPrice?.toLocaleString()}
-                        </span>
-                        <span className="text-[10px] text-slate-400 block">Starting rate</span>
+                      <div className="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-2 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-800 shrink-0">
+                        <div className="text-left sm:text-right">
+                          <span className="text-xs font-bold text-white font-mono">
+                            ₹{creator.startingPrice?.toLocaleString('en-IN')}
+                          </span>
+                          <span className="text-[10px] text-slate-400 block">Package price</span>
+                        </div>
+
+                        <Link
+                          to={`/professionals/${creator.id}`}
+                          onClick={handleResetAndClose}
+                        >
+                          <Button variant="primary" size="sm" rightIcon={<ArrowRight className="w-3.5 h-3.5" />}>
+                            View Studio
+                          </Button>
+                        </Link>
                       </div>
-
-                      <Link
-                        to={`/professionals/${creator.id}`}
-                        onClick={handleResetAndClose}
-                      >
-                        <Button variant="primary" size="sm" rightIcon={<ArrowRight className="w-3.5 h-3.5" />}>
-                          View Studio
-                        </Button>
-                      </Link>
                     </div>
+                  ))}
+
+                  {/* Deep Engine CTA */}
+                  <div className="pt-2 text-center">
+                    <Link
+                      to={`/recommendations?event=${encodeURIComponent(selectedOccasion)}&location=${encodeURIComponent(
+                        selectedCity === 'All Locations' ? '' : selectedCity
+                      )}&style=${encodeURIComponent(selectedAesthetic)}`}
+                      onClick={handleResetAndClose}
+                      className="inline-flex items-center gap-2 text-xs font-mono text-cyan-400 hover:text-cyan-300 transition-colors py-1"
+                    >
+                      <SlidersHorizontal className="w-3.5 h-3.5" />
+                      <span>Open Full Recommendation Engine with Custom Weights & Availability Filters →</span>
+                    </Link>
                   </div>
-                ))}
-              </div>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -562,16 +659,28 @@ const AiMatchmakerModal = ({ isOpen, onClose }) => {
               Next Step
             </Button>
           ) : (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                handleResetAndClose();
-                navigate('/photographers');
-              }}
-            >
-              Explore Full Catalog
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  handleResetAndClose();
+                  navigate('/recommendations');
+                }}
+              >
+                Full AI Engine
+              </Button>
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={() => {
+                  handleResetAndClose();
+                  navigate('/photographers');
+                }}
+              >
+                Browse All
+              </Button>
+            </div>
           )}
         </div>
       </div>
