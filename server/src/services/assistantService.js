@@ -3,6 +3,7 @@ import User from '../models/User.js';
 import ProfessionalProfile from '../models/ProfessionalProfile.js';
 import Service from '../models/Service.js';
 import { ROLES, CREATIVE_ROLES } from '../constants/roles.js';
+import { classifyIntentAndEntities } from './nlpIntentService.js';
 
 const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
 
@@ -311,14 +312,28 @@ export const processAssistantMessage = async ({ message, history = [], user = nu
     throw new Error('Message cannot be empty');
   }
 
-  const criteria = extractSearchCriteria(sanitizedMessage);
+  // 1. Multilingual NLP Intent Classification & Entity Extraction
+  const nlp = await classifyIntentAndEntities(sanitizedMessage);
+  const regexCriteria = extractSearchCriteria(sanitizedMessage);
+
+  // Merge entities (NLP model entities with regex fallback)
+  const criteria = {
+    location: nlp.entities.location || regexCriteria.location || '',
+    maxBudget: nlp.entities.budget || regexCriteria.maxBudget || null,
+    eventType: nlp.entities.eventType || regexCriteria.eventType || '',
+    photographyStyle: nlp.entities.photographyStyle || regexCriteria.photographyStyle || '',
+    requiredService: nlp.entities.requiredService || 'photographer',
+  };
+
   const clean = sanitizedMessage.toLowerCase();
 
-  // Check general platform questions
-  const isBookingQuestion = clean.includes('how to book') || clean.includes('booking process') || clean.includes('how does booking work') || clean.includes('book a photographer');
-  const isPackageQuestion = clean.includes('package') || clean.includes('pricing') || clean.includes('price list') || clean.includes('cost of') || clean.includes('rates');
+  // Intent classification routing
+  const isBookingQuestion = nlp.intent === 'booking_help' || clean.includes('how to book') || clean.includes('booking process') || clean.includes('how does booking work') || clean.includes('book a photographer');
+  const isPackageQuestion = nlp.intent === 'package_search' || nlp.intent === 'pricing_question' || clean.includes('package') || clean.includes('pricing') || clean.includes('price list') || clean.includes('cost of') || clean.includes('rates');
   const isCompareQuestion = clean.includes('compare') || clean.includes('difference between') || clean.includes('versus') || clean.includes('vs');
-  const isSearchQuestion = clean.includes('need') || clean.includes('find') || clean.includes('looking for') || clean.includes('recommend') || clean.includes('photographer') || clean.includes('videographer') || criteria.location || criteria.eventType || criteria.maxBudget;
+  const isGeneralHelp = nlp.intent === 'general_lenscraft_help';
+  const isSearchQuestion = nlp.intent === 'photographer_search' || clean.includes('need') || clean.includes('find') || clean.includes('looking for') || clean.includes('recommend') || clean.includes('photographer') || clean.includes('videographer') || criteria.location || criteria.eventType || criteria.maxBudget;
+  const isUnknown = nlp.intent === 'unknown_or_unsupported' && !criteria.location && !criteria.eventType && !criteria.maxBudget;
 
   let matchingPhotographers = [];
   let matchingPackages = [];
@@ -327,7 +342,7 @@ export const processAssistantMessage = async ({ message, history = [], user = nu
   if (isCompareQuestion) {
     // Check if comparing specific creators
     matchingPhotographers = await comparePhotographersInDb(['Aarav Sharma', 'Kabir Sen']);
-  } else if (isPackageQuestion && !criteria.location && !criteria.eventType) {
+  } else if ((isPackageQuestion || nlp.intent === 'pricing_question') && !criteria.location && !criteria.eventType) {
     matchingPackages = await getPackagesFromDb({ limit: 6 });
   } else if (isSearchQuestion || criteria.eventType || criteria.location || criteria.maxBudget) {
     matchingPhotographers = await searchPhotographersInDb({
@@ -339,7 +354,6 @@ export const processAssistantMessage = async ({ message, history = [], user = nu
     });
 
     if (matchingPhotographers.length > 0) {
-      // Gather top packages
       matchingPackages = matchingPhotographers.flatMap((p) => p.packages || []).slice(0, 4);
     }
   }
@@ -361,6 +375,10 @@ export const processAssistantMessage = async ({ message, history = [], user = nu
       const groundedContext = `
 You are the official Lenscraft AI Assistant for the Lenscraft photography marketplace.
 You help customers find verified photographers, videographers, understand packages and pricing, compare creators, and guide booking steps.
+
+NLP INTENT CONTEXT:
+- Detected Intent: ${nlp.intent} (Confidence: ${(nlp.confidence * 100).toFixed(1)}%)
+- Detected Language: ${nlp.entities.detectedLanguage}
 
 STRICT GROUNDING RULES:
 1. ONLY reference the real photographer profiles and packages provided in the DATABASE CONTEXT below.
@@ -410,6 +428,8 @@ Detected User Request Parameters:
       isBookingQuestion,
       isPackageQuestion,
       isSearchQuestion,
+      isGeneralHelp,
+      isUnknown,
       missingFields,
     });
   }
@@ -420,6 +440,7 @@ Detected User Request Parameters:
     matchingPhotographers,
     isBookingQuestion,
     isPackageQuestion,
+    customFollowUps: nlp.suggestedFollowUps,
   });
 
   return {
@@ -429,9 +450,21 @@ Detected User Request Parameters:
     packages: matchingPackages,
     suggestedFollowUps,
     missingFields,
+    nlp: {
+      intent: nlp.intent,
+      confidence: nlp.confidence,
+      isConfident: nlp.isConfident,
+      allProbabilities: nlp.allProbabilities,
+      entities: nlp.entities,
+      detectedLanguage: nlp.entities.detectedLanguage,
+      source: nlp.source,
+    },
     meta: {
       provider: ai ? 'gemini' : 'grounded-database-engine',
-      model: ai ? GEMINI_MODEL : 'lenscraft-knowledge-graph',
+      model: ai ? GEMINI_MODEL : 'lenscraft-multilingual-nlp-graph',
+      nlpIntent: nlp.intent,
+      nlpSource: nlp.source,
+      nlpConfidence: nlp.confidence,
       matchedCount: matchingPhotographers.length,
     },
   };
