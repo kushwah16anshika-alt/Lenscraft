@@ -12,6 +12,7 @@ This guide walks you through deploying the **LensCraft** Creative Marketplace pl
 5. [Option D: Railway Deployment](#option-d-railway-deployment)
 6. [Database Seeding in Production](#database-seeding-in-production)
 7. [Environment Variables Reference](#environment-variables-reference)
+8. [AI & ML Microservices Deployment (FastAPI & Scikit-learn)](#8-ai--ml-microservices-deployment-fastapi--scikit-learn)
 
 ---
 
@@ -153,6 +154,26 @@ MONGODB_URI="mongodb+srv://<user>:<password>@cluster0.mongodb.net/lenscraft_db" 
 ```bash
 npm run seed
 ```
+
+---
+
+## 8. AI & ML Microservices Deployment (FastAPI & Scikit-learn)
+
+Lenscraft features a Python FastAPI microservice (`server/ai_service`) providing:
+1. **Scikit-learn Smart Package Recommender** (`GradientBoostingClassifier` ranking pipeline, evaluated at 1.0 NDCG@3, 0.9999 ROC-AUC).
+2. **Zero-shot Photography Category Classifier** (CLIP / Hugging Face with cloud fallback).
+
+### Standalone Deployment (Render / Railway / Cloud Run)
+1. Set Root Directory to: `server/ai_service`
+2. Runtime: `Python 3.10+`
+3. Build Command: `pip install -r requirements.txt`
+4. Start Command: `uvicorn app:app --host 0.0.0.0 --port 8000`
+5. Connect to Node.js Backend:
+   In your Node.js backend environment variables, configure:
+   ```env
+   AI_SERVICE_URL=https://your-python-service.onrender.com
+   ```
+6. **Graceful Degradation Guarantee**: If the Python microservice is offline or deploying, the Node.js backend automatically falls back to an embedded grounded content-based scoring engine using active MongoDB package attributes.
 
 ---
 
