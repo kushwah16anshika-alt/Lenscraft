@@ -1,6 +1,7 @@
 """
 Training and Evaluation Script for Lenscraft Multilingual Intent Classification Model
 - Trains and benchmarks TF-IDF + Logistic Regression baseline vs LinearSVC, MultinomialNB, and Random Forest.
+- Uses FeatureUnion of word n-grams and character n-grams for phonetic resilience in Hinglish.
 - Evaluates using stratified train/test split.
 - Calculates Precision, Recall, F1-Score (macro & weighted), and Confusion Matrix.
 - Saves model pipeline to `nlp_intent_model.joblib`.
@@ -23,7 +24,7 @@ from typing import Dict, Any
 
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.pipeline import Pipeline
+from sklearn.pipeline import Pipeline, FeatureUnion
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import LinearSVC
 from sklearn.naive_bayes import MultinomialNB
@@ -40,9 +41,37 @@ from sklearn.metrics import (
 from nlp_intent_dataset import INTENT_DATA, INTENT_LABELS
 
 
+def build_feature_extractor():
+    """
+    Builds hybrid Word + Character boundary n-gram feature extractor.
+    Phonetically robust for Roman Hinglish spelling variations and Devanagari Hindi.
+    """
+    word_vectorizer = TfidfVectorizer(
+        ngram_range=(1, 2),
+        analyzer='word',
+        sublinear_tf=True,
+        lowercase=True,
+        min_df=1,
+        token_pattern=r'(?u)\b\w+\b'
+    )
+    
+    char_vectorizer = TfidfVectorizer(
+        ngram_range=(2, 5),
+        analyzer='char_wb',
+        sublinear_tf=True,
+        lowercase=True,
+        min_df=1
+    )
+    
+    return FeatureUnion([
+        ('word_tfidf', word_vectorizer),
+        ('char_tfidf', char_vectorizer)
+    ])
+
+
 def train_and_evaluate():
     print("=" * 70)
-    print("🚀 TRAINING LENSCRAFT MULTILINGUAL NLP INTENT CLASSIFIER")
+    print("TRAINING LENSCRAFT MULTILINGUAL NLP INTENT CLASSIFIER")
     print("=" * 70)
 
     # 1. Dataset Verification
@@ -57,7 +86,7 @@ def train_and_evaluate():
     # Check for duplicates
     duplicates = df[df.duplicated(subset=['text'])]
     if len(duplicates) > 0:
-        print(f"⚠️ Warning: Found {len(duplicates)} duplicates. Removing...")
+        print(f"Warning: Found {len(duplicates)} duplicates. Removing...")
         df = df.drop_duplicates(subset=['text']).reset_index(drop=True)
     else:
         print("✓ No duplicate utterances found.")
@@ -75,30 +104,24 @@ def train_and_evaluate():
     print(f"\n[2] Data Split: {len(X_train)} Train samples, {len(X_test)} Test samples")
 
     # 3. Candidate Models Benchmarking
-    # Vectorizer uses sublinear TF scaling with unigrams & bigrams and char boundary n-grams for Hinglish phonetic tolerance
-    vectorizer = TfidfVectorizer(
-        ngram_range=(1, 2),
-        sublinear_tf=True,
-        lowercase=True,
-        min_df=1,
-        token_pattern=r'(?u)\b\w+\b'
-    )
-
     candidate_classifiers = {
         "Logistic_Regression_Baseline": LogisticRegression(
             C=3.0,
+            class_weight='balanced',
             max_iter=1000,
             random_state=42
         ),
         "Linear_SVC": LinearSVC(
-            C=1.5,
+            C=1.0,
+            class_weight='balanced',
             random_state=42
         ),
         "Multinomial_Naive_Bayes": MultinomialNB(
-            alpha=0.5
+            alpha=0.3
         ),
         "Random_Forest": RandomForestClassifier(
-            n_estimators=100,
+            n_estimators=120,
+            class_weight='balanced',
             random_state=42
         )
     }
@@ -108,12 +131,13 @@ def train_and_evaluate():
     best_f1 = -1.0
     best_pipeline = None
 
-    print("\n[3] Benchmarking Candidate Classifiers:")
+    print("\n[3] Benchmarking Candidate Classifiers with Word+Char FeatureUnion:")
     print("-" * 70)
 
     for name, clf in candidate_classifiers.items():
+        feature_union = build_feature_extractor()
         pipe = Pipeline([
-            ('tfidf', vectorizer),
+            ('features', feature_union),
             ('classifier', clf)
         ])
 
@@ -140,7 +164,7 @@ def train_and_evaluate():
             best_pipeline = pipe
 
     print("-" * 70)
-    print(f"🏆 Best Performing Model: {best_model_name} (F1: {best_f1:.4f})")
+    print(f"Best Performing Model: {best_model_name} (F1: {best_f1:.4f})")
 
     # 4. Detailed Evaluation for Best Model
     y_test_pred = best_pipeline.predict(X_test)

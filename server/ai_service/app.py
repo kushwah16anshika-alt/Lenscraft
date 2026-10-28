@@ -21,6 +21,13 @@ from smart_recommender import (
     RecommendationResponse,
 )
 
+# Import Multilingual NLP Intent Service module
+from nlp_intent_service import (
+    load_intent_model,
+    predict_intent_and_entities,
+    INTENT_LABELS,
+)
+
 # Optional PyTorch & CLIP imports with graceful degradation
 try:
     from PIL import Image
@@ -51,6 +58,9 @@ app.add_middleware(
 
 # Pre-load Scikit-learn Smart Recommender model at startup
 load_recommender_model()
+
+# Pre-load Scikit-learn Multilingual NLP Intent model at startup
+load_intent_model()
 
 # Model configuration for CLIP
 MODEL_ID = os.getenv("CLIP_MODEL_ID", "openai/clip-vit-base-patch32")
@@ -188,15 +198,60 @@ def run_clip_inference(pil_image: Image.Image) -> ClassificationResponse:
     )
 
 
+class IntentClassificationRequest(BaseModel):
+    text: str
+
+
+class IntentClassificationResponse(BaseModel):
+    text: str
+    intent: str
+    confidence: float
+    isConfident: bool
+    allProbabilities: dict
+    entities: dict
+    suggestedFollowUps: List[str]
+
+
 @app.get("/health")
 def health_check():
     rec_model = load_recommender_model()
+    nlp_model = load_intent_model()
     return {
         "status": "healthy",
         "service": "Lenscraft AI & ML Microservice",
         "clip_model": MODEL_ID if TORCH_AVAILABLE and model is not None else "cloud_fallback",
         "smart_recommender_status": "loaded" if rec_model is not None else "unloaded",
+        "multilingual_nlp_intent_status": "loaded" if nlp_model is not None else "unloaded",
         "device": device,
+    }
+
+
+@app.post("/nlp/classify-intent", response_model=IntentClassificationResponse)
+async def classify_intent(request: IntentClassificationRequest):
+    """
+    Multilingual NLP Intent Classification & Entity Extraction
+    Supports English, Devanagari Hindi, and Roman Hinglish.
+    """
+    if not request.text or request.text.strip() == "":
+        raise HTTPException(status_code=400, detail="Query text cannot be empty.")
+
+    try:
+        result = predict_intent_and_entities(request.text)
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"NLP intent classification error: {str(e)}")
+
+
+@app.get("/nlp/info")
+def nlp_info():
+    """Returns metadata about the Multilingual Intent Classification model."""
+    nlp_model = load_intent_model()
+    return {
+        "status": "ready" if nlp_model is not None else "unavailable",
+        "intents": INTENT_LABELS,
+        "supportedLanguages": ["en", "hi", "hinglish"],
+        "supportedEntities": ["eventType", "location", "budget", "photographyStyle", "requiredService"],
+        "algorithm": "FeatureUnion(Word TF-IDF + Char TF-IDF) -> LinearSVC"
     }
 
 
