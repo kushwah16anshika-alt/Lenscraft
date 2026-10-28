@@ -331,15 +331,16 @@ export const processAssistantMessage = async ({ message, history = [], user = nu
   const isBookingQuestion = nlp.intent === 'booking_help' || clean.includes('how to book') || clean.includes('booking process') || clean.includes('how does booking work') || clean.includes('book a photographer');
   const isPackageQuestion = nlp.intent === 'package_search' || nlp.intent === 'pricing_question' || clean.includes('package') || clean.includes('pricing') || clean.includes('price list') || clean.includes('cost of') || clean.includes('rates');
   const isCompareQuestion = clean.includes('compare') || clean.includes('difference between') || clean.includes('versus') || clean.includes('vs');
-  const isGeneralHelp = nlp.intent === 'general_lenscraft_help';
-  const isSearchQuestion = nlp.intent === 'photographer_search' || clean.includes('need') || clean.includes('find') || clean.includes('looking for') || clean.includes('recommend') || clean.includes('photographer') || clean.includes('videographer') || criteria.location || criteria.eventType || criteria.maxBudget;
-  const isUnknown = nlp.intent === 'unknown_or_unsupported' && !criteria.location && !criteria.eventType && !criteria.maxBudget;
+  const isUnknown = nlp.intent === 'unknown_or_unsupported';
+  const isSearchQuestion = !isUnknown && (nlp.intent === 'photographer_search' || clean.includes('need') || clean.includes('find') || clean.includes('looking for') || clean.includes('recommend') || clean.includes('photographer') || clean.includes('videographer') || criteria.location || criteria.eventType || criteria.maxBudget);
 
   let matchingPhotographers = [];
   let matchingPackages = [];
 
   // Execute database lookups based on intent
-  if (isCompareQuestion) {
+  if (isUnknown) {
+    // Out of domain: no creator or package search needed
+  } else if (isCompareQuestion) {
     // Check if comparing specific creators
     matchingPhotographers = await comparePhotographersInDb(['Aarav Sharma', 'Kabir Sen']);
   } else if ((isPackageQuestion || nlp.intent === 'pricing_question') && !criteria.location && !criteria.eventType) {
