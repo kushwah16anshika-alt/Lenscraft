@@ -137,6 +137,7 @@ How can I help you plan your next shoot?`,
         photographers: data.photographers || [],
         packages: data.packages || [],
         suggestedFollowUps: data.suggestedFollowUps || [],
+        nlp: data.nlp || null,
         meta: data.meta || null,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       };
@@ -189,6 +190,9 @@ How can I help you plan your next shoot?`,
                 </h1>
                 <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-emerald-950/80 text-emerald-400 border border-emerald-500/30">
                   Live Grounded
+                </span>
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-purple-950/80 text-purple-300 border border-purple-500/30 hidden sm:inline-block">
+                  Multilingual NLP (Scikit-Learn)
                 </span>
               </div>
               <p className="text-xs text-slate-400">
@@ -260,7 +264,45 @@ How can I help you plan your next shoot?`,
               )}
 
               {/* Message Bubble & Cards */}
-              <div className={`max-w-[88%] sm:max-w-[78%] space-y-3 ${isUser ? 'text-right' : 'text-left'}`}>
+              <div className={`max-w-[88%] sm:max-w-[78%] space-y-2.5 ${isUser ? 'text-right' : 'text-left'}`}>
+                {/* NLP Intent & Entities Ribbon */}
+                {!isUser && msg.nlp && (
+                  <div className="flex flex-wrap items-center gap-1.5 pt-0.5 pb-0.5">
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-mono font-semibold bg-gradient-to-r from-amber-500/15 to-orange-500/15 border border-amber-500/30 text-amber-300 shadow-sm">
+                      <Sparkles className="w-2.5 h-2.5 text-amber-400" />
+                      Intent: {msg.nlp.intent?.replace(/_/g, ' ')}
+                      {msg.nlp.confidence ? ` (${(msg.nlp.confidence * 100).toFixed(0)}%)` : ''}
+                    </span>
+                    {msg.nlp.detectedLanguage && (
+                      <span className="px-1.5 py-0.5 rounded text-[9px] font-mono uppercase bg-slate-800/80 border border-slate-700 text-slate-300">
+                        {msg.nlp.detectedLanguage === 'hi' ? 'Hindi' : msg.nlp.detectedLanguage === 'hinglish' ? 'Hinglish' : 'English'}
+                      </span>
+                    )}
+                    {msg.nlp.entities?.location && (
+                      <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[9px] font-mono bg-cyan-950/70 border border-cyan-500/30 text-cyan-300">
+                        <MapPin className="w-2.5 h-2.5" />
+                        {msg.nlp.entities.location}
+                      </span>
+                    )}
+                    {msg.nlp.entities?.budget && (
+                      <span className="px-1.5 py-0.5 rounded text-[9px] font-mono bg-emerald-950/70 border border-emerald-500/30 text-emerald-300">
+                        ₹{msg.nlp.entities.budget.toLocaleString('en-IN')}
+                      </span>
+                    )}
+                    {msg.nlp.entities?.eventType && (
+                      <span className="px-1.5 py-0.5 rounded text-[9px] font-mono bg-purple-950/70 border border-purple-500/30 text-purple-300">
+                        {msg.nlp.entities.eventType}
+                      </span>
+                    )}
+                    {msg.nlp.isConfident === false && (
+                      <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-mono bg-amber-950/70 border border-amber-500/30 text-amber-400">
+                        <AlertCircle className="w-2.5 h-2.5" />
+                        Low Confidence
+                      </span>
+                    )}
+                  </div>
+                )}
+
                 <div
                   className={`inline-block rounded-2xl px-4 py-3 text-xs sm:text-sm leading-relaxed whitespace-pre-line shadow-lg backdrop-blur-md ${
                     isUser
