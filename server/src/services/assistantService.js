@@ -481,6 +481,8 @@ const generateGroundedFallbackResponse = ({
   isBookingQuestion,
   isPackageQuestion,
   isSearchQuestion,
+  isGeneralHelp,
+  isUnknown,
   missingFields,
 }) => {
   // Scenario 1: Booking Process Question
@@ -546,14 +548,41 @@ const generateGroundedFallbackResponse = ({
 Once you let me know, I will retrieve actual verified photographers and packages from our database!`;
   }
 
-  // Scenario 6: Default warm marketplace welcome
+  // Scenario 6: General Lenscraft Marketplace Overview
+  if (isGeneralHelp) {
+    return `### About Lenscraft:
+Lenscraft is a verified creative services platform that connects clients with top-tier photographers, videographers, and editors.
+- **Verified Creators**: All professionals are vetted with verified equipment and genuine portfolios.
+- **Milestone-Based Booking**: Select dates and book with advance milestone protection.
+- **Smart Recommendations**: Custom machine learning matching across Bhopal, Mumbai, Indore, Delhi, and Bengaluru.
+
+Would you like to search for photographers in your city or explore packages?`;
+  }
+
+  // Scenario 7: Out-of-Domain / Unknown / Chitchat
+  if (isUnknown) {
+    return `I am the Lenscraft AI Creative Assistant, specialized in finding verified photographers, videographers, editors, and photography packages across India.
+
+I can help you with:
+- Searching wedding, portrait, or commercial photographers in Bhopal, Mumbai, Indore, and Delhi.
+- Exploring packages and checking real prices.
+- Explaining how to book appointments on Lenscraft.
+
+What creative shoot are you planning?`;
+  }
+
+  // Scenario 8: Default warm marketplace welcome
   return `Welcome to Lenscraft! I am your AI Creative Assistant. I can help you find photographers and videographers, look up exact package prices, compare creators, or guide you through the booking process. How can I help you today?`;
 };
 
 /**
  * Generate smart follow-up suggestions
  */
-const generateFollowUps = ({ criteria, matchingPhotographers, isBookingQuestion, isPackageQuestion }) => {
+const generateFollowUps = ({ criteria, matchingPhotographers, isBookingQuestion, isPackageQuestion, customFollowUps = [] }) => {
+  if (customFollowUps && customFollowUps.length > 0) {
+    return customFollowUps;
+  }
+
   if (matchingPhotographers.length > 0) {
     const top = matchingPhotographers[0];
     return [

@@ -147,7 +147,11 @@ export const runGroundedNlpFallback = (text) => {
   let intent = 'unknown_or_unsupported';
   let confidence = 0.85;
 
-  if (clean.includes('book') || clean.includes('appointment') || clean.includes('schedule') || clean.includes('cancel') || clean.includes('बुकिंग')) {
+  const isOutOfDomain = clean.includes('weather') || clean.includes('mausam') || clean.includes('cricket') || clean.includes('joke') || clean.includes('chutkula') || clean.includes('recipe') || clean.includes('pizza') || clean.includes('movie') || clean.includes('song') || clean.includes('gana') || clean.includes('president') || clean.includes('pm') || clean.includes('zomato') || clean.includes('swiggy') || clean.includes('hello hi test');
+
+  if (isOutOfDomain) {
+    intent = 'unknown_or_unsupported';
+  } else if (clean.includes('book') || clean.includes('appointment') || clean.includes('schedule') || clean.includes('cancel') || clean.includes('बुकिंग')) {
     intent = 'booking_help';
   } else if (clean.includes('package') || clean.includes('deal') || clean.includes('bundle') || clean.includes('पैकेज')) {
     intent = 'package_search';
@@ -155,7 +159,7 @@ export const runGroundedNlpFallback = (text) => {
     intent = 'pricing_question';
   } else if (clean.includes('lenscraft') || clean.includes('verify') || clean.includes('register') || clean.includes('about') || clean.includes('support')) {
     intent = 'general_lenscraft_help';
-  } else if (location || eventType || budget || clean.includes('photographer') || clean.includes('videographer') || clean.includes('chahiye')) {
+  } else if (clean.includes('photographer') || clean.includes('videographer') || clean.includes('chahiye') || clean.includes('shoot') || ((location || eventType || budget) && !isOutOfDomain)) {
     intent = 'photographer_search';
   }
 
