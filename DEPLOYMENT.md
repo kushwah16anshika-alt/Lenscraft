@@ -162,6 +162,7 @@ npm run seed
 Lenscraft features a Python FastAPI microservice (`server/ai_service`) providing:
 1. **Scikit-learn Smart Package Recommender** (`GradientBoostingClassifier` ranking pipeline, evaluated at 1.0 NDCG@3, 0.9999 ROC-AUC).
 2. **Zero-shot Photography Category Classifier** (CLIP / Hugging Face with cloud fallback).
+3. **Multilingual NLP Intent & Entity Classifier** (`LinearSVC` + `FeatureUnion` [Word + Char n-grams], 91.30% Accuracy, 0.9142 F1 on English, Hindi, and Roman Hinglish).
 
 ### Standalone Deployment (Render / Railway / Cloud Run)
 1. Set Root Directory to: `server/ai_service`
