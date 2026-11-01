@@ -18,8 +18,9 @@ import { notFound, errorHandler } from './src/middleware/errorMiddleware.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Load environment variables
+// Load environment variables (supports root and server folder execution)
 dotenv.config();
+dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 // Connect Database & Cloudinary
 connectDB();

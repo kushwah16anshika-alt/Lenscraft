@@ -1,4 +1,4 @@
-import ApiResponse from '../utils/ApiResponse.js';
+import { ApiResponse } from '../utils/apiResponse.js';
 import {
   classifyPhotographyImage,
   PHOTOGRAPHY_CATEGORIES,
