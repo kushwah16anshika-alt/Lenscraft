@@ -2,7 +2,22 @@ import mongoose from 'mongoose';
 
 export const connectDB = async () => {
   try {
-    const uri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/lenscraft_db';
+    // Read MONGODB_URI or MONGO_URI (support both common naming conventions)
+    const rawUri = process.env.MONGODB_URI || process.env.MONGO_URI;
+    const uri = rawUri ? rawUri.trim().replace(/^["']|["']$/g, '') : null;
+
+    if (!uri && process.env.NODE_ENV === 'production') {
+      console.error('\n✗ MongoDB Configuration Error: Neither MONGODB_URI nor MONGO_URI is set.');
+      console.error('👉 Please configure MONGODB_URI in your Render Dashboard:');
+      console.error('   1. Open dashboard.render.com -> Select your Web Service');
+      console.error('   2. Go to Environment tab');
+      console.error('   3. Add Variable:');
+      console.error('      Key:   MONGODB_URI');
+      console.error('      Value: mongodb+srv://<username>:<password>@cluster0.xxxx.mongodb.net/lenscraft_db?retryWrites=true&w=majority\n');
+      process.exit(1);
+    }
+
+    const connectionString = uri || 'mongodb://127.0.0.1:27017/lenscraft_db';
 
     // Connection event listeners for production reliability
     mongoose.connection.on('disconnected', () => {
@@ -17,7 +32,7 @@ export const connectDB = async () => {
       console.error(`✗ MongoDB Runtime Error: ${err.message}`);
     });
 
-    const conn = await mongoose.connect(uri, {
+    const conn = await mongoose.connect(connectionString, {
       serverSelectionTimeoutMS: 8000,
       maxPoolSize: 20,
     });

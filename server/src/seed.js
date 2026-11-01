@@ -695,7 +695,8 @@ const demoClientsAndAdmin = [
 
 export const seedDatabase = async () => {
   try {
-    const mongoUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/lenscraft_db';
+    const rawUri = process.env.MONGODB_URI || process.env.MONGO_URI;
+    const mongoUri = rawUri ? rawUri.trim().replace(/^["']|["']$/g, '') : 'mongodb://127.0.0.1:27017/lenscraft_db';
     console.log(`Connecting to MongoDB at ${mongoUri}...`);
     await mongoose.connect(mongoUri);
     console.log('✓ Connected to MongoDB for seeding.');
