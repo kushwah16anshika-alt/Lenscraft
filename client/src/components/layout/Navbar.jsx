@@ -127,14 +127,13 @@ const Navbar = () => {
           <Link
             to="/"
             className="flex items-center gap-2.5 group shrink-0"
-            aria-label="LENSCRAFT STUDIO Home"
+            aria-label="LENSCRAFT Home"
           >
             <div className="relative w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-slate-900/90 border border-white/10 group-hover:border-sky-400/50 flex items-center justify-center transition-all duration-300 group-hover:shadow-[0_0_15px_rgba(56,189,248,0.35)] shrink-0">
               <Aperture className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-sky-400 group-hover:rotate-45 transition-transform duration-500 ease-out" />
-              <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse" />
             </div>
             <span className="text-xs sm:text-sm font-display font-bold tracking-wider text-white group-hover:text-sky-300 transition-colors whitespace-nowrap">
-              LENSCRAFT STUDIO
+              LENSCRAFT
             </span>
           </Link>
 
