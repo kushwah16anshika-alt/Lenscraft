@@ -13,15 +13,12 @@ import {
   User as UserIcon,
   Heart,
   Layers,
-  Camera,
-  Bot,
   SlidersHorizontal,
-  Briefcase,
   Shield,
-  ArrowRight,
-  Zap,
+  Bot,
   Settings,
-  FolderHeart,
+  ArrowRight,
+  ExternalLink,
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { usePlatform } from '../../context/PlatformContext';
@@ -40,6 +37,7 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [demoDropdownOpen, setDemoDropdownOpen] = useState(false);
+  const [aiMenuOpen, setAiMenuOpen] = useState(false);
   const [creatorModalOpen, setCreatorModalOpen] = useState(false);
   const [matchmakerModalOpen, setMatchmakerModalOpen] = useState(false);
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
@@ -47,20 +45,21 @@ const Navbar = () => {
 
   const userDropdownRef = useRef(null);
   const demoDropdownRef = useRef(null);
+  const aiMenuRef = useRef(null);
 
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Scroll detection for backdrop blur and bottom border glow
+  // Scroll detection
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 15);
+      setIsScrolled(window.scrollY > 10);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Global ⌘K / Ctrl+K keyboard shortcut to toggle Search modal
+  // Global ⌘K / Ctrl+K keyboard shortcut
   useEffect(() => {
     const handleKeyDown = (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
@@ -72,7 +71,7 @@ const Navbar = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Click-outside listener for dropdown menus
+  // Click-outside listener
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (userDropdownRef.current && !userDropdownRef.current.contains(e.target)) {
@@ -80,6 +79,9 @@ const Navbar = () => {
       }
       if (demoDropdownRef.current && !demoDropdownRef.current.contains(e.target)) {
         setDemoDropdownOpen(false);
+      }
+      if (aiMenuRef.current && !aiMenuRef.current.contains(e.target)) {
+        setAiMenuOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -91,6 +93,7 @@ const Navbar = () => {
     setMobileMenuOpen(false);
     setUserDropdownOpen(false);
     setDemoDropdownOpen(false);
+    setAiMenuOpen(false);
   }, [location.pathname]);
 
   const getDashboardPath = (role) => {
@@ -107,42 +110,46 @@ const Navbar = () => {
     }
   };
 
+  const isAiRouteActive = ['/recommendations', '/smart-packages', '/color-lab', '/assistant'].includes(
+    location.pathname
+  );
+
   return (
     <>
-      {/* Edge-to-Edge Sticky Top Navigation Header */}
+      {/* Sleek, Executive Glassmorphism Header */}
       <header
-        className={`sticky top-0 z-50 w-full transition-all duration-300 ${
+        className={`sticky top-0 z-50 w-full transition-all duration-200 ${
           isScrolled
-            ? 'bg-[#030712]/95 backdrop-blur-2xl border-b border-cyan-500/25 shadow-[0_4px_30px_rgba(0,0,0,0.85),0_0_20px_rgba(0,210,255,0.12)]'
-            : 'bg-[#030712]/85 backdrop-blur-xl border-b border-white/10'
+            ? 'bg-[#030712]/90 backdrop-blur-xl border-b border-white/[0.08] shadow-[0_4px_30px_rgba(0,0,0,0.5)]'
+            : 'bg-[#030712]/70 backdrop-blur-md border-b border-white/[0.05]'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-18 flex items-center justify-between gap-3">
-          {/* 1. Left: Brand Logo & Wordmark */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+          {/* 1. Left: Brand Identity */}
           <Link to="/" className="flex items-center gap-2.5 group shrink-0" aria-label="LensCraft Home">
-            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gradient-to-tr from-sky-500/20 to-cyan-500/20 border border-sky-400/40 group-hover:border-cyan-300 flex items-center justify-center transition-all duration-300 group-hover:shadow-[0_0_15px_rgba(0,210,255,0.5)] shrink-0">
-              <Aperture className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-cyan-400 group-hover:rotate-90 transition-transform duration-500" />
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500/20 via-sky-500/10 to-transparent border border-cyan-500/30 flex items-center justify-center transition-all duration-300 group-hover:border-cyan-400 group-hover:shadow-[0_0_15px_rgba(0,210,255,0.3)]">
+              <Aperture className="w-4 h-4 text-cyan-400 group-hover:rotate-45 transition-transform duration-500" />
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="text-base sm:text-lg lg:text-xl font-display font-extrabold tracking-wider text-white group-hover:text-cyan-300 transition-colors">
+              <span className="text-base font-display font-bold tracking-tight text-white group-hover:text-cyan-300 transition-colors">
                 LENSCRAFT
               </span>
-              <span className="hidden sm:inline-block px-1.5 py-0.5 rounded text-[9px] font-mono font-bold tracking-widest uppercase bg-cyan-500/10 text-cyan-400 border border-cyan-500/25">
-                AI
+              <span className="text-[10px] font-mono font-semibold tracking-wider uppercase text-cyan-400/90 px-1.5 py-0.2 rounded bg-cyan-950/60 border border-cyan-500/30 hidden sm:inline-block">
+                STUDIO
               </span>
             </div>
           </Link>
 
-          {/* 2. Center: Primary Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-1 xl:gap-1.5" aria-label="Primary Navigation">
-            {/* Core Creatives */}
+          {/* 2. Center: Minimalist, High-End Navigation */}
+          <nav className="hidden lg:flex items-center gap-1" aria-label="Primary Navigation">
+            {/* Primary Creative Directories */}
             <NavLink
               to="/photographers"
               className={({ isActive }) =>
-                `px-3 py-1.5 rounded-full text-xs font-medium tracking-wide transition-all duration-200 ${
+                `px-3 py-1.5 rounded-lg text-xs font-medium tracking-normal transition-all duration-150 ${
                   isActive
-                    ? 'text-cyan-300 bg-cyan-500/15 border border-cyan-400/30 shadow-[0_0_12px_rgba(0,210,255,0.25)] font-semibold'
-                    : 'text-slate-300 hover:text-white hover:bg-white/5 border border-transparent'
+                    ? 'text-white bg-white/[0.08] font-semibold'
+                    : 'text-slate-400 hover:text-slate-100 hover:bg-white/[0.04]'
                 }`
               }
             >
@@ -152,10 +159,10 @@ const Navbar = () => {
             <NavLink
               to="/videographers"
               className={({ isActive }) =>
-                `px-3 py-1.5 rounded-full text-xs font-medium tracking-wide transition-all duration-200 ${
+                `px-3 py-1.5 rounded-lg text-xs font-medium tracking-normal transition-all duration-150 ${
                   isActive
-                    ? 'text-cyan-300 bg-cyan-500/15 border border-cyan-400/30 shadow-[0_0_12px_rgba(0,210,255,0.25)] font-semibold'
-                    : 'text-slate-300 hover:text-white hover:bg-white/5 border border-transparent'
+                    ? 'text-white bg-white/[0.08] font-semibold'
+                    : 'text-slate-400 hover:text-slate-100 hover:bg-white/[0.04]'
                 }`
               }
             >
@@ -165,73 +172,111 @@ const Navbar = () => {
             <NavLink
               to="/editors"
               className={({ isActive }) =>
-                `px-3 py-1.5 rounded-full text-xs font-medium tracking-wide transition-all duration-200 ${
+                `px-3 py-1.5 rounded-lg text-xs font-medium tracking-normal transition-all duration-150 ${
                   isActive
-                    ? 'text-cyan-300 bg-cyan-500/15 border border-cyan-400/30 shadow-[0_0_12px_rgba(0,210,255,0.25)] font-semibold'
-                    : 'text-slate-300 hover:text-white hover:bg-white/5 border border-transparent'
+                    ? 'text-white bg-white/[0.08] font-semibold'
+                    : 'text-slate-400 hover:text-slate-100 hover:bg-white/[0.04]'
                 }`
               }
             >
               Editors
             </NavLink>
 
-            {/* AI Technologies directly visible for showcase */}
-            <NavLink
-              to="/recommendations"
-              className={({ isActive }) =>
-                `flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium tracking-wide transition-all duration-200 ${
-                  isActive
-                    ? 'text-cyan-300 bg-cyan-500/15 border border-cyan-400/35 shadow-[0_0_15px_rgba(0,210,255,0.3)] font-semibold'
-                    : 'text-slate-300 hover:text-white hover:bg-white/5 border border-transparent'
-                }`
-              }
-              title="Technology 1: Multi-Factor AI Photographer Recommendation Engine"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
-              <span>AI Recommend</span>
-            </NavLink>
+            {/* AI Suite Dropdown (Clean, Professional Hover/Click Panel) */}
+            <div className="relative" ref={aiMenuRef}>
+              <button
+                type="button"
+                onClick={() => setAiMenuOpen(!aiMenuOpen)}
+                className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium tracking-normal transition-all duration-150 cursor-pointer ${
+                  isAiRouteActive || aiMenuOpen
+                    ? 'text-cyan-300 bg-cyan-500/10 font-semibold border border-cyan-500/20'
+                    : 'text-slate-400 hover:text-slate-100 hover:bg-white/[0.04]'
+                }`}
+                aria-expanded={aiMenuOpen}
+              >
+                <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                <span>AI Features</span>
+                <ChevronDown
+                  className={`w-3 h-3 text-slate-400 transition-transform duration-200 ${
+                    aiMenuOpen ? 'rotate-180' : ''
+                  }`}
+                />
+              </button>
 
-            <NavLink
-              to="/smart-packages"
-              className={({ isActive }) =>
-                `flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium tracking-wide transition-all duration-200 ${
-                  isActive
-                    ? 'text-amber-300 bg-amber-500/15 border border-amber-400/35 shadow-[0_0_15px_rgba(245,158,11,0.3)] font-semibold'
-                    : 'text-slate-300 hover:text-white hover:bg-white/5 border border-transparent'
-                }`
-              }
-              title="Technology 4: Machine Learning Smart Package Ranking (NDCG@3 = 1.0)"
-            >
-              <Layers className="w-3.5 h-3.5 text-amber-400" />
-              <span>Smart Packages</span>
-              <span className="text-[9px] font-mono px-1 py-0.2 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 font-bold uppercase">
-                ML
-              </span>
-            </NavLink>
+              {aiMenuOpen && (
+                <div className="absolute left-0 mt-2 w-72 rounded-xl bg-[#060c1d]/95 backdrop-blur-2xl border border-white/10 shadow-2xl p-2 z-50 animate-slide-up">
+                  <div className="px-3 py-1.5 border-b border-white/[0.06] mb-1">
+                    <p className="text-[10px] font-mono uppercase tracking-wider text-cyan-400 font-semibold">
+                      Proprietary AI Technologies
+                    </p>
+                  </div>
 
-            <NavLink
-              to="/color-lab"
-              className={({ isActive }) =>
-                `flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium tracking-wide transition-all duration-200 ${
-                  isActive
-                    ? 'text-cyan-300 bg-cyan-500/15 border border-cyan-400/30 shadow-[0_0_12px_rgba(0,210,255,0.25)] font-semibold'
-                    : 'text-slate-300 hover:text-white hover:bg-white/5 border border-transparent'
-                }`
-              }
-              title="Technology 2: Cinematic Color Lab & Neural LUT Studio"
-            >
-              <SlidersHorizontal className="w-3.5 h-3.5 text-cyan-400" />
-              <span>Color Lab</span>
-            </NavLink>
+                  <Link
+                    to="/recommendations"
+                    onClick={() => setAiMenuOpen(false)}
+                    className="flex items-start gap-2.5 p-2 rounded-lg hover:bg-white/[0.05] transition-colors"
+                  >
+                    <div className="p-1.5 rounded-md bg-cyan-500/10 text-cyan-400 shrink-0 mt-0.5">
+                      <Sparkles className="w-3.5 h-3.5" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold text-white">AI Matchmaker</p>
+                      <p className="text-[11px] text-slate-400">Multi-factor creator recommendations</p>
+                    </div>
+                  </Link>
 
-            {/* Secondary navigation links */}
+                  <Link
+                    to="/smart-packages"
+                    onClick={() => setAiMenuOpen(false)}
+                    className="flex items-start gap-2.5 p-2 rounded-lg hover:bg-white/[0.05] transition-colors"
+                  >
+                    <div className="p-1.5 rounded-md bg-amber-500/10 text-amber-400 shrink-0 mt-0.5">
+                      <Layers className="w-3.5 h-3.5" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold text-white">Smart Packages</p>
+                      <p className="text-[11px] text-slate-400">ML-ranked photography packages</p>
+                    </div>
+                  </Link>
+
+                  <Link
+                    to="/color-lab"
+                    onClick={() => setAiMenuOpen(false)}
+                    className="flex items-start gap-2.5 p-2 rounded-lg hover:bg-white/[0.05] transition-colors"
+                  >
+                    <div className="p-1.5 rounded-md bg-purple-500/10 text-purple-400 shrink-0 mt-0.5">
+                      <SlidersHorizontal className="w-3.5 h-3.5" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold text-white">Color Lab & LUTs</p>
+                      <p className="text-[11px] text-slate-400">Neural grading & aesthetic filters</p>
+                    </div>
+                  </Link>
+
+                  <Link
+                    to="/assistant"
+                    onClick={() => setAiMenuOpen(false)}
+                    className="flex items-start gap-2.5 p-2 rounded-lg hover:bg-white/[0.05] transition-colors"
+                  >
+                    <div className="p-1.5 rounded-md bg-emerald-500/10 text-emerald-400 shrink-0 mt-0.5">
+                      <Bot className="w-3.5 h-3.5" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold text-white">AI Concierge Assistant</p>
+                      <p className="text-[11px] text-slate-400">Gemini 24/7 conversational booking</p>
+                    </div>
+                  </Link>
+                </div>
+              )}
+            </div>
+
             <NavLink
               to="/services"
               className={({ isActive }) =>
-                `hidden xl:inline-block px-3 py-1.5 rounded-full text-xs font-medium tracking-wide transition-all duration-200 ${
+                `px-3 py-1.5 rounded-lg text-xs font-medium tracking-normal transition-all duration-150 ${
                   isActive
-                    ? 'text-cyan-300 bg-cyan-500/15 border border-cyan-400/30 font-semibold'
-                    : 'text-slate-300 hover:text-white hover:bg-white/5 border border-transparent'
+                    ? 'text-white bg-white/[0.08] font-semibold'
+                    : 'text-slate-400 hover:text-slate-100 hover:bg-white/[0.04]'
                 }`
               }
             >
@@ -241,10 +286,10 @@ const Navbar = () => {
             <NavLink
               to="/about"
               className={({ isActive }) =>
-                `hidden 2xl:inline-block px-3 py-1.5 rounded-full text-xs font-medium tracking-wide transition-all duration-200 ${
+                `px-3 py-1.5 rounded-lg text-xs font-medium tracking-normal transition-all duration-150 ${
                   isActive
-                    ? 'text-cyan-300 bg-cyan-500/15 border border-cyan-400/30 font-semibold'
-                    : 'text-slate-300 hover:text-white hover:bg-white/5 border border-transparent'
+                    ? 'text-white bg-white/[0.08] font-semibold'
+                    : 'text-slate-400 hover:text-slate-100 hover:bg-white/[0.04]'
                 }`
               }
             >
@@ -252,86 +297,120 @@ const Navbar = () => {
             </NavLink>
           </nav>
 
-          {/* 3. Right: Action Buttons, Quick Search & Profile / Auth */}
-          <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
-            {/* Quick Search Trigger (⌘K) */}
+          {/* 3. Right: Sleek Actions & Authentication */}
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            {/* Minimalist Search Button */}
             <button
               type="button"
               onClick={() => setSearchModalOpen(true)}
-              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-slate-300 hover:text-cyan-300 bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-cyan-500/30 transition-all text-xs cursor-pointer shrink-0"
-              title="Search Creators & Packages (⌘K)"
-              aria-label="Search Creators"
+              className="flex items-center gap-2 px-2.5 sm:px-3 py-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.07] border border-white/[0.08] text-xs text-slate-400 hover:text-slate-200 transition-all cursor-pointer"
+              title="Search Creators (⌘K)"
+              aria-label="Search"
             >
-              <Search className="w-3.5 h-3.5 text-cyan-400/80" />
-              <span className="hidden sm:inline text-[11px] text-slate-300">Search</span>
-              <kbd className="hidden md:inline-block px-1.5 py-0.2 rounded bg-white/10 text-[9px] font-mono text-slate-400 border border-white/15">
+              <Search className="w-3.5 h-3.5 text-slate-400" />
+              <span className="hidden md:inline text-[11px]">Search</span>
+              <kbd className="hidden lg:inline-block px-1 py-0.2 rounded bg-white/[0.06] text-[9px] font-mono text-slate-400 border border-white/10">
                 ⌘K
               </kbd>
             </button>
 
-            {/* Technology 3: Quick AI Assistant Chip */}
-            <Link
-              to="/assistant"
-              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-amber-300 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/35 hover:border-amber-400 transition-all shadow-[0_0_12px_rgba(245,158,11,0.2)] hover:scale-105 shrink-0"
-              title="Technology 3: 24/7 Gemini Conversational Concierge Assistant"
-            >
-              <Bot className="w-3.5 h-3.5 text-amber-400" />
-              <span>Ask AI</span>
-            </Link>
+            {/* Quick Demo Switcher (Understated Viva Testing Pill) */}
+            <div className="relative shrink-0 hidden sm:block" ref={demoDropdownRef}>
+              <button
+                type="button"
+                onClick={() => setDemoDropdownOpen(!demoDropdownOpen)}
+                className="px-2.5 py-1.5 rounded-lg text-[11px] font-mono text-slate-400 hover:text-white bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.08] transition-all flex items-center gap-1.5 cursor-pointer"
+                title="Switch Role for Viva / Demo"
+              >
+                <Shield className="w-3 h-3 text-cyan-400" />
+                <span>Demo</span>
+                <ChevronDown className="w-2.5 h-2.5 text-slate-400" />
+              </button>
 
-            {/* Book a Shoot CTA (Desktop 2XL+) */}
-            <button
-              type="button"
-              onClick={() => setBookingModalOpen(true)}
-              className="hidden 2xl:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider glow-btn-primary transition-all duration-300 shadow-[0_0_18px_rgba(0,210,255,0.35)] hover:scale-105 shrink-0 cursor-pointer"
-            >
-              <Calendar className="w-3.5 h-3.5 text-midnight-950" />
-              <span>Book Shoot</span>
-            </button>
+              {demoDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-48 rounded-xl bg-[#060c1d]/95 backdrop-blur-2xl border border-white/10 shadow-2xl p-1.5 z-50 animate-slide-up">
+                  <p className="px-2.5 py-1 text-[9px] uppercase font-mono tracking-wider text-slate-400 font-semibold border-b border-white/[0.06]">
+                    Switch Profile
+                  </p>
+                  <div className="space-y-0.5 pt-1">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        quickDemoLogin(ROLES.USER);
+                        setDemoDropdownOpen(false);
+                      }}
+                      className="w-full text-left px-2.5 py-1.5 text-xs text-slate-200 hover:bg-white/[0.06] rounded-md transition-colors flex items-center justify-between"
+                    >
+                      <span>Client</span>
+                      <span className="text-[9px] font-mono text-slate-400">User</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        quickDemoLogin(ROLES.PHOTOGRAPHER);
+                        setDemoDropdownOpen(false);
+                      }}
+                      className="w-full text-left px-2.5 py-1.5 text-xs text-slate-200 hover:bg-white/[0.06] rounded-md transition-colors flex items-center justify-between"
+                    >
+                      <span>Creator</span>
+                      <span className="text-[9px] font-mono text-slate-400">Pro</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        quickDemoLogin(ROLES.ADMIN);
+                        setDemoDropdownOpen(false);
+                      }}
+                      className="w-full text-left px-2.5 py-1.5 text-xs text-slate-200 hover:bg-white/[0.06] rounded-md transition-colors flex items-center justify-between"
+                    >
+                      <span>Admin</span>
+                      <span className="text-[9px] font-mono text-slate-400">Root</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
 
-            {/* Authenticated User Menu OR Public Auth CTA */}
+            <div className="hidden sm:block h-4 w-[1px] bg-white/10" />
+
+            {/* Auth / Profile State */}
             {isAuthenticated ? (
               <div className="relative shrink-0" ref={userDropdownRef}>
                 <button
                   type="button"
                   onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                  className="flex items-center gap-2 p-1 pl-2 pr-2.5 rounded-full bg-white/[0.05] hover:bg-white/[0.08] border border-sky-500/25 hover:border-cyan-400/50 transition-all cursor-pointer"
+                  className="flex items-center gap-2 p-1 pr-2 rounded-full hover:bg-white/[0.06] transition-all cursor-pointer"
                   aria-expanded={userDropdownOpen}
-                  aria-label="User profile menu"
                 >
                   <Avatar user={user} size="sm" isOnline={true} />
-                  <span className="text-xs text-slate-200 font-semibold hidden md:inline max-w-[90px] truncate">
+                  <span className="text-xs text-slate-200 font-medium hidden md:inline max-w-[85px] truncate">
                     {user?.name?.split(' ')[0]}
                   </span>
-                  <ChevronDown className="w-3.5 h-3.5 text-slate-400 transition-transform duration-200" />
+                  <ChevronDown className="w-3 h-3 text-slate-400" />
                 </button>
 
-                {/* Solid Glass User Dropdown Menu */}
                 {userDropdownOpen && (
-                  <div className="absolute right-0 mt-2.5 w-64 rounded-2xl bg-[#060c1d]/98 backdrop-blur-2xl border border-cyan-500/35 shadow-[0_20px_50px_rgba(0,0,0,0.9),0_0_20px_rgba(0,210,255,0.15)] py-2 z-50 animate-reveal">
-                    <div className="px-4 py-2.5 border-b border-white/10">
-                      <p className="text-xs font-bold text-white truncate">{user?.name}</p>
+                  <div className="absolute right-0 mt-2 w-56 rounded-xl bg-[#060c1d]/95 backdrop-blur-2xl border border-white/10 shadow-2xl p-2 z-50 animate-slide-up">
+                    <div className="px-3 py-2 border-b border-white/[0.06] mb-1">
+                      <p className="text-xs font-semibold text-white truncate">{user?.name}</p>
                       <p className="text-[11px] text-slate-400 truncate">{user?.email}</p>
-                      <span className="inline-block mt-1 text-[9px] font-mono px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 uppercase font-bold">
-                        {ROLE_LABELS[user?.role] || user?.role}
-                      </span>
                     </div>
 
-                    <div className="py-1">
+                    <div className="space-y-0.5 py-1">
                       <Link
                         to={getDashboardPath(user?.role)}
                         onClick={() => setUserDropdownOpen(false)}
-                        className="flex items-center gap-2.5 px-4 py-2 text-xs text-slate-200 hover:text-cyan-300 hover:bg-sky-500/10 transition-colors"
+                        className="flex items-center gap-2 px-3 py-1.5 text-xs text-slate-200 hover:text-white hover:bg-white/[0.06] rounded-md transition-colors"
                       >
                         <LayoutDashboard className="w-3.5 h-3.5 text-cyan-400" />
-                        <span>Command Dashboard</span>
+                        <span>Dashboard</span>
                       </Link>
 
                       {user?.role === ROLES.USER ? (
                         <Link
                           to="/user/bookings"
                           onClick={() => setUserDropdownOpen(false)}
-                          className="flex items-center gap-2.5 px-4 py-2 text-xs text-slate-200 hover:text-cyan-300 hover:bg-sky-500/10 transition-colors"
+                          className="flex items-center gap-2 px-3 py-1.5 text-xs text-slate-200 hover:text-white hover:bg-white/[0.06] rounded-md transition-colors"
                         >
                           <Calendar className="w-3.5 h-3.5 text-cyan-400" />
                           <span>My Bookings</span>
@@ -340,46 +419,31 @@ const Navbar = () => {
                         <Link
                           to="/professional/appointments"
                           onClick={() => setUserDropdownOpen(false)}
-                          className="flex items-center gap-2.5 px-4 py-2 text-xs text-slate-200 hover:text-cyan-300 hover:bg-sky-500/10 transition-colors"
+                          className="flex items-center gap-2 px-3 py-1.5 text-xs text-slate-200 hover:text-white hover:bg-white/[0.06] rounded-md transition-colors"
                         >
                           <Calendar className="w-3.5 h-3.5 text-cyan-400" />
-                          <span>Client Appointments</span>
+                          <span>Appointments</span>
                         </Link>
                       )}
 
                       <Link
                         to="/user/wishlist"
                         onClick={() => setUserDropdownOpen(false)}
-                        className="flex items-center gap-2.5 px-4 py-2 text-xs text-slate-200 hover:text-cyan-300 hover:bg-sky-500/10 transition-colors"
+                        className="flex items-center gap-2 px-3 py-1.5 text-xs text-slate-200 hover:text-white hover:bg-white/[0.06] rounded-md transition-colors"
                       >
                         <Heart className="w-3.5 h-3.5 text-rose-400" />
-                        <span>Saved Creators ({favorites?.length || 0})</span>
-                      </Link>
-
-                      <Link
-                        to={
-                          user?.role === ROLES.ADMIN
-                            ? '/admin/settings'
-                            : user?.role === ROLES.USER
-                            ? '/user/settings'
-                            : '/professional/settings'
-                        }
-                        onClick={() => setUserDropdownOpen(false)}
-                        className="flex items-center gap-2.5 px-4 py-2 text-xs text-slate-200 hover:text-cyan-300 hover:bg-sky-500/10 transition-colors"
-                      >
-                        <Settings className="w-3.5 h-3.5 text-slate-400" />
-                        <span>Account Settings</span>
+                        <span>Saved ({favorites?.length || 0})</span>
                       </Link>
                     </div>
 
-                    <div className="pt-1 border-t border-white/10">
+                    <div className="pt-1 border-t border-white/[0.06]">
                       <button
                         type="button"
                         onClick={() => {
                           setUserDropdownOpen(false);
                           logout();
                         }}
-                        className="w-full flex items-center gap-2.5 px-4 py-2 text-xs text-rose-400 hover:bg-rose-500/10 transition-colors cursor-pointer"
+                        className="w-full flex items-center gap-2 px-3 py-1.5 text-xs text-rose-400 hover:bg-rose-500/10 rounded-md transition-colors cursor-pointer"
                       >
                         <LogOut className="w-3.5 h-3.5" />
                         <span>Sign Out</span>
@@ -389,114 +453,52 @@ const Navbar = () => {
                 )}
               </div>
             ) : (
-              <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+              <div className="flex items-center gap-2">
                 <Link
                   to="/login"
-                  className="px-3 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white hover:bg-white/5 transition-all shrink-0"
+                  className="px-3 py-1.5 text-xs font-medium text-slate-300 hover:text-white transition-colors"
                 >
                   Sign In
                 </Link>
 
-                <Link
-                  to="/register"
-                  className="hidden sm:inline-flex px-3.5 py-1.5 rounded-full text-xs font-bold text-slate-950 bg-cyan-400 hover:bg-cyan-300 transition-all shadow-[0_0_15px_rgba(0,210,255,0.35)] shrink-0"
+                <button
+                  type="button"
+                  onClick={() => setBookingModalOpen(true)}
+                  className="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-950 bg-white hover:bg-slate-200 transition-all shadow-[0_0_15px_rgba(255,255,255,0.15)] cursor-pointer"
                 >
-                  Get Started
-                </Link>
+                  Book Shoot
+                </button>
               </div>
             )}
 
-            {/* Quick Demo Role Switcher (1-Click Viva Testing Pill) */}
-            <div className="relative shrink-0 hidden sm:block" ref={demoDropdownRef}>
-              <button
-                type="button"
-                onClick={() => setDemoDropdownOpen(!demoDropdownOpen)}
-                className="px-2.5 py-1.5 rounded-full bg-indigo-500/15 text-indigo-300 hover:bg-indigo-500/25 border border-indigo-400/30 transition-all text-xs flex items-center gap-1 shrink-0 cursor-pointer"
-                title="Switch Demo Role for Viva / Evaluation (Client / Creator / Admin)"
-              >
-                <Shield className="w-3 h-3 text-indigo-400" />
-                <span className="text-[10px] font-mono font-bold">Demo</span>
-                <ChevronDown className="w-2.5 h-2.5 text-indigo-400/80" />
-              </button>
-
-              {demoDropdownOpen && (
-                <div className="absolute right-0 mt-2.5 w-52 rounded-2xl bg-[#060c1d]/98 backdrop-blur-2xl border border-indigo-500/35 shadow-[0_20px_50px_rgba(0,0,0,0.9),0_0_20px_rgba(99,102,241,0.2)] py-2 z-50 animate-reveal">
-                  <p className="px-3 py-1 text-[10px] uppercase font-mono tracking-wider text-indigo-300 font-bold border-b border-white/10 flex items-center justify-between">
-                    <span>1-Click Demo Profiles</span>
-                    <span className="text-[8px] px-1 py-0.2 rounded bg-indigo-500/30 text-indigo-200">Viva Ready</span>
-                  </p>
-                  <div className="space-y-0.5 pt-1">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        quickDemoLogin(ROLES.USER);
-                        setDemoDropdownOpen(false);
-                      }}
-                      className="w-full text-left px-3 py-2 text-xs text-slate-200 hover:bg-sky-500/10 hover:text-cyan-300 transition-colors flex items-center justify-between"
-                    >
-                      <span>Client Profile</span>
-                      <span className="text-[9px] font-mono text-slate-400">User</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        quickDemoLogin(ROLES.PHOTOGRAPHER);
-                        setDemoDropdownOpen(false);
-                      }}
-                      className="w-full text-left px-3 py-2 text-xs text-slate-200 hover:bg-sky-500/10 hover:text-cyan-300 transition-colors flex items-center justify-between"
-                    >
-                      <span>Lead Creator</span>
-                      <span className="text-[9px] font-mono text-slate-400">Pro</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        quickDemoLogin(ROLES.ADMIN);
-                        setDemoDropdownOpen(false);
-                      }}
-                      className="w-full text-left px-3 py-2 text-xs text-slate-200 hover:bg-sky-500/10 hover:text-cyan-300 transition-colors flex items-center justify-between"
-                    >
-                      <span>Admin Control</span>
-                      <span className="text-[9px] font-mono text-slate-400">Root</span>
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Mobile Menu Toggle Button */}
+            {/* Mobile Hamburger Button */}
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-xl text-cyan-400 hover:text-white bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 hover:border-cyan-400 transition-colors shrink-0 cursor-pointer"
-              aria-label="Toggle Navigation Menu"
-              aria-expanded={mobileMenuOpen}
+              className="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/[0.06] transition-colors cursor-pointer"
+              aria-label="Toggle navigation"
             >
-              {mobileMenuOpen ? <X className="w-5 h-5 text-cyan-300" /> : <Menu className="w-5 h-5" />}
+              {mobileMenuOpen ? <X className="w-5 h-5 text-white" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
 
-        {/* 4. Full Mobile Dropdown Drawer */}
+        {/* 4. Refined Mobile Navigation Drawer */}
         {mobileMenuOpen && (
-          <div className="lg:hidden w-full bg-[#060c1d]/98 backdrop-blur-2xl border-b border-cyan-500/30 shadow-[0_25px_60px_rgba(0,0,0,0.95),0_0_25px_rgba(0,210,255,0.18)] p-4 sm:p-6 space-y-4 animate-reveal">
-            {/* Quick Demo Switcher on Mobile */}
-            <div className="p-3 rounded-2xl bg-indigo-500/10 border border-indigo-500/25 space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] uppercase font-mono tracking-wider text-indigo-300 flex items-center gap-1.5 font-bold">
-                  <Shield className="w-3.5 h-3.5 text-indigo-400" />
-                  Evaluate Roles (1-Click Login)
-                </span>
-                <span className="text-[10px] font-mono text-slate-400">Viva Mode</span>
-              </div>
-              <div className="grid grid-cols-3 gap-1.5">
+          <div className="lg:hidden w-full bg-[#030712]/98 backdrop-blur-2xl border-b border-white/10 px-4 py-5 space-y-4 animate-slide-up">
+            {/* Demo Switcher for Mobile */}
+            <div className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.08]">
+              <p className="text-[10px] uppercase font-mono tracking-wider text-slate-400 mb-2 font-semibold">
+                Test Role (1-Click Demo)
+              </p>
+              <div className="grid grid-cols-3 gap-2">
                 <button
                   type="button"
                   onClick={() => {
                     quickDemoLogin(ROLES.USER);
                     setMobileMenuOpen(false);
                   }}
-                  className="py-1.5 px-2 rounded-lg bg-white/5 hover:bg-sky-500/20 text-[11px] text-slate-200 hover:text-cyan-300 border border-white/10 text-center font-medium transition-colors"
+                  className="py-1.5 rounded-lg text-xs text-slate-200 bg-white/[0.05] hover:bg-white/10 border border-white/[0.08] text-center"
                 >
                   Client
                 </button>
@@ -506,7 +508,7 @@ const Navbar = () => {
                     quickDemoLogin(ROLES.PHOTOGRAPHER);
                     setMobileMenuOpen(false);
                   }}
-                  className="py-1.5 px-2 rounded-lg bg-white/5 hover:bg-sky-500/20 text-[11px] text-slate-200 hover:text-cyan-300 border border-white/10 text-center font-medium transition-colors"
+                  className="py-1.5 rounded-lg text-xs text-slate-200 bg-white/[0.05] hover:bg-white/10 border border-white/[0.08] text-center"
                 >
                   Creator
                 </button>
@@ -516,142 +518,93 @@ const Navbar = () => {
                     quickDemoLogin(ROLES.ADMIN);
                     setMobileMenuOpen(false);
                   }}
-                  className="py-1.5 px-2 rounded-lg bg-white/5 hover:bg-sky-500/20 text-[11px] text-slate-200 hover:text-cyan-300 border border-white/10 text-center font-medium transition-colors"
+                  className="py-1.5 rounded-lg text-xs text-slate-200 bg-white/[0.05] hover:bg-white/10 border border-white/[0.08] text-center"
                 >
                   Admin
                 </button>
               </div>
             </div>
 
-            {/* 5 AI Technologies Group */}
-            <div className="space-y-1.5">
-              <p className="px-1 text-[10px] font-mono uppercase tracking-wider text-cyan-400 font-bold flex items-center gap-1.5">
-                <Zap className="w-3 h-3 text-cyan-400" />
-                5 Implemented AI Technologies
+            {/* AI Features */}
+            <div className="space-y-1">
+              <p className="px-1 text-[10px] font-mono uppercase tracking-wider text-cyan-400 font-semibold">
+                AI Intelligence
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+              <div className="grid grid-cols-2 gap-2">
                 <Link
                   to="/recommendations"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="p-2.5 rounded-xl bg-cyan-500/10 border border-cyan-500/25 hover:bg-cyan-500/20 flex items-center justify-between text-xs font-semibold text-cyan-300 transition-colors"
+                  className="p-2.5 rounded-lg bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.06] flex items-center gap-2 text-xs text-slate-200"
                 >
-                  <span className="flex items-center gap-2">
-                    <Sparkles className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
-                    AI Matchmaker
-                  </span>
-                  <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-bold">
-                    Tech 1
-                  </span>
+                  <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>AI Matchmaker</span>
                 </Link>
 
                 <Link
                   to="/smart-packages"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/25 hover:bg-amber-500/20 flex items-center justify-between text-xs font-semibold text-amber-300 transition-colors"
+                  className="p-2.5 rounded-lg bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.06] flex items-center gap-2 text-xs text-slate-200"
                 >
-                  <span className="flex items-center gap-2">
-                    <Layers className="w-3.5 h-3.5 text-amber-400" />
-                    Smart Packages (ML)
-                  </span>
-                  <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold">
-                    Tech 4
-                  </span>
-                </Link>
-
-                <Link
-                  to="/assistant"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/25 hover:bg-emerald-500/20 flex items-center justify-between text-xs font-semibold text-emerald-300 transition-colors"
-                >
-                  <span className="flex items-center gap-2">
-                    <Bot className="w-3.5 h-3.5 text-emerald-400" />
-                    AI Concierge Assistant
-                  </span>
-                  <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">
-                    Tech 3
-                  </span>
+                  <Layers className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Smart Packages</span>
                 </Link>
 
                 <Link
                   to="/color-lab"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="p-2.5 rounded-xl bg-purple-500/10 border border-purple-500/25 hover:bg-purple-500/20 flex items-center justify-between text-xs font-semibold text-purple-300 transition-colors"
+                  className="p-2.5 rounded-lg bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.06] flex items-center gap-2 text-xs text-slate-200"
                 >
-                  <span className="flex items-center gap-2">
-                    <SlidersHorizontal className="w-3.5 h-3.5 text-purple-400" />
-                    Color Lab & LUTs
-                  </span>
-                  <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 font-bold">
-                    Tech 2
-                  </span>
+                  <SlidersHorizontal className="w-3.5 h-3.5 text-purple-400" />
+                  <span>Color Lab</span>
+                </Link>
+
+                <Link
+                  to="/assistant"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="p-2.5 rounded-lg bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.06] flex items-center gap-2 text-xs text-slate-200"
+                >
+                  <Bot className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>AI Assistant</span>
                 </Link>
               </div>
             </div>
 
-            {/* Standard Category & Exploration Links */}
+            {/* General Links */}
             <div className="space-y-1">
-              <p className="px-1 text-[10px] font-mono uppercase tracking-wider text-slate-400 font-bold">
-                Marketplace Creators
+              <p className="px-1 text-[10px] font-mono uppercase tracking-wider text-slate-400 font-semibold">
+                Marketplace
               </p>
-              <nav className="flex flex-col space-y-1">
+              <div className="flex flex-col space-y-0.5">
                 {[
                   { label: 'Photographers', path: '/photographers' },
                   { label: 'Videographers', path: '/videographers' },
                   { label: 'Editors', path: '/editors' },
                   { label: 'Services Catalog', path: '/services' },
-                  { label: 'Platform Features', path: '/features' },
                   { label: 'About LensCraft', path: '/about' },
-                ].map((link) => {
-                  const isActive = location.pathname === link.path;
-                  return (
-                    <Link
-                      key={link.label}
-                      to={link.path}
-                      onClick={() => setMobileMenuOpen(false)}
-                      className={`w-full text-left px-3.5 py-2 rounded-xl text-xs font-medium transition-colors flex items-center justify-between ${
-                        isActive
-                          ? 'text-cyan-300 bg-cyan-500/15 border border-cyan-400/30 font-bold'
-                          : 'text-slate-200 hover:text-cyan-300 hover:bg-white/5'
-                      }`}
-                    >
-                      <span>{link.label}</span>
-                      {isActive && <span className="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>}
-                    </Link>
-                  );
-                })}
-              </nav>
+                ].map((item) => (
+                  <Link
+                    key={item.label}
+                    to={item.path}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="px-3 py-2 rounded-lg text-xs text-slate-300 hover:text-white hover:bg-white/[0.05] transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
             </div>
 
-            {/* Mobile Actions CTAs */}
-            <div className="pt-3 border-t border-white/10 flex flex-col gap-2">
-              {!isAuthenticated && (
-                <div className="grid grid-cols-2 gap-2 pb-1">
-                  <Link
-                    to="/login"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="w-full py-2.5 rounded-xl text-xs font-semibold text-center text-slate-200 bg-white/5 border border-white/10 hover:bg-white/10 transition-colors"
-                  >
-                    Sign In
-                  </Link>
-                  <Link
-                    to="/register"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="w-full py-2.5 rounded-xl text-xs font-bold text-center text-slate-950 bg-cyan-400 hover:bg-cyan-300 transition-colors shadow-[0_0_15px_rgba(0,210,255,0.3)]"
-                  >
-                    Get Started
-                  </Link>
-                </div>
-              )}
+            {/* Mobile CTAs */}
+            <div className="pt-2 border-t border-white/[0.08] flex flex-col gap-2">
               <button
                 type="button"
                 onClick={() => {
                   setMobileMenuOpen(false);
                   setBookingModalOpen(true);
                 }}
-                className="w-full py-2.5 rounded-full text-xs font-bold uppercase tracking-wider glow-btn-primary text-center flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(0,210,255,0.35)]"
+                className="w-full py-2.5 rounded-lg text-xs font-semibold text-slate-950 bg-white hover:bg-slate-200 transition-all text-center shadow-md cursor-pointer"
               >
-                <Calendar className="w-4 h-4 text-midnight-950" />
-                <span>Book a Shoot</span>
+                Book a Shoot
               </button>
               <button
                 type="button"
@@ -659,7 +612,7 @@ const Navbar = () => {
                   setMobileMenuOpen(false);
                   setCreatorModalOpen(true);
                 }}
-                className="w-full py-2.5 rounded-full text-xs font-bold uppercase tracking-wider text-cyan-300 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-center transition-all"
+                className="w-full py-2.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] transition-all text-center cursor-pointer"
               >
                 Join as Creator
               </button>
@@ -668,7 +621,7 @@ const Navbar = () => {
         )}
       </header>
 
-      {/* Global Interactive Modals */}
+      {/* Global Modals */}
       <CreatorOnboardingModal isOpen={creatorModalOpen} onClose={() => setCreatorModalOpen(false)} />
       <AiMatchmakerModal isOpen={matchmakerModalOpen} onClose={() => setMatchmakerModalOpen(false)} />
       <BookingModal
