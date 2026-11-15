@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import {
   Sparkles,
@@ -88,40 +88,59 @@ const RecommendationPage = () => {
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
-  // Fetch recommendations
-  const handleSearch = async (e) => {
-    if (e) e.preventDefault();
+  // Prevent duplicate concurrent in-flight requests
+  const inFlightRef = useRef(false);
+
+  // Core query execution function
+  const executeRecommendationQuery = useCallback(async (queryPayload) => {
+    if (inFlightRef.current) return;
+    inFlightRef.current = true;
     setLoading(true);
     setError(null);
 
     try {
-      const payload = {
-        eventType: eventType.trim(),
-        location: location.trim(),
-        maxBudget: maxBudget ? Number(maxBudget) : null,
-        photographyStyle: photographyStyle.trim(),
-        eventDate: eventDate || null,
-        weights,
-        strictBudget,
-        excludeUnavailable,
-      };
-
-      const res = await recommendationService.getRecommendations(payload);
-      if (res.success && res.data) {
+      const res = await recommendationService.getRecommendations(queryPayload);
+      if (res && res.success && res.data) {
         setRecommendations(res.data.recommendations || []);
         setSearchedCriteria(res.data.criteria);
-        // On mobile, collapse filter drawer after submitting
         setMobileFiltersOpen(false);
       } else {
         setRecommendations([]);
       }
     } catch (err) {
-      console.error('Failed to get recommendations:', err);
-      setError(err.message || 'Failed to retrieve recommendations from server.');
+      const statusCode = err?.statusCode || err?.response?.status || '';
+      const errorMessage =
+        err?.message ||
+        err?.response?.data?.message ||
+        'Failed to retrieve photographer recommendations from server.';
+
+      console.error(
+        `[RecommendationPage] Failed to get recommendations${statusCode ? ` (HTTP ${statusCode})` : ''}:`,
+        errorMessage,
+        err
+      );
+      setError(errorMessage);
       setRecommendations([]);
     } finally {
       setLoading(false);
+      inFlightRef.current = false;
     }
+  }, []);
+
+  // Fetch recommendations from current form state
+  const handleSearch = (e) => {
+    if (e && typeof e.preventDefault === 'function') e.preventDefault();
+    const payload = {
+      eventType: eventType.trim(),
+      location: location.trim(),
+      maxBudget: maxBudget ? Number(maxBudget) : null,
+      photographyStyle: photographyStyle.trim(),
+      eventDate: eventDate || null,
+      weights,
+      strictBudget,
+      excludeUnavailable,
+    };
+    return executeRecommendationQuery(payload);
   };
 
   // Run initial recommendation query on page load
@@ -139,9 +158,7 @@ const RecommendationPage = () => {
     setExcludeUnavailable(true);
     setWeights(DEFAULT_WEIGHTS);
 
-    setLoading(true);
-    setError(null);
-    recommendationService.getRecommendations({
+    executeRecommendationQuery({
       eventType: 'Wedding',
       location: 'Bhopal',
       maxBudget: 15000,
@@ -150,17 +167,6 @@ const RecommendationPage = () => {
       weights: DEFAULT_WEIGHTS,
       strictBudget: false,
       excludeUnavailable: true,
-    }).then((res) => {
-      if (res.success && res.data) {
-        setRecommendations(res.data.recommendations || []);
-        setSearchedCriteria(res.data.criteria);
-        setMobileFiltersOpen(false);
-      }
-    }).catch((err) => {
-      console.error(err);
-      setError(err.message || 'Failed to query recommendations');
-    }).finally(() => {
-      setLoading(false);
     });
   };
 
@@ -584,12 +590,21 @@ const RecommendationPage = () => {
 
           {/* Error Banner */}
           {error && (
-            <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs flex items-center gap-3">
-              <AlertTriangle className="w-5 h-5 shrink-0 text-rose-400" />
-              <div>
-                <strong className="block font-semibold">Query Execution Notice</strong>
-                <span>{error}</span>
+            <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs flex flex-wrap items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <AlertTriangle className="w-5 h-5 shrink-0 text-rose-400" />
+                <div>
+                  <strong className="block font-semibold">Query Execution Notice</strong>
+                  <span>{error}</span>
+                </div>
               </div>
+              <button
+                type="button"
+                onClick={() => handleSearch()}
+                className="px-3 py-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 border border-rose-500/40 text-rose-200 text-xs font-medium transition-colors shrink-0 cursor-pointer"
+              >
+                Retry Query
+              </button>
             </div>
           )}
 

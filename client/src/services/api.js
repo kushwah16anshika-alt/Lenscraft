@@ -28,14 +28,25 @@ api.interceptors.response.use(
     return response.data;
   },
   (error) => {
-    const customError = {
-      message: error.response?.data?.message || error.message || 'An unexpected error occurred',
-      statusCode: error.response?.status || 500,
-      errors: error.response?.data?.errors || null,
-    };
+    const message =
+      error.response?.data?.message ||
+      error.message ||
+      'An unexpected error occurred';
+    const statusCode = error.response?.status || (error.code === 'ECONNABORTED' ? 408 : 500);
+    const errors = error.response?.data?.errors || null;
+
+    // Use a standard Error instance so console.error prints a readable stack & message rather than "[object Object]"
+    const customError = new Error(message);
+    customError.name = 'ApiError';
+    customError.statusCode = statusCode;
+    customError.status = statusCode;
+    customError.errors = errors;
+    customError.response = error.response;
+    customError.request = error.request;
+    customError.code = error.code;
 
     // Auto logout on 401 Unauthorized token expiry
-    if (customError.statusCode === 401 && window.location.pathname !== '/login') {
+    if (customError.statusCode === 401 && typeof window !== 'undefined' && window.location.pathname !== '/login') {
       // Optional: Clear token or notify auth context
     }
 

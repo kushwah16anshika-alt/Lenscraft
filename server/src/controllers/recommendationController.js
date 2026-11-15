@@ -42,12 +42,21 @@ export const getPhotographerRecommendations = async (req, res, next) => {
       parsedEventDate = eventDate;
     }
 
-    // Validate weights if provided
+    // Validate weights if provided (handles both object and JSON string from GET query)
+    let rawWeights = weights;
+    if (typeof rawWeights === 'string') {
+      try {
+        rawWeights = JSON.parse(rawWeights);
+      } catch {
+        rawWeights = {};
+      }
+    }
+
     const parsedWeights = {};
-    if (weights && typeof weights === 'object') {
+    if (rawWeights && typeof rawWeights === 'object') {
       ['style', 'budget', 'location', 'service', 'availability'].forEach((key) => {
-        if (weights[key] !== undefined && weights[key] !== null) {
-          const val = Number(weights[key]);
+        if (rawWeights[key] !== undefined && rawWeights[key] !== null) {
+          const val = Number(rawWeights[key]);
           if (!isNaN(val) && val >= 0) {
             parsedWeights[key] = val;
           }

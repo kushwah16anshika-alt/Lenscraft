@@ -8,6 +8,7 @@ import ApiResponse from '../utils/apiResponse.js';
  */
 export const getSmartPackageRecommendations = async (req, res) => {
   try {
+    const source = req.method === 'POST' ? req.body : req.query;
     const {
       eventType,
       budget,
@@ -16,7 +17,7 @@ export const getSmartPackageRecommendations = async (req, res) => {
       requiredService,
       requiredInclusions,
       strictBudget,
-    } = req.body || {};
+    } = source || {};
 
     // Input Validation
     let parsedBudget = 20000;

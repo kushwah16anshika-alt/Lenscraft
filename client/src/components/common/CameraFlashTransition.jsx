@@ -10,9 +10,40 @@ import { Volume2, VolumeX, Camera, Aperture } from 'lucide-react';
 class CameraShutterAudioSynthesizer {
   constructor() {
     this.audioCtx = null;
+    this.hasUserInteracted = false;
+    this._unlockHandler = null;
+    this.setupUserGestureListener();
+  }
+
+  setupUserGestureListener() {
+    if (typeof window === 'undefined') return;
+
+    const unlock = () => {
+      this.hasUserInteracted = true;
+      if (this.audioCtx && this.audioCtx.state === 'suspended') {
+        this.audioCtx.resume().catch(() => {});
+      }
+      this.removeUserGestureListener();
+    };
+
+    this._unlockHandler = unlock;
+    window.addEventListener('click', unlock, { capture: true, passive: true });
+    window.addEventListener('touchstart', unlock, { capture: true, passive: true });
+    window.addEventListener('keydown', unlock, { capture: true, passive: true });
+  }
+
+  removeUserGestureListener() {
+    if (typeof window === 'undefined' || !this._unlockHandler) return;
+    window.removeEventListener('click', this._unlockHandler, { capture: true });
+    window.removeEventListener('touchstart', this._unlockHandler, { capture: true });
+    window.removeEventListener('keydown', this._unlockHandler, { capture: true });
+    this._unlockHandler = null;
   }
 
   init() {
+    // Strictly do not create or resume AudioContext before a user interaction occurs
+    if (!this.hasUserInteracted) return;
+
     if (!this.audioCtx && typeof window !== 'undefined') {
       const AudioCtx = window.AudioContext || window.webkitAudioContext;
       if (AudioCtx) {
@@ -22,12 +53,18 @@ class CameraShutterAudioSynthesizer {
   }
 
   playShutter() {
+    // Audio is strictly suppressed until a user gesture to adhere to modern browser autoplay policies
+    if (!this.hasUserInteracted) return;
+
     try {
       this.init();
       if (!this.audioCtx) return;
 
       if (this.audioCtx.state === 'suspended') {
-        this.audioCtx.resume();
+        this.audioCtx.resume().catch(() => {});
+      }
+      if (this.audioCtx.state === 'suspended') {
+        return;
       }
 
       const now = this.audioCtx.currentTime;
@@ -157,7 +194,7 @@ const CameraFlashTransition = () => {
   const prevLocationRef = useRef(location.pathname + location.search);
   const isFirstMountRef = useRef(true);
 
-  const triggerFlash = useCallback((customShutter = null) => {
+  const triggerFlash = useCallback((customShutter = null, playSound = true) => {
     if (!fxEnabled) return;
 
     // Randomize camera specs slightly for authentic DSLR immersion
@@ -172,7 +209,8 @@ const CameraFlashTransition = () => {
     setIsFlashing(true);
     setFlashPhase('strobe');
 
-    if (soundEnabled) {
+    // Only play audio if sound is enabled and requested, and audio gesture has been unlocked
+    if (soundEnabled && playSound) {
       shutterSynth.playShutter();
     }
 
@@ -201,8 +239,8 @@ const CameraFlashTransition = () => {
 
     if (isFirstMountRef.current) {
       isFirstMountRef.current = false;
-      // Trigger a welcome flash on first page load
-      triggerFlash('1/1000s');
+      // Visual-only welcome flash on initial page load (playSound = false prevents AudioContext autoplay violation)
+      triggerFlash('1/1000s', false);
       prevLocationRef.current = currentLoc;
       return;
     }
@@ -215,6 +253,7 @@ const CameraFlashTransition = () => {
 
   const toggleSound = (e) => {
     e.stopPropagation();
+    shutterSynth.hasUserInteracted = true;
     const next = !soundEnabled;
     setSoundEnabled(next);
     try {
@@ -227,13 +266,14 @@ const CameraFlashTransition = () => {
 
   const toggleFx = (e) => {
     e.stopPropagation();
+    shutterSynth.hasUserInteracted = true;
     const next = !fxEnabled;
     setFxEnabled(next);
     try {
       localStorage.setItem('lenscraft_camera_fx_enabled', JSON.stringify(next));
     } catch {}
     if (next) {
-      triggerFlash();
+      triggerFlash(null, true);
     }
   };
 
@@ -349,7 +389,10 @@ const CameraFlashTransition = () => {
       >
         <button
           type="button"
-          onClick={() => triggerFlash('1/1000s')}
+          onClick={() => {
+            shutterSynth.hasUserInteracted = true;
+            triggerFlash('1/1000s', true);
+          }}
           title="Snap Camera Shutter Flash (Test Animation)"
           className="flex items-center gap-1.5 text-xs text-slate-300 hover:text-cyan-300 transition-colors pr-2 border-r border-slate-700/60"
         >
