@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import { resolveMongoUri, maskMongoUri } from './config/db.js';
 import User from './models/User.js';
 import ProfessionalProfile from './models/ProfessionalProfile.js';
 import Service from './models/Service.js';
@@ -695,10 +696,12 @@ const demoClientsAndAdmin = [
 
 export const seedDatabase = async () => {
   try {
-    const rawUri = process.env.MONGODB_URI || process.env.MONGO_URI;
-    const mongoUri = rawUri ? rawUri.trim().replace(/^["']|["']$/g, '') : 'mongodb://127.0.0.1:27017/lenscraft_db';
-    console.log(`Connecting to MongoDB at ${mongoUri}...`);
-    await mongoose.connect(mongoUri);
+    const { uri, sourceKey } = resolveMongoUri();
+    const mongoUri = uri || 'mongodb://127.0.0.1:27017/lenscraft_db';
+    console.log(`Connecting to MongoDB${sourceKey ? ` via [${sourceKey}]` : ''} at ${maskMongoUri(mongoUri)}...`);
+    await mongoose.connect(mongoUri, {
+      dbName: process.env.MONGODB_DB_NAME || 'lenscraft_db',
+    });
     console.log('✓ Connected to MongoDB for seeding.');
 
     // Clear existing collections

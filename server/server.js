@@ -23,7 +23,9 @@ dotenv.config();
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 // Connect Database & Cloudinary
-connectDB();
+connectDB().catch((err) => {
+  console.error('✗ Initial database connection error:', err.message);
+});
 configureCloudinary();
 
 const app = express();
